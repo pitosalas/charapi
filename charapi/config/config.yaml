@@ -22,4 +22,8 @@ scoring:
 
 caching:
   enabled: true
-  api_cache_hours: 24
+  database_path: "cache/charapi_cache.db"
+  default_ttl_hours: 24
+  propublica_ttl_hours: 24
+  charity_navigator_ttl_hours: 168
+  cleanup_on_startup: true

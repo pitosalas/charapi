@@ -45,9 +45,12 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
     total_score = financial_score + trend_modifier + validation_bonus + compliance_penalty
     grade = _assign_grade(total_score)
     
+    # Handle both mock and real API response structures
+    org_name = org_data.get("name") or org_data.get("organization", {}).get("name", "Unknown")
+
     return CharityEvaluationResult(
         ein=ein,
-        organization_name=org_data.get("name", "Unknown"),
+        organization_name=org_name,
         total_score=total_score,
         grade=grade,
         financial_score=financial_score,

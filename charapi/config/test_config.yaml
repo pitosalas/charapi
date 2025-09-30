@@ -21,5 +21,9 @@ scoring:
     volatility_penalty_range: 10
 
 caching:
-  enabled: true
-  api_cache_hours: 24
+  enabled: false
+  database_path: "cache/test_cache.db"
+  default_ttl_hours: 1
+  propublica_ttl_hours: 1
+  charity_navigator_ttl_hours: 1
+  cleanup_on_startup: false
