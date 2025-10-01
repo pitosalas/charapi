@@ -29,16 +29,15 @@ def print_results(result, mode):
     print(f"Financial Score: {result.financial_score:.1f}")
     print(f"Trend Modifier: {result.trend_modifier:.1f} (stub - needs implementation)")
 
-    normalized_ein = result.ein.replace("-", "")
     if result.external_validation.charity_navigator_rating is None:
-        print(f"Validation Bonus: {result.validation_bonus:.1f} (manual data not available - edit manual/{normalized_ein}.json)")
+        print(f"Validation Bonus: {result.validation_bonus:.1f} (manual data not available - edit manual/manual_data.yaml)")
     else:
         print(f"Validation Bonus: {result.validation_bonus:.1f} (Charity Navigator rating: {result.external_validation.charity_navigator_rating} stars)")
 
     # Show compliance with manual data status
     if not result.compliance_check.is_compliant:
         print(f"Compliance Penalty: {result.compliance_penalty:.1f} (issues: {', '.join(result.compliance_check.issues)})")
-        print(f"  → Check manual data in manual/{normalized_ein}.json")
+        print(f"  → Check manual data in manual/manual_data.yaml")
     else:
         print(f"Compliance Penalty: {result.compliance_penalty:.1f}")
 
@@ -47,9 +46,9 @@ def print_results(result, mode):
 
     # Show expense ratios with manual data status
     if result.financial_metrics.program_expenses == 0:
-        print(f"Program Expense Ratio: Manual data not available (edit manual/{normalized_ein}.json)")
-        print(f"Admin Expense Ratio: Manual data not available (edit manual/{normalized_ein}.json)")
-        print(f"Fundraising Expense Ratio: Manual data not available (edit manual/{normalized_ein}.json)")
+        print(f"Program Expense Ratio: Manual data not available (edit manual/manual_data.yaml)")
+        print(f"Admin Expense Ratio: Manual data not available (edit manual/manual_data.yaml)")
+        print(f"Fundraising Expense Ratio: Manual data not available (edit manual/manual_data.yaml)")
     else:
         print(f"Program Expense Ratio: {result.financial_metrics.program_expense_ratio:.1f}%")
         print(f"Admin Expense Ratio: {result.financial_metrics.admin_expense_ratio:.1f}%")

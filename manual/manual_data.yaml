@@ -1,0 +1,394 @@
+# ========================================
+# COMPLETE NONPROFIT DATA FOR ALL EINs
+# ========================================
+
+# EIN: 53-0196605
+ein_53_0196605:
+  organization:
+    name: "American National Red Cross"
+    dba: "American Red Cross"
+    ein: "53-0196605"
+    location: "Washington, DC"
+    headquarters: "Washington, DC"
+    ntee_code: "P99"
+    category: "Human Services — Multipurpose and Other / American Red Cross"
+    tax_status: "501(c)(3)"
+    founded: 1881
+    founder: "Clara Barton"
+    mission: "Since its founding in 1881 by visionary leader Clara Barton, the American Red Cross has been the nation's premier emergency response organization. Brings shelter, food, and relief to people in crisis"
+    description: "Nation's premier emergency response organization providing disaster relief, blood services, health and safety training, and international humanitarian services"
+    
+    charity_navigator_rating:
+      stars: 4
+      score_percent: 100
+      rating_date: 2025
+      
+    charity_watch_rating:
+      grade: "B+"
+      program_spending_percent: 89
+      cost_to_raise_100: 30
+
+  fiscal_year_2024:
+    period_ending: "June 2024"
+    revenue:
+      total: 3802376544
+      contributions: 1331945848
+      contributions_percent: 35.0
+      program_services: 2326747468
+      program_services_percent: 61.2
+      investment_income: 71872112
+      investment_income_percent: 1.9
+      bond_proceeds: 0
+      royalties: 0
+      rental_income: 25783421
+      rental_income_percent: 0.7
+      net_fundraising: -439848
+      sales_of_assets: 7284086
+      sales_of_assets_percent: 0.2
+      net_inventory_sales: 0
+      other_revenue: 41184257
+      other_revenue_percent: 1.1
+    expenses:
+      total: 3534376744
+      executive_compensation: 6873699
+      executive_compensation_percent: 0.2
+      other_salaries_wages: 1258437042
+      other_salaries_wages_percent: 35.6
+      professional_fundraising_fees: 644002
+      professional_fundraising_fees_percent: 0.0
+      program_expenses: 3200000000  # Approximate 90.7% of total
+      program_expenses_percent: 90.5
+    balance_sheet:
+      total_assets: 4565143729
+      total_liabilities: 1142559888
+      net_assets: 3422583841
+
+  fiscal_year_2023:
+    period_ending: "June 2023"
+    revenue:
+      total: 3217077611
+      contributions: 919126379
+      contributions_percent: 28.6
+      program_services: 2167924872
+      program_services_percent: 67.4
+      investment_income: 76827242
+      investment_income_percent: 2.4
+      rental_income: 25402149
+      rental_income_percent: 0.8
+      net_fundraising: -849629
+      sales_of_assets: 5390917
+      sales_of_assets_percent: 0.2
+      other_revenue: 23255681
+      other_revenue_percent: 0.7
+    expenses:
+      total: 2972000000
+      executive_compensation: 5947262
+      executive_compensation_percent: 0.2
+      other_salaries_wages: 1182370329
+      other_salaries_wages_percent: 39.8
+      professional_fundraising_fees: 452216
+      professional_fundraising_fees_percent: 0.0
+      program_expenses: 2695000000  # 90.7% of total
+      program_expenses_percent: 90.7
+    balance_sheet:
+      total_assets: 4028321133
+      total_liabilities: 1008326202
+      net_assets: 3019994931
+
+  fiscal_year_2022:
+    period_ending: "June 2022"
+    revenue:
+      total: 3182229338
+      contributions: 1060031161
+      contributions_percent: 33.3
+      program_services: 2018755758
+      program_services_percent: 63.4
+      investment_income: 48466117
+      investment_income_percent: 1.5
+      rental_income: 25283390
+      rental_income_percent: 0.8
+      net_fundraising: -472544
+      sales_of_assets: 11802455
+      sales_of_assets_percent: 0.4
+      other_revenue: 18363001
+      other_revenue_percent: 0.6
+    expenses:
+      total: 3047000000
+      executive_compensation: 5758532
+      executive_compensation_percent: 0.2
+      other_salaries_wages: 1119398026
+      other_salaries_wages_percent: 36.7
+      professional_fundraising_fees: 301063
+      professional_fundraising_fees_percent: 0.0
+    balance_sheet:
+      total_assets: 3872181875
+      total_liabilities: 1171891777
+      net_assets: 2700290098
+
+  fiscal_year_2021:
+    period_ending: "June 2021"
+    revenue:
+      total: 3090183560
+      contributions: 962942913
+      contributions_percent: 31.2
+      program_services: 1999617756
+      program_services_percent: 64.7
+      investment_income: 63790894
+      investment_income_percent: 2.1
+      rental_income: 25607891
+      rental_income_percent: 0.8
+      net_fundraising: 2243926
+      net_fundraising_percent: 0.1
+      sales_of_assets: 9223931
+      sales_of_assets_percent: 0.3
+      other_revenue: 26756249
+      other_revenue_percent: 0.9
+    expenses:
+      total: 2799000000
+      executive_compensation: 5750681
+      executive_compensation_percent: 0.2
+      other_salaries_wages: 1071857732
+      other_salaries_wages_percent: 38.3
+      professional_fundraising_fees: 216781
+      professional_fundraising_fees_percent: 0.0
+    balance_sheet:
+      total_assets: 3668499985
+      total_liabilities: 1300112674
+      net_assets: 2368387311
+
+  fiscal_year_2020:
+    period_ending: "June 2020"
+    revenue:
+      total: 2839409246
+      contributions: 887785755
+      contributions_percent: 31.3
+      program_services: 1840018144
+      program_services_percent: 64.8
+      investment_income: 44576430
+      investment_income_percent: 1.6
+      rental_income: 25128547
+      rental_income_percent: 0.9
+      net_fundraising: -1042517
+      sales_of_assets: 10805822
+      sales_of_assets_percent: 0.4
+      other_revenue: 32137065
+      other_revenue_percent: 1.1
+    expenses:
+      total: 2682000000
+      executive_compensation: 5988644
+      executive_compensation_percent: 0.2
+      other_salaries_wages: 1099816849
+      other_salaries_wages_percent: 41.0
+      professional_fundraising_fees: 123953
+      professional_fundraising_fees_percent: 0.0
+    balance_sheet:
+      total_assets: 3266899381
+      total_liabilities: 1454684272
+      net_assets: 1812215109
+
+  programs:
+    disaster_relief:
+      description: "Responds to an average of 65,000 disasters every year"
+      services:
+        - "Emergency shelter and housing"
+        - "Food and relief supplies"
+        - "Emotional support and counseling"
+        - "Recovery assistance"
+      
+    biomedical_services:
+      description: "Nation's largest single supplier of blood and blood products"
+      annual_blood_donations: 4500000
+      annual_platelet_donations: 1000000
+      hospitals_served: "Over 2,500"
+      services:
+        - "Blood collection from volunteer donors"
+        - "Blood processing and testing"
+        - "Distribution to hospitals nationwide"
+        - "Support for surgeries, injuries, cancer treatments, blood disorders"
+      
+    training_services:
+      description: "Provides health and safety training to the public"
+      services:
+        - "First Aid and CPR certification"
+        - "Lifeguard training"
+        - "Babysitting courses"
+        - "Nurse assistant training"
+        - "Emergency preparedness education"
+      annual_participants: "Millions trained annually"
+      
+    service_to_armed_forces:
+      description: "Support for military members, veterans, and their families"
+      services:
+        - "Emergency communication services"
+        - "Financial assistance"
+        - "Support on military installations worldwide"
+        
+    international_services:
+      description: "Part of the International Red Cross and Red Crescent Movement"
+      services:
+        - "International disaster response"
+        - "Humanitarian assistance worldwide"
+        - "Coordination with International Committee of the Red Cross (ICRC)"
+        - "Support to Red Cross societies globally"
+
+  performance_metrics:
+    program_spending_percent: 90.7  # FY 2023
+    administrative_overhead_percent: 9.3
+    disasters_responded_to_annually: 65000
+    volunteers: "Over 200,000"
+    employees: "Approximately 20,000"
+
+  top_compensation_2024:
+    - name: "Gail McGovern"
+      title: "President & CEO"
+      compensation: 1296862
+      benefits: 16743
+      total: 1313605
+    - name: "Clifford Holtz"
+      title: "Chief Operating Officer"
+      compensation: 855665
+      benefits: 31863
+      total: 887528
+    - name: "Chris Hrouda"
+      title: "President Of Biomedical Services"
+      compensation: 801049
+      benefits: 33066
+      total: 834115
+    - name: "Brian Rhoa"
+      title: "Chief Investment Officer"
+      compensation: 704132
+      benefits: 30957
+      total: 735089
+    - name: "Shaun Gilmore"
+      title: "Chief Transformation Officer"
+      compensation: 622623
+      benefits: 34459
+      total: 657082
+
+  top_compensation_2023:
+    - name: "Gail McGovern"
+      title: "President & CEO"
+      compensation: 859260
+      benefits: 13951
+      total: 873211
+    - name: "Clifford Holtz"
+      title: "Chief Operating Officer"
+      compensation: 749814
+      benefits: 31071
+      total: 780885
+    - name: "Chris Hrouda"
+      title: "President Of Biomedical Services"
+      compensation: 696337
+      benefits: 32163
+      total: 728500
+
+  recognition:
+    - "Charity Navigator: 4-star rating (100%)"
+    - "CharityWatch: B+ rating"
+    - "BBB Wise Giving Alliance: Accredited Charity"
+    - "Candid/GuideStar: Highest ratings"
+    - "FDA lifted 22-year Consent Decree on blood safety operations"
+    - "Member of International Red Cross and Red Crescent Movement"
+
+  historical_context:
+    - "Founded in 1881 by Clara Barton"
+    - "Congressional Charter granted in 1900, reaffirmed in 1905"
+    - "Serves as auxiliary to U.S. government in disaster relief"
+    - "One of the world's most recognized humanitarian organizations"
+    - "Has responded to every major disaster in the United States for over 140 years"
+
+# EIN: 04-3255365
+ein_043255365:
+  organization:
+    name: "Passim"
+    legal_name: "47 Palmer, Inc."
+    ein: "04-3255365"
+    location: "Cambridge, MA"
+    address: "47 Palmer Street, Harvard Square"
+    tax_status: "501(c)(3)"
+    tax_exempt_since: "June 1996"
+    ntee_code: "A68"
+    category: "Arts, Culture and Humanities - Music"
+    in_pub78: true
+    is_revoked: false
+    has_recent_filing: true
+    charity_navigator_rating:
+      stars: 4
+      score_percent: 93
+
+  fiscal_year_2024:
+    period_ending: "June 2024"
+    revenue:
+      total: 2150000
+      contributions: 751513
+      contributions_percent: 35.0
+      program_services: 1392915
+      program_services_percent: 64.8
+      investment_income: 5006
+      investment_income_percent: 0.2
+      bond_proceeds: 0
+      royalties: 0
+      rental_income: 0
+      net_fundraising: 0
+      sales_of_assets: 0
+      net_inventory_sales: 0
+      other_revenue: 0
+    expenses:
+      total: 2230000
+      program: 1800000
+      admin: 330000
+      fundraising: 100000
+      executive_compensation: 97387
+      executive_compensation_percent: 4.4
+      other_salaries_wages: 587290
+      other_salaries_wages_percent: 26.3
+      professional_fundraising_fees: 0
+    balance_sheet:
+      total_assets: 584832
+      total_liabilities: 157929
+      net_assets: 426903
+
+  fiscal_year_2023:
+    period_ending: "June 2023"
+    revenue:
+      total: 1750261
+      contributions: 607491
+      contributions_percent: 34.7
+      program_services: 1139493
+      program_services_percent: 65.1
+      investment_income: 3277
+      investment_income_percent: 0.2
+    expenses:
+      total: 1832000
+      executive_compensation: 92750
+      executive_compensation_percent: 5.1
+      other_salaries_wages: 459859
+      other_salaries_wages_percent: 25.1
+    balance_sheet:
+      total_assets: 652259
+      total_liabilities: 140451
+      net_assets: 511808
+
+  programs:
+    club_passim:
+      capacity: 110
+      annual_shows: 430
+      annual_attendance: 30000
+    passim_school_of_music:
+      founded: 2000
+      classes_2024: 131
+      students_2024: 680
+    festivals:
+      - name: "campfire festival"
+        frequency: "bi-annual (Memorial Day and Labor Day weekends)"
+        artists: 60
+      - name: "BCMFest (Boston Celtic Music Festival)"
+        years_running: 22
+    summer_concerts:
+      series_count: 4
+      cost: "free"
+      locations: "various public spaces across Cambridge"
+
+  governance:
+    board_compensation: 0
+    all_directors_unpaid: true

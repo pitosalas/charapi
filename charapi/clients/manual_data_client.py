@@ -1,28 +1,32 @@
-import json
+import yaml
 from pathlib import Path
 
 
 class ManualDataClient:
+    _global_data = None
+
     def __init__(self, config: dict):
         self.manual_dir = Path(config.get("manual_data", {}).get("directory", "manual"))
-        self._cache = {}
+        self.filename = config.get("manual_data", {}).get("filename", "manual_data.yaml")
+
+        if ManualDataClient._global_data is None:
+            self._load_data()
+
+    def _load_data(self):
+        yaml_path = self.manual_dir / self.filename
+
+        if not yaml_path.exists():
+            ManualDataClient._global_data = {}
+            return
+
+        with open(yaml_path, "r") as f:
+            ManualDataClient._global_data = yaml.safe_load(f) or {}
 
     def get_data(self, ein: str) -> dict:
         normalized_ein = ein.replace("-", "")
+        ein_key = f"ein_{normalized_ein}"
 
-        if normalized_ein in self._cache:
-            return self._cache[normalized_ein]
-
-        json_path = self.manual_dir / f"{normalized_ein}.json"
-
-        if not json_path.exists():
-            return {}
-
-        with open(json_path, "r") as f:
-            data = json.load(f)
-
-        self._cache[normalized_ein] = data
-        return data
+        return ManualDataClient._global_data.get(ein_key, {})
 
     def get_value(self, field_name: str, ein: str):
         data = self.get_data(ein)
