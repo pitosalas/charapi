@@ -7,13 +7,13 @@ class ComplianceChecker:
         self.data_manager = DataFieldManager(config)
 
     def check_compliance(self, ein: str) -> ComplianceCheck:
-        in_pub78_str = self.data_manager.get_field("in_pub78", ein)
-        is_revoked_str = self.data_manager.get_field("is_revoked", ein)
-        has_recent_filing_str = self.data_manager.get_field("has_recent_filing", ein)
+        in_pub78_val = self.data_manager.get_field("in_pub78", ein)
+        is_revoked_val = self.data_manager.get_field("is_revoked", ein)
+        has_recent_filing_val = self.data_manager.get_field("has_recent_filing", ein)
 
-        in_pub78 = in_pub78_str != "manual data not available" and in_pub78_str.lower() in ["1", "true", "yes"]
-        is_revoked = is_revoked_str != "manual data not available" and is_revoked_str.lower() in ["1", "true", "yes"]
-        has_recent_filing = has_recent_filing_str != "manual data not available" and has_recent_filing_str.lower() in ["1", "true", "yes"]
+        in_pub78 = bool(in_pub78_val) if in_pub78_val is not None else False
+        is_revoked = bool(is_revoked_val) if is_revoked_val is not None else False
+        has_recent_filing = bool(has_recent_filing_val) if has_recent_filing_val is not None else False
 
         issues = []
         if not in_pub78:

@@ -1,33 +1,42 @@
-import csv
+import json
 from pathlib import Path
 
 
 class ManualDataClient:
     def __init__(self, config: dict):
         self.manual_dir = Path(config.get("manual_data", {}).get("directory", "manual"))
+        self._cache = {}
 
-    def get_value(self, field_name: str, ein: str) -> str:
-        csv_path = self.manual_dir / f"{field_name}.csv"
+    def get_data(self, ein: str) -> dict:
+        normalized_ein = ein.replace("-", "")
 
-        if not csv_path.exists():
-            raise FileNotFoundError(f"Manual data file not found: {csv_path}")
+        if normalized_ein in self._cache:
+            return self._cache[normalized_ein]
 
-        rows = self._read_csv(csv_path)
+        json_path = self.manual_dir / f"{normalized_ein}.json"
 
-        for row in rows:
-            if row["ein"] == ein:
-                return row["value"]
+        if not json_path.exists():
+            return {}
 
-        return "manual data not available"
+        with open(json_path, "r") as f:
+            data = json.load(f)
 
-    def _read_csv(self, csv_path: Path) -> list:
-        with open(csv_path, "r") as f:
-            reader = csv.DictReader(f)
-            if reader.fieldnames != ["ein", "value"]:
-                raise ValueError(f"Invalid CSV format in {csv_path}. Expected columns: ein,value")
-            return list(reader)
+        self._cache[normalized_ein] = data
+        return data
 
-    def _add_row(self, csv_path: Path, ein: str, value: str):
-        with open(csv_path, "a", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerow([ein, value])
+    def get_value(self, field_name: str, ein: str):
+        data = self.get_data(ein)
+
+        if not data:
+            return None
+
+        parts = field_name.split(".")
+        current = data
+
+        for part in parts:
+            if isinstance(current, dict) and part in current:
+                current = current[part]
+            else:
+                return None
+
+        return current

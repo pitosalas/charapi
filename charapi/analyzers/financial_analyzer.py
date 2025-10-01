@@ -10,13 +10,13 @@ class FinancialAnalyzer:
         total_expenses = filing_data.get("totfuncexpns", 0)
         total_revenue = filing_data.get("totrevenue", 0)
 
-        program_expenses_str = self.data_manager.get_field("program_expenses", ein)
-        admin_expenses_str = self.data_manager.get_field("admin_expenses", ein)
-        fundraising_expenses_str = self.data_manager.get_field("fundraising_expenses", ein)
+        program_expenses_val = self.data_manager.get_field("program_expenses", ein)
+        admin_expenses_val = self.data_manager.get_field("admin_expenses", ein)
+        fundraising_expenses_val = self.data_manager.get_field("fundraising_expenses", ein)
 
-        program_expenses = 0 if program_expenses_str == "manual data not available" else int(program_expenses_str)
-        admin_expenses = 0 if admin_expenses_str == "manual data not available" else int(admin_expenses_str)
-        fundraising_expenses = 0 if fundraising_expenses_str == "manual data not available" else int(fundraising_expenses_str)
+        program_expenses = int(program_expenses_val) if program_expenses_val is not None else 0
+        admin_expenses = int(admin_expenses_val) if admin_expenses_val is not None else 0
+        fundraising_expenses = int(fundraising_expenses_val) if fundraising_expenses_val is not None else 0
 
         # Calculate ratios as percentages when total expenses > 0
         if total_expenses > 0:

@@ -8,13 +8,13 @@ class ValidationScorer:
         self.data_manager = DataFieldManager(config)
 
     def get_validation_data(self, ein: str) -> ExternalValidation:
-        rating_str = self.data_manager.get_field("charity_navigator_rating", ein)
+        rating_val = self.data_manager.get_field("charity_navigator_rating", ein)
 
-        if rating_str == "manual data not available":
+        if rating_val is None:
             rating = None
             score = 0.0
         else:
-            rating = int(rating_str)
+            rating = int(rating_val)
             score = rating * 5.0
 
         return ExternalValidation(

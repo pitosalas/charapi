@@ -3,18 +3,25 @@ mock_mode: true
 data_fields:
   program_expenses:
     source: manual
+    path: "fiscal_year_2024.expenses.program"
   admin_expenses:
     source: manual
+    path: "fiscal_year_2024.expenses.admin"
   fundraising_expenses:
     source: manual
+    path: "fiscal_year_2024.expenses.fundraising"
   in_pub78:
     source: manual
+    path: "organization.in_pub78"
   is_revoked:
     source: manual
+    path: "organization.is_revoked"
   has_recent_filing:
     source: manual
+    path: "organization.has_recent_filing"
   charity_navigator_rating:
     source: manual
+    path: "organization.charity_navigator_rating.stars"
   total_revenue:
     source: api
   total_expenses:

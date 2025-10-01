@@ -11,10 +11,12 @@ class DataFieldManager:
         if field_name not in self.data_fields:
             raise KeyError(f"Field {field_name} not configured in data_fields")
 
-        source = self.data_fields[field_name].get("source")
+        field_config = self.data_fields[field_name]
+        source = field_config.get("source")
 
         if source == "manual":
-            return self.manual_client.get_value(field_name, ein)
+            json_path = field_config.get("path", field_name)
+            return self.manual_client.get_value(json_path, ein)
         elif source == "api":
             raise NotImplementedError(f"API source for {field_name} must be handled by caller")
         else:

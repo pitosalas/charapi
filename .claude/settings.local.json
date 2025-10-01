@@ -4,7 +4,8 @@
       "Bash(uv run:*)",
       "Bash(curl:*)",
       "WebSearch",
-      "Bash(uv add:*)"
+      "Bash(uv add:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
