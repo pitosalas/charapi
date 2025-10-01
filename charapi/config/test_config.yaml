@@ -5,6 +5,10 @@ propublica:
   timeout: 30
   mock_mode: false
 
+irs:
+  local_data_dir: "cache"
+  mock_mode: false
+
 scoring:
   financial:
     program_expense_target: 0.75

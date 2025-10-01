@@ -24,3 +24,8 @@ dev = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["charapi"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+]

@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(uv run:*)"
+      "Bash(uv run:*)",
+      "Bash(curl:*)",
+      "WebSearch",
+      "Bash(uv add:*)"
     ],
     "deny": [],
     "ask": []

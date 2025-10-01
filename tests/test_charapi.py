@@ -1,13 +1,9 @@
-import sys
-import os
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-
-from api.charity_evaluator import evaluate_charity
-from data.charity_evaluation_result import CharityEvaluationResult
+from charapi.api.charity_evaluator import evaluate_charity
+from charapi.data.charity_evaluation_result import CharityEvaluationResult
 
 
 def test_evaluate_charity_mock_mode():
-    config_path = "config/test_config.yaml"
+    config_path = "charapi/config/test_config.yaml"
     red_cross_ein = "530196605"
     
     result = evaluate_charity(red_cross_ein, config_path)
@@ -28,7 +24,7 @@ def test_evaluate_charity_mock_mode():
 
 
 def test_evaluate_charity_salvation_army():
-    config_path = "config/test_config.yaml"
+    config_path = "charapi/config/test_config.yaml"
     salvation_army_ein = "136161001"
     
     result = evaluate_charity(salvation_army_ein, config_path)
@@ -40,7 +36,7 @@ def test_evaluate_charity_salvation_army():
 
 
 def test_evaluate_unknown_charity():
-    config_path = "config/test_config.yaml"
+    config_path = "charapi/config/test_config.yaml"
     unknown_ein = "999999999"
     
     result = evaluate_charity(unknown_ein, config_path)

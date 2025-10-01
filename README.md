@@ -38,7 +38,7 @@ result = evaluate_charity("530196605", "charapi/config/config.yaml")
 - Multiple years of filings (when available)
 - PDF links to original Form 990 documents
 
-### IRS Tax Exempt Organization Data 🔄 Planned
+### IRS Tax Exempt Organization Data ✅ Implemented
 **Sources**: Bulk CSV downloads from IRS
 
 **Information Retrieved:**
@@ -46,6 +46,60 @@ result = evaluate_charity("530196605", "charapi/config/config.yaml")
 - Auto-revocation list (organizations that lost exemption)
 - EO Business Master File (comprehensive organization details)
 - Recent filing compliance status
+
+**Setup Required:**
+```bash
+# Download IRS compliance data (required)
+./scripts/download_irs_data.sh
+
+# Data stored in: cache/ directory
+# - data-download-pub78.txt (92MB)
+# - irs_revocation_list.csv (75KB)
+# - irs_eo1.csv through irs_eo4.csv (314MB total)
+```
+
+### IRS Form 990 XML Data ✅ Implemented
+**Source**: IRS Form 990 e-file database
+
+**Information Retrieved:**
+- Detailed expense breakdowns:
+  - `TotalProgramServiceExpensesAmt` - Program expenses
+  - `ManagementAndGeneralExpenseAmt` - Administrative expenses
+  - `TotalFundraisingExpenseAmt` - Fundraising expenses
+- Total revenue and expenses
+- Net assets and fund balances
+
+**Setup Required:**
+The system downloads Form 990 XML files on-demand. When you evaluate a charity, if the required XML file is not found, you'll receive detailed instructions including:
+
+1. The specific OBJECT_ID needed
+2. Which batch file to download (organized by month)
+3. Download URL from IRS.gov
+4. Extraction commands
+
+**Manual Download Process:**
+```bash
+# Download the IRS Form 990 index first (if not already present)
+cd cache
+curl -o irs_form_index_2023.csv \
+  "https://apps.irs.gov/pub/epostcard/990/xml/2023/index_2023.csv"
+
+# When evaluation fails, use the provided script with batch number from error message
+./scripts/download_form990_batch.sh 2023 12A
+
+# Or download manually:
+cd cache
+curl -L -o 2023_TEOS_XML_12A.zip \
+  "https://apps.irs.gov/pub/epostcard/990/xml/2023/2023_TEOS_XML_12A.zip"
+mkdir -p irs_990_xml/2023_12A
+unzip 2023_TEOS_XML_12A.zip -d irs_990_xml/2023_12A
+```
+
+**Storage:**
+- Index: `cache/irs_form_index_2023.csv`
+- XML files: `cache/irs_990_xml/[YEAR]_[BATCH]/`
+- Batch sizes: ~150-200MB per month (uncompressed)
+- Each batch contains ~30,000-40,000 XML files
 
 ### Charity Navigator API 🔄 Planned
 **Base URL**: `https://developer.charitynavigator.org/`
@@ -177,10 +231,48 @@ F: <45 points - Failing charity
 ## Current Implementation Status
 
 - ✅ **ProPublica API**: Fully integrated with real and mock modes
-- ✅ **Basic Financial Metrics**: Revenue, assets, liabilities extracted
-- 🔄 **Financial Ratios**: Require detailed Form 990 parsing
+- ✅ **IRS Compliance Data**: Publication 78, revocation list, BMF data
+- ✅ **IRS Form 990 XML**: On-demand download with automatic error handling
+- ✅ **SQLite Caching**: 24-hour cache for API responses, 30-day cache for IRS data
+- ✅ **Basic Financial Metrics**: Revenue, assets, liabilities, expense breakdowns
+- ✅ **Financial Ratios**: Program/admin/fundraising ratios from Form 990 XML
+- 🔄 **Financial Scoring**: Calculation formulas need implementation
 - 🔄 **Trend Analysis**: Multi-year data processing needed
-- 🔄 **External Validation**: API registrations required
-- 🔄 **Compliance Checking**: IRS bulk data integration needed
+- 🔄 **External Validation**: Charity Navigator API registration required
 
 Run `python demo.py real` to see which calculations require additional API integrations.
+
+## Setup Instructions
+
+### 1. Install Dependencies
+```bash
+uv sync
+```
+
+### 2. Download IRS Compliance Data (Required)
+```bash
+./scripts/download_irs_data.sh
+```
+This downloads ~340MB of IRS data for compliance checking.
+
+### 3. Download IRS Form 990 Index (Required for Financial Analysis)
+```bash
+cd cache
+curl -o irs_form_index_2023.csv \
+  "https://apps.irs.gov/pub/epostcard/990/xml/2023/index_2023.csv"
+```
+
+### 4. Download Form 990 Batches (On-Demand)
+When you evaluate a charity, if the Form 990 XML is missing, the system will tell you exactly which batch to download:
+```bash
+./scripts/download_form990_batch.sh 2023 12A
+```
+
+### 5. Run Demo
+```bash
+# Mock mode (no downloads needed)
+uv run python demo.py mock
+
+# Real mode (requires IRS data downloaded)
+uv run python demo.py real
+```
