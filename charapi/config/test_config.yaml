@@ -1,5 +1,26 @@
 mock_mode: true
 
+data_fields:
+  program_expenses:
+    source: manual
+  admin_expenses:
+    source: manual
+  fundraising_expenses:
+    source: manual
+  in_pub78:
+    source: manual
+  is_revoked:
+    source: manual
+  has_recent_filing:
+    source: manual
+  total_revenue:
+    source: api
+  total_expenses:
+    source: api
+
+manual_data:
+  directory: "manual"
+
 propublica:
   base_url: "https://projects.propublica.org/nonprofits/api/v2"
   timeout: 30

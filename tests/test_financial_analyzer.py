@@ -1,50 +1,52 @@
-import sys
-import os
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-
 from charapi.analyzers.financial_analyzer import FinancialAnalyzer
 
 
-def test_metrics_extraction_complete_data():
-    """Test extracting metrics from complete filing data"""
-    analyzer = FinancialAnalyzer()
-    filing = {
-        "totfuncexpns": 1000000,
-        "totprogrevexp": 750000,
-        "totadminexp": 150000,
-        "totfndrsexp": 100000,
-        "totrevenue": 1500000,
-        "totassetsend": 2000000,
-        "totliabend": 500000
-    }
-    metrics = analyzer.extract_metrics(filing)
+TEST_CONFIG = {
+    "data_fields": {
+        "program_expenses": {"source": "manual"},
+        "admin_expenses": {"source": "manual"},
+        "fundraising_expenses": {"source": "manual"}
+    },
+    "manual_data": {"directory": "manual"}
+}
 
-    assert metrics.program_expense_ratio == 0.75
-    assert metrics.admin_expense_ratio == 0.15
-    assert metrics.fundraising_expense_ratio == 0.10
-    assert metrics.net_assets == 1500000
-    assert metrics.total_revenue == 1500000
+
+def test_metrics_extraction_complete_data():
+    """Test extracting metrics from filing data with real manual data"""
+    analyzer = FinancialAnalyzer(TEST_CONFIG)
+    filing = {
+        "totfuncexpns": 3000000000,
+        "totrevenue": 3500000000,
+        "totassetsend": 5400000000,
+        "totliabend": 2000000000
+    }
+    # Using 530196605 which has manual data: program=2.8B, admin=120M, fundraising=80M
+    metrics = analyzer.extract_metrics(filing, "530196605")
+
+    assert metrics.program_expenses == 2800000000
+    assert metrics.admin_expenses == 120000000
+    assert metrics.fundraising_expenses == 80000000
+    assert metrics.net_assets == 3400000000
+    assert metrics.total_revenue == 3500000000
 
 
 def test_metrics_extraction_missing_data():
     """Test extracting metrics when some data is missing"""
-    analyzer = FinancialAnalyzer()
+    analyzer = FinancialAnalyzer(TEST_CONFIG)
     filing = {
-        "totfuncexpns": 1000000,
-        "totprogrevexp": 750000
+        "totfuncexpns": 1000000
     }
-    metrics = analyzer.extract_metrics(filing)
+    metrics = analyzer.extract_metrics(filing, "530196605")
 
-    assert metrics.program_expense_ratio == 0.75
     assert metrics.total_expenses == 1000000
     assert metrics.net_assets == 0
 
 
 def test_metrics_extraction_zero_expenses():
     """Test handling when total expenses are zero"""
-    analyzer = FinancialAnalyzer()
+    analyzer = FinancialAnalyzer(TEST_CONFIG)
     filing = {"totfuncexpns": 0}
-    metrics = analyzer.extract_metrics(filing)
+    metrics = analyzer.extract_metrics(filing, "530196605")
 
     assert metrics.program_expense_ratio == 0.0
     assert metrics.admin_expense_ratio == 0.0
@@ -53,14 +55,13 @@ def test_metrics_extraction_zero_expenses():
 
 def test_calculate_score_returns_valid_range():
     """Test that scoring returns a valid value"""
-    analyzer = FinancialAnalyzer()
+    analyzer = FinancialAnalyzer(TEST_CONFIG)
     filing = {
         "totfuncexpns": 1000000,
-        "totprogrevexp": 750000,
         "totassetsend": 2000000,
         "totliabend": 500000
     }
-    metrics = analyzer.extract_metrics(filing)
+    metrics = analyzer.extract_metrics(filing, "530196605")
     score = analyzer.calculate_score(metrics)
 
     assert 0 <= score <= 100

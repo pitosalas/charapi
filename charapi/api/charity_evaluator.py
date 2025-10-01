@@ -15,18 +15,18 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
         config = yaml.safe_load(f)
     
     propublica = ProPublicaClient(config_path)
-    financial_analyzer = FinancialAnalyzer()
+    financial_analyzer = FinancialAnalyzer(config)
     trend_analyzer = TrendAnalyzer()
-    compliance_checker = ComplianceChecker("mock_irs_data")
+    compliance_checker = ComplianceChecker(config)
     validation_scorer = ValidationScorer(config)
-    
+
     # Get organization data from ProPublica
     org_data = propublica.get_organization(ein)
     filings = propublica.get_all_filings(ein)
-    
+
     # Calculate financial health score
     latest_filing = filings[0] if filings else {}
-    financial_metrics = financial_analyzer.extract_metrics(latest_filing)
+    financial_metrics = financial_analyzer.extract_metrics(latest_filing, ein)
     financial_score = financial_analyzer.calculate_score(financial_metrics)
     
     # Calculate trend analysis
