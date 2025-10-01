@@ -28,7 +28,11 @@ def print_results(result, mode):
     # Show scores with data availability status
     print(f"Financial Score: {result.financial_score:.1f}")
     print(f"Trend Modifier: {result.trend_modifier:.1f} (stub - needs implementation)")
-    print(f"Validation Bonus: {result.validation_bonus:.1f} (stub - needs Charity Navigator API)")
+
+    if result.external_validation.charity_navigator_rating is None:
+        print(f"Validation Bonus: {result.validation_bonus:.1f} (manual data not available - edit manual/charity_navigator_rating.csv)")
+    else:
+        print(f"Validation Bonus: {result.validation_bonus:.1f} (Charity Navigator rating: {result.external_validation.charity_navigator_rating} stars)")
 
     # Show compliance with manual data status
     if not result.compliance_check.is_compliant:

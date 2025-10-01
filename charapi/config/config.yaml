@@ -13,6 +13,8 @@ data_fields:
     source: manual
   has_recent_filing:
     source: manual
+  charity_navigator_rating:
+    source: manual
   total_revenue:
     source: api
   total_expenses:
