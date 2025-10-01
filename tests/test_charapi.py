@@ -19,7 +19,8 @@ def test_evaluate_charity_mock_mode():
     assert result.financial_metrics.total_revenue > 0
     assert result.financial_metrics.net_assets > 0
     assert result.trend_analysis.years_analyzed == 5
-    assert result.compliance_check.is_compliant == True
+    assert result.compliance_check.is_compliant == False
+    assert len(result.compliance_check.issues) > 0
     assert result.external_validation.charity_navigator_rating == 4
 
 

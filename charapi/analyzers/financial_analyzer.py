@@ -18,11 +18,11 @@ class FinancialAnalyzer:
         admin_expenses = 0 if admin_expenses_str == "manual data not available" else int(admin_expenses_str)
         fundraising_expenses = 0 if fundraising_expenses_str == "manual data not available" else int(fundraising_expenses_str)
 
-        # Calculate ratios when total expenses > 0
+        # Calculate ratios as percentages when total expenses > 0
         if total_expenses > 0:
-            program_ratio = program_expenses / total_expenses if program_expenses else 0.0
-            admin_ratio = admin_expenses / total_expenses if admin_expenses else 0.0
-            fundraising_ratio = fundraising_expenses / total_expenses if fundraising_expenses else 0.0
+            program_ratio = (program_expenses / total_expenses * 100) if program_expenses else 0.0
+            admin_ratio = (admin_expenses / total_expenses * 100) if admin_expenses else 0.0
+            fundraising_ratio = (fundraising_expenses / total_expenses * 100) if fundraising_expenses else 0.0
         else:
             program_ratio = admin_ratio = fundraising_ratio = 0.0
 

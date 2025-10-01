@@ -18,7 +18,6 @@ class ManualDataClient:
             if row["ein"] == ein:
                 return row["value"]
 
-        self._add_row(csv_path, ein, "manual data not available")
         return "manual data not available"
 
     def _read_csv(self, csv_path: Path) -> list:

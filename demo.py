@@ -25,26 +25,26 @@ def print_results(result, mode):
     print(f"Grade: {result.grade}")
     print(f"Total Score: {result.total_score:.1f}")
 
-    # Show API requirements for different calculations
-    if mode == "real":
-        print(f"Financial Score: {format_value_or_api_message(result.financial_score, 'IRS Form 990 detailed', result.financial_score == 75.0)}")
-        print(f"Trend Modifier: {format_value_or_api_message(result.trend_modifier, 'Multi-year ProPublica', result.trend_modifier == 6.0)}")
-        print(f"Validation Bonus: {format_value_or_api_message(result.validation_bonus, 'Charity Navigator', result.validation_bonus == 20.0)}")
-        print(f"Compliance Penalty: {format_value_or_api_message(result.compliance_penalty, 'IRS Pub 78', result.compliance_penalty == 0.0)}")
+    # Show scores with data availability status
+    print(f"Financial Score: {result.financial_score:.1f}")
+    print(f"Trend Modifier: {result.trend_modifier:.1f} (stub - needs implementation)")
+    print(f"Validation Bonus: {result.validation_bonus:.1f} (stub - needs Charity Navigator API)")
+
+    # Show compliance with manual data status
+    if not result.compliance_check.is_compliant:
+        print(f"Compliance Penalty: {result.compliance_penalty:.1f} (issues: {', '.join(result.compliance_check.issues)})")
+        print(f"  → Check manual data files: in_pub78.csv, is_revoked.csv, has_recent_filing.csv")
     else:
-        print(f"Financial Score: {result.financial_score:.1f}")
-        print(f"Trend Modifier: {result.trend_modifier:.1f}")
-        print(f"Validation Bonus: {result.validation_bonus:.1f}")
         print(f"Compliance Penalty: {result.compliance_penalty:.1f}")
 
     print(f"Revenue: ${result.financial_metrics.total_revenue:,}")
     print(f"Net Assets: ${result.financial_metrics.net_assets:,}")
 
-    # Show expense ratios with API requirements
-    if mode == "real" and result.financial_metrics.program_expenses == 0:
-        print(f"Program Expense Ratio: IRS Form 990 detailed API required to compute this value")
-        print(f"Admin Expense Ratio: IRS Form 990 detailed API required to compute this value")
-        print(f"Fundraising Expense Ratio: IRS Form 990 detailed API required to compute this value")
+    # Show expense ratios with manual data status
+    if result.financial_metrics.program_expenses == 0:
+        print(f"Program Expense Ratio: Manual data not available (edit manual/program_expenses.csv)")
+        print(f"Admin Expense Ratio: Manual data not available (edit manual/admin_expenses.csv)")
+        print(f"Fundraising Expense Ratio: Manual data not available (edit manual/fundraising_expenses.csv)")
     else:
         print(f"Program Expense Ratio: {result.financial_metrics.program_expense_ratio:.1f}%")
         print(f"Admin Expense Ratio: {result.financial_metrics.admin_expense_ratio:.1f}%")

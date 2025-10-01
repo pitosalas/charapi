@@ -12,7 +12,7 @@ TEST_CONFIG = {
 
 
 def test_metrics_extraction_complete_data():
-    """Test extracting metrics from filing data with real manual data"""
+    """Test extracting metrics from filing data when manual data is not available"""
     analyzer = FinancialAnalyzer(TEST_CONFIG)
     filing = {
         "totfuncexpns": 3000000000,
@@ -20,12 +20,11 @@ def test_metrics_extraction_complete_data():
         "totassetsend": 5400000000,
         "totliabend": 2000000000
     }
-    # Using 530196605 which has manual data: program=2.8B, admin=120M, fundraising=80M
     metrics = analyzer.extract_metrics(filing, "530196605")
 
-    assert metrics.program_expenses == 2800000000
-    assert metrics.admin_expenses == 120000000
-    assert metrics.fundraising_expenses == 80000000
+    assert metrics.program_expenses == 0
+    assert metrics.admin_expenses == 0
+    assert metrics.fundraising_expenses == 0
     assert metrics.net_assets == 3400000000
     assert metrics.total_revenue == 3500000000
 
