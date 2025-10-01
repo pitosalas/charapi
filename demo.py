@@ -77,32 +77,36 @@ def main():
         sys.exit(1)
 
     mode = sys.argv[1]
-    ein = "530196605"  # Red Cross
+    eins = [
+        "530196605",  # Red Cross
+        "043255365",  # Additional charity
+    ]
 
     config_path = "charapi/config/test_config.yaml" if mode == "mock" else "charapi/config/config.yaml"
     mode_label = "🧪 MOCK MODE - Using test data" if mode == "mock" else "🌐 REAL MODE - Using live ProPublica API"
 
     print(mode_label)
-    print(f"Evaluating charity with EIN: {ein}")
-    print("-" * 50)
 
-    try:
-        start_time = time.time()
-        result = evaluate_charity(ein, config_path)
-        end_time = time.time()
+    for ein in eins:
+        print(f"\nEvaluating charity with EIN: {ein}")
+        print("-" * 50)
 
-        print_results(result, mode)
+        try:
+            start_time = time.time()
+            result = evaluate_charity(ein, config_path)
+            end_time = time.time()
 
-        print(f"⏱️  Evaluation time: {end_time - start_time:.2f} seconds")
+            print_results(result, mode)
 
-        if mode == "real":
-            show_cache_stats(config_path)
+            print(f"⏱️  Evaluation time: {end_time - start_time:.2f} seconds")
 
-    except Exception as e:
-        print(f"❌ Error: {e}")
-        if mode == "real":
-            print("This might be due to API rate limiting or network issues")
-        sys.exit(1)
+        except Exception as e:
+            print(f"❌ Error: {e}")
+            if mode == "real":
+                print("This might be due to API rate limiting or network issues")
+
+    if mode == "real":
+        show_cache_stats(config_path)
 
 if __name__ == "__main__":
     main()
