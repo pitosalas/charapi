@@ -2,6 +2,824 @@
 # COMPLETE NONPROFIT DATA FOR ALL EINs
 # ========================================
 
+# EIN: 04-3255365
+ein_04_3255365:
+  organization:
+    name: "Passim"
+    legal_name: "47 Palmer, Inc."
+    ein: "04-3255365"
+    location: "Cambridge, MA"
+    address: "47 Palmer Street, Harvard Square"
+    tax_status: "501(c)(3)"
+    tax_exempt_since: "June 1996"
+    ntee_code: "A68"
+    category: "Arts, Culture and Humanities - Music"
+    charity_navigator_rating:
+      stars: 4
+      score_percent: 93
+
+  fiscal_year_2024:
+    period_ending: "June 2024"
+    revenue:
+      total: 2150000
+      contributions: 751513
+      contributions_percent: 35.0
+      program_services: 1392915
+      program_services_percent: 64.8
+      investment_income: 5006
+      investment_income_percent: 0.2
+      bond_proceeds: 0
+      royalties: 0
+      rental_income: 0
+      net_fundraising: 0
+      sales_of_assets: 0
+      net_inventory_sales: 0
+      other_revenue: 0
+    expenses:
+      total: 2230000
+      executive_compensation: 97387
+      executive_compensation_percent: 4.4
+      other_salaries_wages: 587290
+      other_salaries_wages_percent: 26.3
+      professional_fundraising_fees: 0
+    balance_sheet:
+      total_assets: 584832
+      total_liabilities: 157929
+      net_assets: 426903
+
+  fiscal_year_2023:
+    period_ending: "June 2023"
+    revenue:
+      total: 1750261
+      contributions: 607491
+      contributions_percent: 34.7
+      program_services: 1139493
+      program_services_percent: 65.1
+      investment_income: 3277
+      investment_income_percent: 0.2
+    expenses:
+      total: 1832000
+      executive_compensation: 92750
+      executive_compensation_percent: 5.1
+      other_salaries_wages: 459859
+      other_salaries_wages_percent: 25.1
+    balance_sheet:
+      total_assets: 652259
+      total_liabilities: 140451
+      net_assets: 511808
+
+  programs:
+    club_passim:
+      capacity: 110
+      annual_shows: 430
+      annual_attendance: 30000
+    passim_school_of_music:
+      founded: 2000
+      classes_2024: 131
+      students_2024: 680
+
+# EIN: 13-2500888
+ein_13_2500888:
+  organization:
+    name: "Jewish Reconstructionist Federation"
+    ein: "13-2500888"
+    location: "New York"
+    ntee_code: "X30"
+    category: "Jewish / Religious"
+    tax_status: "501(c)(3)"
+    filing_requirement: "Not required to file Form 990 (church exemption)"
+  note: "Religious organization exempt from filing Form 990. No financial data publicly available. As a religious organization under IRC Section 501(c)(3), this organization is granted church exemption and is not required to file annual Form 990 returns with the IRS."
+
+# EIN: 13-1930176
+ein_13_1930176:
+  organization:
+    name: "The World Union for Progressive Judaism Ltd"
+    ein: "13-1930176"
+    location: "International"
+    ntee_code: "X30"
+    category: "Jewish / Religious"
+    tax_status: "501(c)(3)"
+    filing_requirement: "Not required to file Form 990 (church exemption)"
+  programs:
+    focus: "Summer camps in former Soviet Union, progressive Judaism worldwide"
+  note: "Religious organization exempt from filing Form 990. No financial data publicly available. As a religious organization under IRC Section 501(c)(3), this organization is granted church exemption and is not required to file annual Form 990 returns with the IRS."
+
+# EIN: 04-3129124
+ein_04_3129124:
+  organization:
+    name: "Commonwealth Zoological Corporation"
+    dba: "Zoo New England"
+    ein: "04-3129124"
+    location: "Massachusetts"
+    ntee_code: "D50"
+    category: "Zoo, Zoological Society"
+    tax_status: "501(c)(3)"
+
+  fiscal_year_2024:
+    period_ending: "June 2024"
+    revenue:
+      total: 29100000
+      contributions: 17491554
+      contributions_percent: 60.1
+      program_services: 10269629
+      program_services_percent: 35.3
+      investment_income: 436457
+      investment_income_percent: 1.5
+      net_fundraising: -5611
+      sales_of_assets: 130314
+      sales_of_assets_percent: 0.4
+      other_revenue: 801527
+      other_revenue_percent: 2.8
+    expenses:
+      total: 28900000
+      executive_compensation: 1174612
+      executive_compensation_percent: 4.1
+      other_salaries_wages: 11284158
+      other_salaries_wages_percent: 39.1
+      professional_fundraising_fees: 0
+    balance_sheet:
+      total_assets: 58905087
+      total_liabilities: 3174868
+      net_assets: 55730219
+
+  fiscal_year_2023:
+    period_ending: "June 2023"
+    revenue:
+      total: 31453609
+      contributions: 19851367
+      contributions_percent: 63.1
+      program_services: 10397954
+      program_services_percent: 33.1
+      investment_income: 354150
+      investment_income_percent: 1.1
+    expenses:
+      total: 26230000
+      executive_compensation: 1142338
+      executive_compensation_percent: 4.4
+      other_salaries_wages: 9704177
+      other_salaries_wages_percent: 37.0
+    balance_sheet:
+      total_assets: 58006178
+      total_liabilities: 2520985
+      net_assets: 55485193
+
+  fiscal_year_2022:
+    period_ending: "June 2022"
+    revenue:
+      total: 30082811
+      contributions: 19151922
+      contributions_percent: 63.7
+      program_services: 10402796
+      program_services_percent: 34.6
+    expenses:
+      total: 23240000
+      executive_compensation: 1108726
+      other_salaries_wages: 8345676
+    balance_sheet:
+      total_assets: 53681720
+      total_liabilities: 3427140
+
+# EIN: 31-1640316
+ein_31_1640316:
+  organization:
+    name: "Donor Advised Charitable Giving, Inc."
+    dba: "DAFgiving360 / Schwab Charitable Fund"
+    legal_name: "Donor Advised Charitable Giving, Inc."
+    ein: "31-1640316"
+    location: "San Francisco, CA"
+    address: "211 Main Street, San Francisco, CA 94105"
+    tax_status: "501(c)(3)"
+    ntee_code: "T99"
+    category: "Other Philanthropy, Voluntarism, and Grantmaking Foundations"
+    founded: 1999
+    founder: "Charles R. Schwab"
+    mission: "To increase charitable giving in the United States by offering advantageous ways to give, useful information and unbiased guidance"
+    description: "One of the largest national providers of donor-advised funds and other philanthropic services"
+
+  fiscal_year_2023:
+    period_ending: "June 2023"
+    revenue:
+      total: 9661652588
+      contributions: 9500000000
+      contributions_percent: 98.3
+      program_services: 0
+      investment_income: 161652588
+      investment_income_percent: 1.7
+    expenses:
+      total: 6747958156
+      grants_paid: 6100000000
+      administrative_expenses: 647958156
+      executive_compensation: 914841
+      professional_services_fees: 14953830
+    balance_sheet:
+      total_assets: 41110879271
+      total_liabilities: 0
+      net_assets: 41110879271
+
+  fiscal_year_2022:
+    period_ending: "June 2022"
+    revenue:
+      total: 8500000000
+    expenses:
+      total: 5500000000
+      grants_paid: 4700000000
+    balance_sheet:
+      total_assets: 37000000000
+
+  fiscal_year_2021:
+    period_ending: "June 2021"
+    revenue:
+      total: 7000000000
+    expenses:
+      total: 4500000000
+    balance_sheet:
+      total_assets: 32000000000
+
+  programs:
+    donor_advised_funds:
+      account_types:
+        - name: "Core Account"
+          minimum_balance: 0
+          investment_options: "15 investment pools"
+        - name: "Professionally Managed Account"
+          minimum_balance: 100000
+          investment_options: "Customized portfolios"
+      grants_2023:
+        calendar_year_total: 6100000000
+        number_of_grants: 1000000
+        charities_supported: 127000
+      grants_2022:
+        total: 4700000000
+      assets_under_management: 41110879271
+      account_holders: "Over 100,000"
+      financial_advisors_partnered: 3700
+    
+  grantmaking_highlights:
+    - "Sixth-largest charitable organization in the United States as of 2018"
+    - "64% of contributions in 2023 were non-cash assets (appreciated stock, private business interests)"
+    - "76% of account assets associated with professional investment advisor"
+    - "Donors can recommend grants to over 1.5 million IRS-approved public charities"
+    - "Minimum grant recommendation: $50"
+
+  leadership:
+    president_2023: "Samuel W. Kang (retired)"
+    president_2025: "Julie Sunwoo"
+    board_chair: "Adele Taylor"
+    
+# EIN: 13-1644147
+ein_13_1644147:
+  organization:
+    name: "Planned Parenthood Federation of America, Inc."
+    ein: "13-1644147"
+    location: "New York, NY"
+    ntee_code: "E42"
+    category: "Family Planning Centers"
+    tax_status: "501(c)(3)"
+
+  fiscal_year_2024:
+    period_ending: "June 2024"
+    revenue:
+      total: 392274439
+      contributions: 359940816
+      contributions_percent: 91.8
+      program_services: 771308
+      program_services_percent: 0.2
+      investment_income: 8968971
+      investment_income_percent: 2.3
+      royalties: 52184
+      royalties_percent: 0.0
+      net_fundraising: 0
+      sales_of_assets: 9325428
+      sales_of_assets_percent: 2.4
+      net_inventory_sales: -331
+      other_revenue: 13216363
+      other_revenue_percent: 3.4
+    expenses:
+      total: 403000000
+      executive_compensation: 3016489
+      executive_compensation_percent: 0.7
+      professional_fundraising_fees: 25599805
+      professional_fundraising_fees_percent: 6.3
+      other_salaries_wages: 82296149
+      other_salaries_wages_percent: 20.4
+    balance_sheet:
+      total_assets: 483062353
+      total_liabilities: 142060060
+      net_assets: 341002293
+
+  fiscal_year_2023:
+    period_ending: "June 2023"
+    revenue:
+      total: 378167827
+      contributions: 362765335
+      contributions_percent: 95.9
+      program_services: 378880
+      program_services_percent: 0.1
+      investment_income: 8183445
+      investment_income_percent: 2.2
+      royalties: 204137
+      royalties_percent: 0.1
+      sales_of_assets: -3552237
+      other_revenue: 10179877
+      other_revenue_percent: 2.7
+    expenses:
+      total: 445000000
+      executive_compensation: 3652157
+      executive_compensation_percent: 0.8
+      professional_fundraising_fees: 8124041
+      professional_fundraising_fees_percent: 1.8
+      other_salaries_wages: 89878796
+      other_salaries_wages_percent: 20.2
+    balance_sheet:
+      total_assets: 457834409
+      total_liabilities: 125638060
+      net_assets: 332196349
+
+  fiscal_year_2022:
+    period_ending: "June 2022"
+    revenue:
+      total: 454574008
+      contributions: 428045060
+      contributions_percent: 94.2
+      program_services: 502306
+      program_services_percent: 0.1
+      investment_income: 7716950
+      investment_income_percent: 1.7
+      sales_of_assets: 12953491
+      sales_of_assets_percent: 2.8
+    expenses:
+      total: 390000000
+      executive_compensation: 2656272
+      executive_compensation_percent: 0.7
+      professional_fundraising_fees: 4547985
+      professional_fundraising_fees_percent: 1.2
+      other_salaries_wages: 73025424
+      other_salaries_wages_percent: 18.7
+    balance_sheet:
+      total_assets: 500855875
+      total_liabilities: 116627678
+      net_assets: 384228197
+
+  top_compensation_2024:
+    - name: "Alexis McGill Johnson"
+      title: "President"
+      compensation: 552123
+      related: 299581
+      benefits: 9901
+      total: 861605
+
+# EIN: 13-5660870
+ein_13_5660870:
+  organization:
+    name: "International Rescue Committee Inc"
+    dba: "IRC"
+    ein: "13-5660870"
+    location: "New York, NY"
+    ntee_code: "Q71"
+    category: "International Migration, Refugee Issues"
+    tax_status: "501(c)(3)"
+    tax_exempt_since: 1955
+    charity_navigator_rating:
+      stars: 4
+      score_percent: 97
+
+  fiscal_year_2023:
+    period_ending: "September 2023"
+    revenue:
+      total: 1341268874
+      contributions: 1297583900
+      contributions_percent: 96.7
+      program_services: 16615924
+      program_services_percent: 1.2
+      investment_income: 4046368
+      investment_income_percent: 0.3
+      rental_income: 221349
+      rental_income_percent: 0.0
+      net_fundraising: -473310
+      sales_of_assets: 1041534
+      sales_of_assets_percent: 0.1
+      other_revenue: 22233099
+      other_revenue_percent: 1.7
+    expenses:
+      total: 1427000000
+      executive_compensation: 3931525
+      executive_compensation_percent: 0.3
+      professional_fundraising_fees: 11178326
+      professional_fundraising_fees_percent: 0.8
+      other_salaries_wages: 512331886
+      other_salaries_wages_percent: 35.9
+    balance_sheet:
+      total_assets: 629978674
+      total_liabilities: 348949775
+      net_assets: 281028899
+
+  fiscal_year_2022:
+    period_ending: "September 2022"
+    revenue:
+      total: 1373898628
+      contributions: 1355187734
+      contributions_percent: 98.6
+      program_services: 12421917
+      program_services_percent: 0.9
+      investment_income: 2472241
+      rental_income: 168051
+      sales_of_assets: 1372083
+      other_revenue: 2581074
+    expenses:
+      total: 1270000000
+      executive_compensation: 3196731
+      professional_fundraising_fees: 5863625
+      other_salaries_wages: 424375848
+    balance_sheet:
+      total_assets: 584265431
+      total_liabilities: 248410266
+      net_assets: 335855165
+
+  fiscal_year_2021:
+    period_ending: "September 2021"
+    revenue:
+      total: 950664386
+      contributions: 924498780
+      contributions_percent: 97.2
+      program_services: 18036305
+      program_services_percent: 1.9
+    expenses:
+      total: 904000000
+      executive_compensation: 3284493
+      other_salaries_wages: 341623230
+    balance_sheet:
+      total_assets: 527551484
+      total_liabilities: 223244694
+
+  top_compensation_2023:
+    - name: "David Miliband"
+      title: "Dir/CEO/Pres"
+      compensation: 1193570
+      benefits: 60158
+      total: 1253728
+    - name: "Madlin J Sheerman"
+      title: "Senior Vice President, Operations Strategy"
+      compensation: 469160
+      benefits: 59306
+      total: 528466
+
+# EIN: 13-3433452
+ein_13_3433452:
+  organization:
+    name: "Doctors Without Borders USA Inc"
+    dba: "Médecins Sans Frontières (MSF)"
+    ein: "13-3433452"
+    location: "New York, NY"
+    ntee_code: "M20"
+    category: "Disaster Preparedness and Relief Services"
+    tax_status: "501(c)(3)"
+    tax_exempt_since: "February 1989"
+    charity_navigator_rating:
+      stars: 4
+      score_percent: 96
+
+  fiscal_year_2023:
+    period_ending: "December 2023"
+    revenue:
+      total: 767366916
+      contributions: 744652791
+      contributions_percent: 97.0
+      program_services: 13330736
+      program_services_percent: 1.7
+      investment_income: 11106168
+      investment_income_percent: 1.4
+      rental_income: 10431
+      rental_income_percent: 0.0
+      sales_of_assets: -2027135
+      net_inventory_sales: 160
+      other_revenue: 289765
+      other_revenue_percent: 0.0
+    expenses:
+      total: 857000000
+      executive_compensation: 3105482
+      executive_compensation_percent: 0.4
+      professional_fundraising_fees: 25728499
+      professional_fundraising_fees_percent: 3.0
+      other_salaries_wages: 27905557
+      other_salaries_wages_percent: 3.3
+    balance_sheet:
+      total_assets: 501967209
+      total_liabilities: 238377697
+      net_assets: 263589512
+
+  fiscal_year_2022:
+    period_ending: "December 2022"
+    revenue:
+      total: 688743776
+      contributions: 675099889
+      contributions_percent: 98.0
+      program_services: 11765290
+      program_services_percent: 1.7
+      investment_income: 6660200
+      investment_income_percent: 1.0
+      rental_income: 39000
+      net_fundraising: -500111
+      sales_of_assets: -2453110
+      other_revenue: -1867382
+    expenses:
+      total: 656000000
+      executive_compensation: 1007088
+      executive_compensation_percent: 0.2
+      professional_fundraising_fees: 15120762
+      professional_fundraising_fees_percent: 2.3
+      other_salaries_wages: 24968889
+      other_salaries_wages_percent: 3.8
+    balance_sheet:
+      total_assets: 436019804
+      total_liabilities: 93509737
+      net_assets: 342510067
+
+  fiscal_year_2021:
+    period_ending: "December 2021"
+    revenue:
+      total: 649355353
+      contributions: 623387442
+      contributions_percent: 96.0
+      program_services: 12344679
+      program_services_percent: 1.9
+      investment_income: 4970434
+      sales_of_assets: 9267496
+    expenses:
+      total: 589000000
+      executive_compensation: 973845
+      professional_fundraising_fees: 12308041
+      other_salaries_wages: 23723772
+    balance_sheet:
+      total_assets: 471142331
+      total_liabilities: 146775775
+
+  top_compensation_2023:
+    - name: "Avril Benoit"
+      title: "Chief Executive Officer"
+      compensation: 263026
+      benefits: 29613
+      total: 292639
+
+# EIN: 04-2105780
+ein_04_2105780:
+  organization:
+    name: "The Trustees of Reservations"
+    ein: "04-2105780"
+    location: "Boston, Massachusetts"
+    ntee_code: "C30"
+    category: "Natural Resource Conservation and Protection / Land Resources Conservation"
+    tax_status: "501(c)(3)"
+    mission: "Preserve, for public use and enjoyment, properties of exceptional scenic, historic, and ecological value in Massachusetts"
+
+  fiscal_year_2024:
+    period_ending: "March 2024"
+    revenue:
+      total: 64920859
+      contributions: 46913535
+      contributions_percent: 72.3
+      program_services: 9067947
+      program_services_percent: 14.0
+      investment_income: 2133468
+      investment_income_percent: 3.3
+      rental_income: 894027
+      rental_income_percent: 1.4
+      net_fundraising: 205072
+      net_fundraising_percent: 0.3
+      sales_of_assets: 3645888
+      sales_of_assets_percent: 5.6
+      net_inventory_sales: 2060922
+      net_inventory_sales_percent: 3.2
+    expenses:
+      total: 61426859
+      executive_compensation: 1729660
+      executive_compensation_percent: 2.8
+      other_salaries_wages: 22063181
+      other_salaries_wages_percent: 35.9
+      professional_fundraising_fees: 226417
+      professional_fundraising_fees_percent: 0.4
+    balance_sheet:
+      total_assets: 386708488
+      total_liabilities: 13504221
+      net_assets: 373204267
+
+  fiscal_year_2023:
+    period_ending: "March 2023"
+    revenue:
+      total: 50485860
+      contributions: 39966545
+      contributions_percent: 79.2
+      program_services: 9682373
+      program_services_percent: 19.2
+      investment_income: 1254761
+      investment_income_percent: 2.5
+      rental_income: 812012
+      rental_income_percent: 1.6
+      net_fundraising: 219082
+      net_fundraising_percent: 0.4
+      sales_of_assets: -3729601
+      net_inventory_sales: 2280688
+      net_inventory_sales_percent: 4.5
+    expenses:
+      total: 55276110
+      executive_compensation: 1819770
+      executive_compensation_percent: 3.3
+      other_salaries_wages: 22168670
+      other_salaries_wages_percent: 40.1
+      professional_fundraising_fees: 400064
+      professional_fundraising_fees_percent: 0.7
+    balance_sheet:
+      total_assets: 356550348
+      total_liabilities: 15614962
+      net_assets: 340935386
+
+  fiscal_year_2022:
+    period_ending: "March 2022"
+    revenue:
+      total: 79907362
+      contributions: 52018981
+      contributions_percent: 65.1
+      program_services: 7329639
+      program_services_percent: 9.2
+      investment_income: 1269425
+      investment_income_percent: 1.6
+      rental_income: 900657
+      rental_income_percent: 1.1
+      net_fundraising: 397772
+      net_fundraising_percent: 0.5
+      sales_of_assets: 15458022
+      sales_of_assets_percent: 19.3
+      net_inventory_sales: 2532866
+      net_inventory_sales_percent: 3.2
+    expenses:
+      total: 51457193
+      executive_compensation: 1330610
+      executive_compensation_percent: 2.6
+      other_salaries_wages: 19920859
+      other_salaries_wages_percent: 38.7
+      professional_fundraising_fees: 445293
+      professional_fundraising_fees_percent: 0.9
+    balance_sheet:
+      total_assets: 373027910
+      total_liabilities: 14026751
+      net_assets: 359001159
+
+  programs:
+    land_protected_total: "47,000+ acres"
+    properties_owned: "27,000 acres in 117 reservations throughout Massachusetts"
+    conservation_restrictions: "20,000 acres protected through conservation easements"
+    
+  top_compensation_2024:
+    - name: "John Judge"
+      title: "Former President And CEO"
+      compensation: 369423
+    - name: "Christine Morin"
+      title: "Chief Operating Officer"
+      compensation: 333945
+      benefits: 20375
+      total: 354320
+    - name: "Brian Therrien"
+      title: "Treasurer, Chief Financial Officer"
+      compensation: 301340
+      benefits: 5654
+      total: 306994
+
+# EIN: 04-3567502
+ein_04_3567502:
+  organization:
+    name: "Partners In Health a Nonprofit Corporation"
+    dba: "Partners In Health (PIH)"
+    ein: "04-3567502"
+    location: "Boston, Massachusetts"
+    address: "800 Boylston Street, Suite 300, Boston, MA 02199"
+    ntee_code: "E21"
+    category: "Community Health Systems / Public Health Program"
+    tax_status: "501(c)(3)"
+    mission: "Bring modern medicine to world's poor, serve vulnerable communities, fight social injustice by bringing the benefits of modern medical science first to those who need them most"
+    description: "Global health organization working with communities and governments in resource-poor settings"
+    years_operating: "35+ years"
+
+  fiscal_year_2024:
+    period_ending: "June 2024"
+    revenue:
+      total: 238255229
+      contributions: 228843662
+      contributions_percent: 96.0
+      program_services: 20059
+      program_services_percent: 0.0
+      investment_income: 7914134
+      investment_income_percent: 3.3
+      rental_income: 13771
+      rental_income_percent: 0.0
+      net_fundraising: 0
+      sales_of_assets: 12561
+      sales_of_assets_percent: 0.0
+      other_revenue: 1451042
+      other_revenue_percent: 0.6
+    expenses:
+      total: 239595725
+      executive_compensation: 987534
+      executive_compensation_percent: 0.4
+      other_salaries_wages: 71847771
+      other_salaries_wages_percent: 30.0
+      professional_fundraising_fees: 360420
+      professional_fundraising_fees_percent: 0.2
+    balance_sheet:
+      total_assets: 330577266
+      total_liabilities: 46062186
+      net_assets: 284515080
+
+  fiscal_year_2023:
+    period_ending: "June 2023"
+    revenue:
+      total: 273127031
+      contributions: 266032972
+      contributions_percent: 97.4
+      program_services: 824738
+      program_services_percent: 0.3
+      investment_income: 4886168
+      investment_income_percent: 1.8
+      rental_income: 13940
+      rental_income_percent: 0.0
+      net_fundraising: 0
+      sales_of_assets: 22809
+      sales_of_assets_percent: 0.0
+      other_revenue: 1346404
+      other_revenue_percent: 0.5
+    expenses:
+      total: 232527090
+      executive_compensation: 1350749
+      executive_compensation_percent: 0.6
+      other_salaries_wages: 63500839
+      other_salaries_wages_percent: 27.3
+      professional_fundraising_fees: 395447
+      professional_fundraising_fees_percent: 0.2
+    balance_sheet:
+      total_assets: 324509921
+      total_liabilities: 47926723
+      net_assets: 276583198
+
+  fiscal_year_2022:
+    period_ending: "June 2022"
+    revenue:
+      total: 331511246
+      contributions: 329458275
+      contributions_percent: 99.4
+      program_services: 199655
+      program_services_percent: 0.1
+      investment_income: 595777
+      investment_income_percent: 0.2
+      rental_income: 15629
+      rental_income_percent: 0.0
+      net_fundraising: 0
+      sales_of_assets: 317226
+      sales_of_assets_percent: 0.1
+      other_revenue: 924684
+      other_revenue_percent: 0.3
+    expenses:
+      total: 238547250
+      executive_compensation: 1305692
+      executive_compensation_percent: 0.5
+      other_salaries_wages: 71509542
+      other_salaries_wages_percent: 30.0
+      professional_fundraising_fees: 785934
+      professional_fundraising_fees_percent: 0.3
+    balance_sheet:
+      total_assets: 280456941
+      total_liabilities: 44686480
+      net_assets: 235770461
+
+  programs:
+    countries_served: 11
+    focus_areas:
+      - "Haiti"
+      - "Rwanda"
+      - "Sierra Leone"
+      - "Liberia"
+      - "Lesotho"
+      - "Malawi"
+      - "Peru"
+      - "Mexico"
+      - "Kazakhstan"
+      - "Navajo Nation"
+      - "United States"
+    
+  top_compensation_2024:
+    - name: "Sheila Davis"
+      title: "President And Chief Executive Officer"
+      compensation: 357640
+      benefits: 23653
+      total: 381293
+    - name: "Francesco De Flaviis"
+      title: "Principal, Chief Advancement & Comms Officer"
+      compensation: 261862
+      benefits: 8490
+      total: 270352
+    - name: "Andrew Wilson"
+      title: "Chief Development Officer"
+      compensation: 247738
+      benefits: 8054
+      total: 255792
+
 # EIN: 53-0196605
 ein_53_0196605:
   organization:
@@ -56,7 +874,7 @@ ein_53_0196605:
       other_salaries_wages_percent: 35.6
       professional_fundraising_fees: 644002
       professional_fundraising_fees_percent: 0.0
-      program_expenses: 3200000000  # Approximate 90.7% of total
+      program_expenses: 3200000000
       program_expenses_percent: 90.5
     balance_sheet:
       total_assets: 4565143729
@@ -88,7 +906,7 @@ ein_53_0196605:
       other_salaries_wages_percent: 39.8
       professional_fundraising_fees: 452216
       professional_fundraising_fees_percent: 0.0
-      program_expenses: 2695000000  # 90.7% of total
+      program_expenses: 2695000000
       program_expenses_percent: 90.7
     balance_sheet:
       total_assets: 4028321133
@@ -232,7 +1050,7 @@ ein_53_0196605:
         - "Support to Red Cross societies globally"
 
   performance_metrics:
-    program_spending_percent: 90.7  # FY 2023
+    program_spending_percent: 90.7
     administrative_overhead_percent: 9.3
     disasters_responded_to_annually: 65000
     volunteers: "Over 200,000"
@@ -296,99 +1114,3 @@ ein_53_0196605:
     - "Serves as auxiliary to U.S. government in disaster relief"
     - "One of the world's most recognized humanitarian organizations"
     - "Has responded to every major disaster in the United States for over 140 years"
-
-# EIN: 04-3255365
-ein_043255365:
-  organization:
-    name: "Passim"
-    legal_name: "47 Palmer, Inc."
-    ein: "04-3255365"
-    location: "Cambridge, MA"
-    address: "47 Palmer Street, Harvard Square"
-    tax_status: "501(c)(3)"
-    tax_exempt_since: "June 1996"
-    ntee_code: "A68"
-    category: "Arts, Culture and Humanities - Music"
-    in_pub78: true
-    is_revoked: false
-    has_recent_filing: true
-    charity_navigator_rating:
-      stars: 4
-      score_percent: 93
-
-  fiscal_year_2024:
-    period_ending: "June 2024"
-    revenue:
-      total: 2150000
-      contributions: 751513
-      contributions_percent: 35.0
-      program_services: 1392915
-      program_services_percent: 64.8
-      investment_income: 5006
-      investment_income_percent: 0.2
-      bond_proceeds: 0
-      royalties: 0
-      rental_income: 0
-      net_fundraising: 0
-      sales_of_assets: 0
-      net_inventory_sales: 0
-      other_revenue: 0
-    expenses:
-      total: 2230000
-      program: 1800000
-      admin: 330000
-      fundraising: 100000
-      executive_compensation: 97387
-      executive_compensation_percent: 4.4
-      other_salaries_wages: 587290
-      other_salaries_wages_percent: 26.3
-      professional_fundraising_fees: 0
-    balance_sheet:
-      total_assets: 584832
-      total_liabilities: 157929
-      net_assets: 426903
-
-  fiscal_year_2023:
-    period_ending: "June 2023"
-    revenue:
-      total: 1750261
-      contributions: 607491
-      contributions_percent: 34.7
-      program_services: 1139493
-      program_services_percent: 65.1
-      investment_income: 3277
-      investment_income_percent: 0.2
-    expenses:
-      total: 1832000
-      executive_compensation: 92750
-      executive_compensation_percent: 5.1
-      other_salaries_wages: 459859
-      other_salaries_wages_percent: 25.1
-    balance_sheet:
-      total_assets: 652259
-      total_liabilities: 140451
-      net_assets: 511808
-
-  programs:
-    club_passim:
-      capacity: 110
-      annual_shows: 430
-      annual_attendance: 30000
-    passim_school_of_music:
-      founded: 2000
-      classes_2024: 131
-      students_2024: 680
-    festivals:
-      - name: "campfire festival"
-        frequency: "bi-annual (Memorial Day and Labor Day weekends)"
-        artists: 60
-      - name: "BCMFest (Boston Celtic Music Festival)"
-        years_running: 22
-    summer_concerts:
-      series_count: 4
-      cost: "free"
-      locations: "various public spaces across Cambridge"
-
-  governance:
-    board_compensation: 0
-    all_directors_unpaid: true

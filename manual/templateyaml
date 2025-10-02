@@ -1,0 +1,223 @@
+# ========================================
+# NONPROFIT DATA COLLECTION TEMPLATE
+# ========================================
+# Instructions: Replace [BRACKETED] items with actual data
+# Use this template to request comprehensive nonprofit data
+
+# EIN: [XX-XXXXXXX]
+ein_[XX_XXXXXXX]:
+  organization:
+    name: "[Full Organization Name]"
+    legal_name: "[Legal Name if different]"
+    dba: "[Doing Business As / Common Name]"
+    ein: "[XX-XXXXXXX]"
+    location: "[City, State]"
+    address: "[Full Street Address]"
+    headquarters: "[City, State if different from location]"
+    tax_status: "[501(c)(3) or other]"
+    tax_exempt_since: "[Month Year or Year]"
+    ntee_code: "[NTEE Classification Code]"
+    category: "[Primary Category / Subcategory]"
+    founded: [YYYY]
+    founder: "[Founder Name(s)]"
+    mission: "[Mission Statement]"
+    description: "[Brief description of organization and activities]"
+    website: "[URL]"
+    
+    # IRS Status Indicators
+    in_pub78: [true/false]  # Eligible to receive tax-deductible contributions
+    is_revoked: [true/false]  # Tax-exempt status revoked by IRS
+    has_recent_filing: [true/false]  # Filed Form 990 in last 3 years
+    
+    # Optional: Charity Ratings (if available)
+    charity_navigator_rating:
+      stars: [1-4]
+      score_percent: [0-100]
+      rating_date: [YYYY]
+      
+    charity_watch_rating:
+      grade: "[Letter Grade]"
+      program_spending_percent: [0-100]
+      cost_to_raise_100: [Dollar amount]
+    
+    # For church-exempt organizations
+    filing_requirement: "[Not required to file Form 990 (church exemption) OR Required to file Form 990]"
+
+  # Most Recent Fiscal Year
+  fiscal_year_[YYYY]:
+    period_ending: "[Month YYYY]"
+    revenue:
+      total: [Amount]
+      contributions: [Amount]
+      contributions_percent: [0-100]
+      program_services: [Amount]
+      program_services_percent: [0-100]
+      investment_income: [Amount]
+      investment_income_percent: [0-100]
+      bond_proceeds: [Amount]
+      royalties: [Amount]
+      royalties_percent: [0-100]
+      rental_income: [Amount]
+      rental_income_percent: [0-100]
+      net_fundraising: [Amount]
+      net_fundraising_percent: [0-100]
+      sales_of_assets: [Amount]
+      sales_of_assets_percent: [0-100]
+      net_inventory_sales: [Amount]
+      net_inventory_sales_percent: [0-100]
+      other_revenue: [Amount]
+      other_revenue_percent: [0-100]
+    expenses:
+      total: [Amount]
+      executive_compensation: [Amount]
+      executive_compensation_percent: [0-100]
+      other_salaries_wages: [Amount]
+      other_salaries_wages_percent: [0-100]
+      professional_fundraising_fees: [Amount]
+      professional_fundraising_fees_percent: [0-100]
+      program_expenses: [Amount]
+      program_expenses_percent: [0-100]
+      administrative_expenses: [Amount]
+      grants_paid: [Amount]  # For grantmaking organizations
+    balance_sheet:
+      total_assets: [Amount]
+      total_liabilities: [Amount]
+      net_assets: [Amount]
+
+  # Second Most Recent Fiscal Year
+  fiscal_year_[YYYY-1]:
+    period_ending: "[Month YYYY]"
+    revenue:
+      total: [Amount]
+      contributions: [Amount]
+      contributions_percent: [0-100]
+      program_services: [Amount]
+      program_services_percent: [0-100]
+      investment_income: [Amount]
+      investment_income_percent: [0-100]
+      rental_income: [Amount]
+      net_fundraising: [Amount]
+      sales_of_assets: [Amount]
+      other_revenue: [Amount]
+    expenses:
+      total: [Amount]
+      executive_compensation: [Amount]
+      executive_compensation_percent: [0-100]
+      other_salaries_wages: [Amount]
+      other_salaries_wages_percent: [0-100]
+      professional_fundraising_fees: [Amount]
+    balance_sheet:
+      total_assets: [Amount]
+      total_liabilities: [Amount]
+      net_assets: [Amount]
+
+  # Third Most Recent Fiscal Year
+  fiscal_year_[YYYY-2]:
+    period_ending: "[Month YYYY]"
+    revenue:
+      total: [Amount]
+      contributions: [Amount]
+      contributions_percent: [0-100]
+      program_services: [Amount]
+      program_services_percent: [0-100]
+      investment_income: [Amount]
+    expenses:
+      total: [Amount]
+      executive_compensation: [Amount]
+      other_salaries_wages: [Amount]
+    balance_sheet:
+      total_assets: [Amount]
+      total_liabilities: [Amount]
+      net_assets: [Amount]
+
+  # Programs and Services
+  programs:
+    [program_name_1]:
+      description: "[Brief description]"
+      services:
+        - "[Service 1]"
+        - "[Service 2]"
+        - "[Service 3]"
+      metrics:
+        [metric_name]: "[Value with units]"
+        [another_metric]: [Number]
+      
+    [program_name_2]:
+      description: "[Brief description]"
+      annual_participants: "[Number or description]"
+      geographic_scope: "[Local, Regional, National, International]"
+
+  # Performance Metrics
+  performance_metrics:
+    program_spending_percent: [0-100]
+    administrative_overhead_percent: [0-100]
+    fundraising_efficiency: "[Description]"
+    volunteers: "[Number or description]"
+    employees: "[Number or description]"
+    people_served_annually: [Number]
+    [other_key_metric]: "[Value]"
+
+  # Top Compensation (Most Recent Year)
+  top_compensation_[YYYY]:
+    - name: "[Full Name]"
+      title: "[Job Title]"
+      compensation: [Base salary]
+      related: [Related compensation]  # Optional
+      benefits: [Benefits and other]
+      total: [Total compensation]
+    - name: "[Full Name]"
+      title: "[Job Title]"
+      compensation: [Amount]
+      benefits: [Amount]
+      total: [Amount]
+    - name: "[Full Name]"
+      title: "[Job Title]"
+      compensation: [Amount]
+      benefits: [Amount]
+      total: [Amount]
+
+  # Leadership (Current)
+  leadership:
+    ceo: "[Name]"
+    president: "[Name]"
+    board_chair: "[Name]"
+    cfo: "[Name]"
+    board_size: [Number]
+
+  # Recognition and Awards
+  recognition:
+    - "[Award or recognition 1]"
+    - "[Award or recognition 2]"
+    - "[Accreditation or certification]"
+
+  # Historical Context (Optional)
+  historical_context:
+    - "[Notable historical fact 1]"
+    - "[Major milestone or achievement]"
+    - "[Founding story or important date]"
+
+  # Special Notes
+  note: "[Any special circumstances, exemptions, or important context about this organization]"
+
+# ========================================
+# SIMPLIFIED REQUEST FORMAT
+# ========================================
+# When requesting new data, you can simply provide:
+#
+# EIN: [XX-XXXXXXX]
+# Organization Name: [Name]
+#
+# Or for multiple organizations:
+#
+# EINs to research:
+# - [XX-XXXXXXX] ([Organization Name])
+# - [XX-XXXXXXX] ([Organization Name])
+# - [XX-XXXXXXX] ([Organization Name])
+#
+# The assistant will then:
+# 1. Search for Form 990 data
+# 2. Find charity ratings
+# 3. Gather program information
+# 4. Compile financial data (3-4 years)
+# 5. Format everything in YAML matching this template
+# ========================================
