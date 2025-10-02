@@ -21,7 +21,7 @@ class DataFieldManager:
                 for year in ["2024", "2023", "2022"]:
                     year_path = json_path.replace("fiscal_year_2024", f"fiscal_year_{year}")
                     value = self.manual_client.get_value(year_path, ein)
-                    if value is not None:
+                    if value is not None and value != 0:
                         return value
                 return None
             else:

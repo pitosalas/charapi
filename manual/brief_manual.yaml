@@ -6,11 +6,11 @@
 #   - Charity Navigator: https://www.charitynavigator.org/
 #   - GuideStar/Candid: https://www.guidestar.org/
 #   - ProPublica Nonprofit Explorer: https://projects.propublica.org/nonprofits/
+#   - Organization websites (Form 990 PDFs)
 #
 # Notes:
-#   - Functional expense breakdowns (program/admin/fundraising) require Form 990 Part IX
-#   - Download PDFs from ProPublica links provided for each organization
-#   - Organizations with 4-star Charity Navigator ratings typically have 75-90% program expenses
+#   - Only confirmed data is included
+#   - Functional expense breakdowns require downloading Form 990 Part IX PDFs
 #   - in_pub78 = eligible to receive tax-deductible contributions
 #   - is_revoked = tax-exempt status revoked by IRS
 #   - has_recent_filing = filed Form 990 in last 3 years
@@ -24,33 +24,20 @@ ein_043255365:
     has_recent_filing: true
     charity_navigator_rating:
       stars: 4
-      score_percentage: 93
-      url: "https://www.charitynavigator.org/ein/043255365"
-  
-  data_sources:
-    propublica_url: "https://projects.propublica.org/nonprofits/organizations/43255365"
-    guidestar_url: "https://www.guidestar.org/profile/04-3255365"
-  
+
   fiscal_year_2024:
-    total_revenue: 2150000
-    total_expenses: 2230000
     expenses:
       program: 0
       admin: 0
       fundraising: 0
-      note: "Download Form 990 Part IX from ProPublica for breakdown"
-  
+
   fiscal_year_2023:
-    total_revenue: 1750000
-    total_expenses: 1830000
     expenses:
-      program: 0
-      admin: 0
-      fundraising: 0
-  
+      program: 1425314
+      admin: 325001
+      fundraising: 83568
+
   fiscal_year_2022:
-    total_revenue: 1620000
-    total_expenses: 1510000
     expenses:
       program: 0
       admin: 0
@@ -62,26 +49,19 @@ ein_132500888:
     in_pub78: true
     is_revoked: false
     has_recent_filing: true
-    charity_navigator_rating:
-      stars: null
-      note: "Not rated by Charity Navigator"
-  
-  data_sources:
-    propublica_url: "https://projects.propublica.org/nonprofits/organizations/132500888"
-    note: "Search GuideStar for additional details"
-  
+
   fiscal_year_2024:
     expenses:
       program: 0
       admin: 0
       fundraising: 0
-  
+
   fiscal_year_2023:
     expenses:
       program: 0
       admin: 0
       fundraising: 0
-  
+
   fiscal_year_2022:
     expenses:
       program: 0
@@ -94,27 +74,19 @@ ein_131930176:
     in_pub78: true
     is_revoked: false
     has_recent_filing: false
-    charity_navigator_rating:
-      stars: null
-      note: "Organization files as a church - exempt from Form 990 requirement"
-  
-  data_sources:
-    guidestar_url: "https://www.guidestar.org/profile/13-1930176"
-    website: "https://wupj.org/"
-  
+
   fiscal_year_2024:
     expenses:
       program: 0
       admin: 0
       fundraising: 0
-      note: "Not required to file Form 990 - church exception"
-  
+
   fiscal_year_2023:
     expenses:
       program: 0
       admin: 0
       fundraising: 0
-  
+
   fiscal_year_2022:
     expenses:
       program: 0
@@ -127,29 +99,19 @@ ein_043129124:
     in_pub78: true
     is_revoked: false
     has_recent_filing: true
-    charity_navigator_rating:
-      stars: null
-      note: "Not currently rated by Charity Navigator"
-  
-  data_sources:
-    propublica_url: "https://projects.propublica.org/nonprofits/organizations/43129124"
-    guidestar_url: "https://www.guidestar.org/profile/04-3129124"
-    website: "https://www.zoonewengland.org/"
-  
+
   fiscal_year_2024:
-    total_revenue: 29123870
-    total_expenses: 28878844
     expenses:
       program: 0
       admin: 0
       fundraising: 0
-  
+
   fiscal_year_2023:
     expenses:
-      program: 0
-      admin: 0
-      fundraising: 0
-  
+      program: 21378282
+      admin: 3723377
+      fundraising: 1122237
+
   fiscal_year_2022:
     expenses:
       program: 0
@@ -162,27 +124,19 @@ ein_311640316:
     in_pub78: true
     is_revoked: false
     has_recent_filing: true
-    charity_navigator_rating:
-      stars: null
-      note: "Not eligible for rating - donor-advised fund sponsor"
-  
-  data_sources:
-    charity_navigator_url: "https://www.charitynavigator.org/ein/311640316"
-    website: "https://www.schwabcharitable.org/"
-  
+
   fiscal_year_2024:
     expenses:
       program: 0
       admin: 0
       fundraising: 0
-      note: "DAF sponsors have unique expense structures - primarily grant-making"
-  
+
   fiscal_year_2023:
     expenses:
       program: 0
       admin: 0
       fundraising: 0
-  
+
   fiscal_year_2022:
     expenses:
       program: 0
@@ -197,25 +151,19 @@ ein_131644147:
     has_recent_filing: true
     charity_navigator_rating:
       stars: 4
-      score_percentage: 99
-      url: "https://www.charitynavigator.org/ein/131644147"
-  
-  data_sources:
-    propublica_url: "https://projects.propublica.org/nonprofits/organizations/131644147"
-    website: "https://www.plannedparenthood.org/"
-  
+
   fiscal_year_2024:
     expenses:
       program: 0
       admin: 0
       fundraising: 0
-  
+
   fiscal_year_2023:
     expenses:
-      program: 0
-      admin: 0
-      fundraising: 0
-  
+      program: 318432906
+      admin: 69261841
+      fundraising: 58269580
+
   fiscal_year_2022:
     expenses:
       program: 0
@@ -230,33 +178,20 @@ ein_135660870:
     has_recent_filing: true
     charity_navigator_rating:
       stars: 4
-      score_percentage: 97
-      url: "https://www.charitynavigator.org/ein/135660870"
-  
-  data_sources:
-    propublica_url: "https://projects.propublica.org/nonprofits/organizations/135660870"
-    website: "https://www.rescue.org/"
-  
+
+  fiscal_year_2024:
+    expenses:
+      program: 1402010000
+      admin: 116683000
+      fundraising: 100969000
+
   fiscal_year_2023:
-    total_revenue: 1341000000
-    total_expenses: 1430000000
     expenses:
-      program: 0
-      admin: 0
-      fundraising: 0
-      note: "IRC states 87% goes to programs. Download Form 990 for exact breakdown"
-  
+      program: 1281715000
+      admin: 110665000
+      fundraising: 89103000
+
   fiscal_year_2022:
-    total_revenue: 1374000000
-    total_expenses: 1271000000
-    expenses:
-      program: 0
-      admin: 0
-      fundraising: 0
-  
-  fiscal_year_2021:
-    total_revenue: 951000000
-    total_expenses: 904000000
     expenses:
       program: 0
       admin: 0
@@ -270,30 +205,24 @@ ein_133433452:
     has_recent_filing: true
     charity_navigator_rating:
       stars: 4
-      score_percentage: 94
-      url: "https://www.charitynavigator.org/ein/133433452"
-  
-  data_sources:
-    propublica_url: "https://projects.propublica.org/nonprofits/organizations/133433452"
-    website: "https://www.doctorswithoutborders.org/"
-  
+
   fiscal_year_2024:
     expenses:
       program: 0
       admin: 0
       fundraising: 0
-  
+
   fiscal_year_2023:
     expenses:
       program: 0
       admin: 0
       fundraising: 0
-  
+
   fiscal_year_2022:
     expenses:
-      program: 0
-      admin: 0
-      fundraising: 0
+      program: 540279313
+      admin: 8596787
+      fundraising: 100699786
 
 ein_042105780:
   organization:
@@ -303,25 +232,19 @@ ein_042105780:
     has_recent_filing: true
     charity_navigator_rating:
       stars: 4
-      score_percentage: 92
-      url: "https://www.charitynavigator.org/ein/042105780"
-  
-  data_sources:
-    propublica_url: "https://projects.propublica.org/nonprofits/organizations/42105780"
-    website: "https://thetrustees.org/"
-  
+
   fiscal_year_2024:
     expenses:
       program: 0
       admin: 0
       fundraising: 0
-  
+
   fiscal_year_2023:
     expenses:
-      program: 0
-      admin: 0
-      fundraising: 0
-  
+      program: 42035803
+      admin: 7067387
+      fundraising: 6177860
+
   fiscal_year_2022:
     expenses:
       program: 0
@@ -336,30 +259,24 @@ ein_043567502:
     has_recent_filing: true
     charity_navigator_rating:
       stars: 4
-      score_percentage: 98
-      url: "https://www.charitynavigator.org/ein/043567502"
-  
-  data_sources:
-    propublica_url: "https://projects.propublica.org/nonprofits/organizations/43567502"
-    website: "https://www.pih.org/"
-  
+
   fiscal_year_2024:
     expenses:
       program: 0
       admin: 0
       fundraising: 0
-  
+
   fiscal_year_2023:
     expenses:
       program: 0
       admin: 0
       fundraising: 0
-  
+
   fiscal_year_2022:
     expenses:
-      program: 0
-      admin: 0
-      fundraising: 0
+      program: 216490970
+      admin: 12302738
+      fundraising: 9670608
 
 ein_530196605:
   organization:
@@ -369,26 +286,19 @@ ein_530196605:
     has_recent_filing: true
     charity_navigator_rating:
       stars: 4
-      score_percentage: 100
-      url: "https://www.charitynavigator.org/ein/530196605"
-  
-  data_sources:
-    propublica_url: "https://projects.propublica.org/nonprofits/organizations/530196605"
-    guidestar_url: "https://www.guidestar.org/profile/53-0196605"
-    website: "https://www.redcross.org/"
-  
+
   fiscal_year_2024:
     expenses:
-      program: 0
-      admin: 0
-      fundraising: 0
-  
+      program: 3260239000
+      admin: 119686000
+      fundraising: 191613000
+
   fiscal_year_2023:
     expenses:
-      program: 0
-      admin: 0
-      fundraising: 0
-  
+      program: 2731483000
+      admin: 100068000
+      fundraising: 179837000
+
   fiscal_year_2022:
     expenses:
       program: 0
