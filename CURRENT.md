@@ -1,6 +1,6 @@
 # Charity Evaluation API - Current State
 
-*Last Updated: October 1, 2025 - Morning Session*
+*Last Updated: October 2, 2025 - Morning Session*
 
 ## Project Overview
 
@@ -32,14 +32,11 @@ charapi/
 │   └── config/             # Configuration files
 │       ├── config.yaml (with data_fields config)
 │       └── test_config.yaml
-├── manual/                 # Manual data entry CSVs (NEW - Oct 1)
-│   ├── program_expenses.csv
-│   ├── admin_expenses.csv
-│   ├── fundraising_expenses.csv
-│   ├── in_pub78.csv
-│   ├── is_revoked.csv
-│   ├── has_recent_filing.csv
-│   └── charity_navigator_rating.csv
+├── manual/                 # Manual data entry YAML files (Oct 1-2)
+│   ├── brief_manual.yaml        # Simplified manual data (recommended)
+│   ├── manual_data.yaml         # Comprehensive manual data
+│   ├── eins.yaml               # EIN registry
+│   └── irs990/                 # Downloaded Form 990 PDFs
 ├── tests/                  # Test files
 │   ├── test_charapi.py
 │   ├── test_api_cache.py
@@ -58,12 +55,12 @@ charapi/
 - **SQLite caching** for persistent API response storage
 - **YAML configuration** for API keys and parameters
 - **Mock mode support** for development and testing
-- **Manual data entry system** with CSV files for missing API data
+- **Manual data entry system** with YAML files for missing API data
 - **Modular architecture** following CLAUDE.md principles
 
 ## Current Implementation Status
 
-### ✅ Completed (38/40 tasks - 95.0%)
+### ✅ Completed (39/40 tasks - 97.5%)
 
 #### Infrastructure & Setup
 1. **Project Structure**: uv-based Python package with pyproject.toml
@@ -109,16 +106,17 @@ charapi/
     - test_grading.py: 2 tests for grade boundary precision
 29. **Code Quality Review**: Full codebase review against CLAUDE.md standards
 
-#### Manual Data Entry System (NEW - October 1 Morning)
-30. **ManualDataClient**: CSV-based manual data entry system for missing API data
-31. **DataFieldManager**: Config-driven routing between manual and API data sources
-32. **7 Manual CSV Files**: program_expenses, admin_expenses, fundraising_expenses, in_pub78, is_revoked, has_recent_filing, charity_navigator_rating
+#### Manual Data Entry System (NEW - October 1-2)
+30. **ManualDataClient**: YAML-based manual data entry system for missing API data
+31. **DataFieldManager**: Config-driven routing between manual and API data sources with multi-year fallback
+32. **Manual YAML Files**: brief_manual.yaml (simplified) and manual_data.yaml (comprehensive)
 33. **Integration with Analyzers**: FinancialAnalyzer, ComplianceChecker, and ValidationScorer use manual data
 34. **Demo Improvements**: Clear messages showing which manual data files need editing
 35. **IRS Rollback**: Removed all IRS-related code and 2.3GB of data files (user decision)
 36. **Expense Ratio Fix**: Corrected calculations to display as percentages (was showing decimals)
 37. **Charity Navigator Integration**: Manual rating entry (1-4 stars) with 5 points per star scoring
 38. **Non-modifying Tests**: Removed auto-add functionality to prevent test pollution of manual data files
+39. **Multi-year Fallback Fix**: DataFieldManager now skips zero values and falls back to previous fiscal years (Oct 2)
 
 ### 🔄 Current Implementation Gaps
 
@@ -128,10 +126,11 @@ charapi/
 - **Expense ratio scoring**: Ratios calculated but not scored against targets
 
 #### Data Availability
-- **Manual data required**: 7 CSV files need manual population for full functionality
+- **Manual data population**: brief_manual.yaml needs expense data from Form 990 PDFs
   - Expense breakdowns (program/admin/fundraising) - not in ProPublica API
-  - IRS compliance fields (in_pub78, is_revoked, has_recent_filing) - not integrated
-  - Charity Navigator ratings - not integrated
+  - IRS compliance fields (in_pub78, is_revoked, has_recent_filing) - included in YAML
+  - Charity Navigator ratings - included in YAML
+  - Form 990 PDFs stored in manual/irs990/ for reference
 
 ## Technical Context for Future Development
 
@@ -171,19 +170,18 @@ propublica:
 - **Penalty**: -50 points for non-compliance
 
 ### Manual Data Entry System
-- **CSV Format**: Each field has its own CSV file with `ein,value` columns
+- **YAML Format**: Hierarchical structure for organization data by EIN and fiscal year
 - **Location**: `manual/` directory in project root
 - **Non-modifying**: System never auto-adds or modifies manual data files
 - **Config-driven**: `data_fields` section in config.yaml specifies manual vs API sources
-- **Missing Data Handling**: Returns "manual data not available" string for missing EINs
-- **7 Data Fields**:
-  1. `program_expenses.csv` - Program service expenses in dollars
-  2. `admin_expenses.csv` - Administrative expenses in dollars
-  3. `fundraising_expenses.csv` - Fundraising expenses in dollars
-  4. `in_pub78.csv` - IRS Publication 78 status (1=yes, 0=no)
-  5. `is_revoked.csv` - Tax-exempt status revoked (1=yes, 0=no)
-  6. `has_recent_filing.csv` - Recent Form 990 filing (1=yes, 0=no)
-  7. `charity_navigator_rating.csv` - Star rating (1-4)
+- **Multi-year Fallback**: Automatically falls back from fiscal_year_2024 → 2023 → 2022 when values are zero
+- **Files**:
+  1. `brief_manual.yaml` - Simplified format (recommended for most users)
+  2. `manual_data.yaml` - Comprehensive format with full organizational details
+  3. `irs990/` - Downloaded Form 990 PDFs for reference
+- **Data Structure** (per EIN):
+  - Organization metadata (name, in_pub78, is_revoked, has_recent_filing, charity_navigator_rating)
+  - Fiscal year data (program/admin/fundraising expenses for FY2024, 2023, 2022)
 
 ## Current Todo List (10 pending tasks - reduced from 18)
 
@@ -273,13 +271,18 @@ caching:
 
 #### October 1, 2025 - Manual Data System
 6. **IRS Rollback**: Removed all IRS integration code and 2.3GB of data files (user decision to use manual entry instead)
-7. **Manual Data Architecture**: Built CSV-based manual data entry system with 7 data files
-8. **ManualDataClient**: Non-modifying client that reads manual CSV files
+7. **Manual Data Architecture**: Built YAML-based manual data entry system (brief_manual.yaml and manual_data.yaml)
+8. **ManualDataClient**: Non-modifying client that reads manual YAML files
 9. **DataFieldManager**: Config-driven routing between manual and API data sources
 10. **Analyzer Integration**: Updated FinancialAnalyzer, ComplianceChecker, ValidationScorer to use manual data
 11. **Expense Ratio Fix**: Corrected calculations to display as percentages (was 0.009, now 0.9%)
-12. **Charity Navigator Manual Entry**: Added charity_navigator_rating.csv with 5 points per star scoring
-13. **Demo Improvements**: Added clear messages showing which manual CSV files need editing
+12. **Charity Navigator Manual Entry**: Integrated star ratings (1-4) with 5 points per star scoring
+13. **Demo Improvements**: Added clear messages showing which manual data fields need editing
+
+#### October 2, 2025 - Multi-year Fallback & Data Population
+14. **Multi-year Fallback Bug Fix**: Fixed DataFieldManager to skip zero values when falling back to previous fiscal years
+15. **Trustees of Reservations Data**: Extracted and populated FY2023 expense data from Form 990 PDF
+16. **PDF Storage**: Added manual/irs990/ directory for storing downloaded Form 990 PDFs
 
 ### Working Demo Commands
 ```bash
@@ -322,14 +325,14 @@ Fundraising Expense Ratio: Manual data not available (edit manual/fundraising_ex
 
 ### Minor Issues
 3. **Stub Implementations**: Financial scoring and trend analysis return placeholder values
-4. **Manual Data Population**: All 7 CSV files start empty and need manual population
+4. **Manual Data Population**: Most organizations in brief_manual.yaml still need expense data from Form 990 PDFs
 
 ### System Status
 - ✅ All core functionality working as expected
 - ✅ API integration stable
 - ✅ Caching system reliable
 - ✅ Mock/real mode switching functional
-- ✅ Manual data system working correctly
+- ✅ Manual data system working correctly with multi-year fallback
 - ✅ All 31 tests passing
 
 ## Next Development Session Context
@@ -346,20 +349,26 @@ Fundraising Expense Ratio: Manual data not available (edit manual/fundraising_ex
 - **Error handling**: ✅ Non-defensive, lets errors bubble up
 - **Testing**: ✅ Comprehensive coverage (31 tests, all passing)
 - **Documentation**: ✅ Comprehensive and up-to-date
-- **Manual Data System**: ✅ Working, non-modifying, config-driven
+- **Manual Data System**: ✅ Working, non-modifying, config-driven with multi-year fallback
 - **CLAUDE.md Compliance**: ⚠️ 2 minor violations remaining
 
-### Key Files Modified Recently (October 1, 2025)
-- `charapi/clients/manual_data_client.py` - NEW: CSV-based manual data client
-- `charapi/data/data_field_manager.py` - NEW: Routes between manual and API data sources
+### Key Files Modified Recently (October 2, 2025)
+- `charapi/data/data_field_manager.py` - FIXED: Multi-year fallback now skips zero values
+- `manual/brief_manual.yaml` - UPDATED: Added Trustees of Reservations FY2023 expense data
+- `manual/irs990/` - NEW: Directory for storing downloaded Form 990 PDFs
+
+### Key Files Modified (October 1, 2025)
+- `charapi/clients/manual_data_client.py` - NEW: YAML-based manual data client
+- `charapi/data/data_field_manager.py` - NEW: Routes between manual and API data sources with multi-year fallback
 - `charapi/analyzers/financial_analyzer.py` - UPDATED: Uses manual data for expense breakdowns, fixed percentage calculations
 - `charapi/analyzers/compliance_checker.py` - UPDATED: Uses manual data for IRS compliance fields
 - `charapi/analyzers/validation_scorer.py` - UPDATED: Uses manual data for Charity Navigator rating
 - `charapi/config/config.yaml` - UPDATED: Added data_fields configuration
-- `manual/*.csv` - NEW: 7 CSV files for manual data entry (all empty initially)
+- `manual/brief_manual.yaml` - NEW: Simplified YAML format for manual data entry
+- `manual/manual_data.yaml` - NEW: Comprehensive YAML format for manual data entry
 - `demo.py` - UPDATED: Shows clear messages about manual data availability
 - `tests/test_charapi.py` - UPDATED: Reflects manual data system behavior
-- `tests/test_financial_analyzer.py` - UPDATED: Tests with empty manual data
+- `tests/test_financial_analyzer.py` - UPDATED: Tests with manual data
 
 ---
 
@@ -386,4 +395,4 @@ Fundraising Expense Ratio: Manual data not available (edit manual/fundraising_ex
 
 ---
 
-**Status**: Core infrastructure complete with manual data entry system. 95.0% complete (38/40 tasks). Next priority: Implement financial calculation formulas from apifeatures.md, then add trend analysis.
+**Status**: Core infrastructure complete with YAML-based manual data entry system and working multi-year fallback. 97.5% complete (39/40 tasks). Next priority: Implement financial calculation formulas from apifeatures.md, then add trend analysis.
