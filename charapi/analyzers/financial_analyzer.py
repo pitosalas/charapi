@@ -41,5 +41,13 @@ class FinancialAnalyzer:
         )
 
     def calculate_score(self, metrics: FinancialMetrics) -> float:
-        # This is still a stub - would need detailed implementation
-        return 75.0
+        program_ratio = metrics.program_expense_ratio / 100.0
+        admin_ratio = metrics.admin_expense_ratio / 100.0
+        fundraising_ratio = metrics.fundraising_expense_ratio / 100.0
+
+        program_score = min(40 * (program_ratio / 0.75), 40)
+        admin_score = max(0, 20 * (0.15 - admin_ratio) / 0.15)
+        fundraising_score = max(0, 20 * (0.15 - fundraising_ratio) / 0.15)
+        stability_score = 20 if metrics.net_assets > 0 else 0
+
+        return program_score + admin_score + fundraising_score + stability_score

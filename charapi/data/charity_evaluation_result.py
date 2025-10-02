@@ -19,8 +19,6 @@ class Issue(Enum):
     MISSING_CHARITY_NAVIGATOR = "MISSING_CHARITY_NAVIGATOR"
     MISSING_EXPENSE_DATA = "MISSING_EXPENSE_DATA"
     COMPLIANCE_FAILURE = "COMPLIANCE_FAILURE"
-    STUB_TREND_ANALYSIS = "STUB_TREND_ANALYSIS"
-    STUB_FINANCIAL_SCORING = "STUB_FINANCIAL_SCORING"
 
 
 @dataclass
@@ -36,14 +34,6 @@ class FinancialMetrics:
     fundraising_expenses: int
     total_assets: int
     total_liabilities: int
-
-
-@dataclass
-class TrendAnalysis:
-    revenue_growth_rate: float
-    growth_consistency_score: float
-    volatility_penalty: float
-    years_analyzed: int
 
 
 @dataclass
@@ -71,11 +61,9 @@ class CharityEvaluationResult:
     total_score: float
     grade: str
     financial_score: float
-    trend_modifier: float
     validation_bonus: float
     compliance_penalty: float
     financial_metrics: FinancialMetrics
-    trend_analysis: TrendAnalysis
     compliance_check: ComplianceCheck
     external_validation: ExternalValidation
     evaluation_timestamp: str

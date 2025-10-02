@@ -18,16 +18,12 @@ def test_evaluate_charity_mock_mode():
     
     assert result.financial_metrics.total_revenue > 0
     assert result.financial_metrics.net_assets > 0
-    assert result.trend_analysis.years_analyzed == 5
     assert result.compliance_check.is_compliant == True
     assert result.external_validation.charity_navigator_rating == 4
     assert result.external_validation.charity_navigator_score == 20.0
     assert isinstance(result.issues, list)
-    assert len(result.issues) > 0
     assert isinstance(result.issue_codes, list)
     assert len(result.issue_codes) == len(result.issues)
-    assert Issue.STUB_TREND_ANALYSIS in result.issue_codes
-    assert Issue.STUB_FINANCIAL_SCORING in result.issue_codes
 
 
 def test_evaluate_charity_salvation_army():
