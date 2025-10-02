@@ -38,7 +38,7 @@ class BaseAPIClient:
         endpoint: str,
         identifier: str,
         fetch_function: Callable[[], Any],
-        mock_function: Optional[Callable[[], Any]] = None
+        mock_function: Optional[Callable[[], Any]]
     ) -> Any:
         if self.mock_mode and mock_function:
             return mock_function()

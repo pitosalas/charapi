@@ -1,4 +1,4 @@
-from ..data.charity_evaluation_result import ComplianceCheck
+from ..data.charity_evaluation_result import ComplianceCheck, Ident
 from ..data.data_field_manager import DataFieldManager
 
 
@@ -7,9 +7,9 @@ class ComplianceChecker:
         self.data_manager = DataFieldManager(config)
 
     def check_compliance(self, ein: str) -> ComplianceCheck:
-        in_pub78_val = self.data_manager.get_field("in_pub78", ein)
-        is_revoked_val = self.data_manager.get_field("is_revoked", ein)
-        has_recent_filing_val = self.data_manager.get_field("has_recent_filing", ein)
+        in_pub78_val = self.data_manager.get_field(Ident.IN_PUB78, ein)
+        is_revoked_val = self.data_manager.get_field(Ident.IS_REVOKED, ein)
+        has_recent_filing_val = self.data_manager.get_field(Ident.HAS_RECENT_FILING, ein)
 
         in_pub78 = bool(in_pub78_val) if in_pub78_val is not None else False
         is_revoked = bool(is_revoked_val) if is_revoked_val is not None else False

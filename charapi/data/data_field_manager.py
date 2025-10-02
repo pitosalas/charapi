@@ -1,4 +1,6 @@
+from typing import Union
 from ..clients.manual_data_client import ManualDataClient
+from ..data.charity_evaluation_result import Ident
 
 
 class DataFieldManager:
@@ -7,15 +9,16 @@ class DataFieldManager:
         self.data_fields = config.get("data_fields", {})
         self.manual_client = ManualDataClient(config)
 
-    def get_field(self, field_name: str, ein: str):
-        if field_name not in self.data_fields:
-            raise KeyError(f"Field {field_name} not configured in data_fields")
+    def get_field(self, field_name: Union[Ident, str], ein: str):
+        field_name_str = field_name.value if isinstance(field_name, Ident) else field_name
+        if field_name_str not in self.data_fields:
+            raise KeyError(f"Field {field_name_str} not configured in data_fields")
 
-        field_config = self.data_fields[field_name]
+        field_config = self.data_fields[field_name_str]
         source = field_config.get("source")
 
         if source == "manual":
-            json_path = field_config.get("path", field_name)
+            json_path = field_config.get("path", field_name_str)
 
             if "fiscal_year_2024" in json_path:
                 for year in ["2024", "2023", "2022"]:
@@ -27,6 +30,6 @@ class DataFieldManager:
             else:
                 return self.manual_client.get_value(json_path, ein)
         elif source == "api":
-            raise NotImplementedError(f"API source for {field_name} must be handled by caller")
+            raise NotImplementedError(f"API source for {field_name_str} must be handled by caller")
         else:
-            raise ValueError(f"Unknown source '{source}' for field {field_name}")
+            raise ValueError(f"Unknown source '{source}' for field {field_name_str}")

@@ -1,5 +1,26 @@
 from dataclasses import dataclass
 from typing import List, Optional
+from enum import Enum
+
+
+class Ident(Enum):
+    PROGRAM_EXPENSES = "program_expenses"
+    ADMIN_EXPENSES = "admin_expenses"
+    FUNDRAISING_EXPENSES = "fundraising_expenses"
+    CHARITY_NAVIGATOR_RATING = "charity_navigator_rating"
+    IN_PUB78 = "in_pub78"
+    IS_REVOKED = "is_revoked"
+    HAS_RECENT_FILING = "has_recent_filing"
+    TOTAL_REVENUE = "total_revenue"
+    TOTAL_EXPENSES = "total_expenses"
+
+
+class Issue(Enum):
+    MISSING_CHARITY_NAVIGATOR = "MISSING_CHARITY_NAVIGATOR"
+    MISSING_EXPENSE_DATA = "MISSING_EXPENSE_DATA"
+    COMPLIANCE_FAILURE = "COMPLIANCE_FAILURE"
+    STUB_TREND_ANALYSIS = "STUB_TREND_ANALYSIS"
+    STUB_FINANCIAL_SCORING = "STUB_FINANCIAL_SCORING"
 
 
 @dataclass
@@ -59,3 +80,5 @@ class CharityEvaluationResult:
     external_validation: ExternalValidation
     evaluation_timestamp: str
     data_sources_used: List[str]
+    issues: List[str]
+    issue_codes: List[Issue]

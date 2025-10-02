@@ -2,7 +2,7 @@ import yaml
 from datetime import datetime
 from typing import List
 
-from ..data.charity_evaluation_result import CharityEvaluationResult
+from ..data.charity_evaluation_result import CharityEvaluationResult, Issue
 from ..clients.propublica_client import ProPublicaClient
 from ..analyzers.financial_analyzer import FinancialAnalyzer
 from ..analyzers.trend_analyzer import TrendAnalyzer
@@ -44,9 +44,31 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
     # Calculate final score and grade
     total_score = financial_score + trend_modifier + validation_bonus + compliance_penalty
     grade = _assign_grade(total_score)
-    
+
     # Handle both mock and real API response structures
     org_name = org_data.get("name") or org_data.get("organization", {}).get("name", "Unknown")
+
+    # Collect issues
+    issues = []
+    issue_codes = []
+
+    if external_validation.charity_navigator_rating is None:
+        issue_codes.append(Issue.MISSING_CHARITY_NAVIGATOR)
+        issues.append("Charity Navigator rating not available - edit manual/brief_manual.yaml")
+
+    if financial_metrics.program_expenses == 0:
+        issue_codes.append(Issue.MISSING_EXPENSE_DATA)
+        issues.append("Expense breakdown data missing - edit manual/brief_manual.yaml")
+
+    if not compliance_check.is_compliant:
+        issue_codes.append(Issue.COMPLIANCE_FAILURE)
+        issues.append(f"IRS compliance issues: {', '.join(compliance_check.issues)} - edit manual/brief_manual.yaml")
+
+    issue_codes.append(Issue.STUB_TREND_ANALYSIS)
+    issues.append("Trend analysis using stub implementation - needs real formulas")
+
+    issue_codes.append(Issue.STUB_FINANCIAL_SCORING)
+    issues.append("Financial scoring using stub implementation - needs real formulas")
 
     return CharityEvaluationResult(
         ein=ein,
@@ -62,7 +84,9 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
         compliance_check=compliance_check,
         external_validation=external_validation,
         evaluation_timestamp=datetime.now().isoformat(),
-        data_sources_used=["ProPublica", "IRS", "Charity Navigator"]
+        data_sources_used=["ProPublica", "IRS", "Charity Navigator"],
+        issues=issues,
+        issue_codes=issue_codes
     )
 
 

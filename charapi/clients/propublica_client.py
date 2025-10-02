@@ -40,8 +40,7 @@ class ProPublicaClient(BaseAPIClient):
     
     def get_all_filings(self, ein: str) -> List[Dict]:
         def fetch():
-            org_data = self.get_organization(ein)
-            return org_data.get("filings_with_data", [])
+            return self.get_organization(ein).get("filings_with_data", [])
 
         return self.get_cached_or_fetch(
             "filings",

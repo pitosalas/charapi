@@ -1,4 +1,4 @@
-from ..data.charity_evaluation_result import ExternalValidation
+from ..data.charity_evaluation_result import ExternalValidation, Ident
 from ..data.data_field_manager import DataFieldManager
 
 
@@ -8,7 +8,7 @@ class ValidationScorer:
         self.data_manager = DataFieldManager(config)
 
     def get_validation_data(self, ein: str) -> ExternalValidation:
-        rating_val = self.data_manager.get_field("charity_navigator_rating", ein)
+        rating_val = self.data_manager.get_field(Ident.CHARITY_NAVIGATOR_RATING, ein)
 
         if rating_val is None:
             rating = None
