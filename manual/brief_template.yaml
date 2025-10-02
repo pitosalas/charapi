@@ -1,0 +1,56 @@
+# ========================================
+# BRIEF NONPROFIT DATA TEMPLATE
+# ========================================
+# This template contains only the fields currently used by the scoring system
+# Instructions: Replace placeholder values with actual data
+# Provide whichever fiscal years are available - code will use most recent
+
+ein_XXXXXXXXX:
+  organization:
+    name: "Organization Name"
+
+    # IRS Status Indicators (required for compliance scoring)
+    in_pub78: true                   # Eligible to receive tax-deductible contributions
+    is_revoked: false                # Tax-exempt status revoked by IRS
+    has_recent_filing: true          # Filed Form 990 in last 3 years
+
+    # Charity Navigator Rating (optional - adds validation bonus)
+    charity_navigator_rating:
+      stars: 4                       # 1-4 star rating
+
+  # Fiscal Years (provide whichever years are available)
+  fiscal_year_2024:
+    expenses:
+      program: 0                     # Program/mission-related expenses
+      admin: 0                       # Administrative expenses
+      fundraising: 0                 # Fundraising expenses
+
+  fiscal_year_2023:
+    expenses:
+      program: 0
+      admin: 0
+      fundraising: 0
+
+  fiscal_year_2022:
+    expenses:
+      program: 0
+      admin: 0
+      fundraising: 0
+
+# ========================================
+# NOTES
+# ========================================
+# - Provide data for whichever fiscal years are available
+# - Code will automatically use the most recent year (2024 > 2023 > 2022)
+# - Fields used for scoring:
+#   1. in_pub78
+#   2. is_revoked
+#   3. has_recent_filing
+#   4. charity_navigator_rating.stars
+#   5. fiscal_year_YYYY.expenses.program
+#   6. fiscal_year_YYYY.expenses.admin
+#   7. fiscal_year_YYYY.expenses.fundraising
+#
+# - All other data (revenue, assets, etc.) comes from ProPublica API
+# - See templateyaml for full template with all optional fields
+# ========================================

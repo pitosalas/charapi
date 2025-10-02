@@ -29,7 +29,7 @@ data_fields:
 
 manual_data:
   directory: "manual"
-  filename: "manual_data.yaml"
+  filename: "brief_manual.yaml"
 
 propublica:
   base_url: "https://projects.propublica.org/nonprofits/api/v2"

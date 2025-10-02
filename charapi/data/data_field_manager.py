@@ -16,7 +16,16 @@ class DataFieldManager:
 
         if source == "manual":
             json_path = field_config.get("path", field_name)
-            return self.manual_client.get_value(json_path, ein)
+
+            if "fiscal_year_2024" in json_path:
+                for year in ["2024", "2023", "2022"]:
+                    year_path = json_path.replace("fiscal_year_2024", f"fiscal_year_{year}")
+                    value = self.manual_client.get_value(year_path, ein)
+                    if value is not None:
+                        return value
+                return None
+            else:
+                return self.manual_client.get_value(json_path, ein)
         elif source == "api":
             raise NotImplementedError(f"API source for {field_name} must be handled by caller")
         else:

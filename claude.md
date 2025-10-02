@@ -31,7 +31,13 @@
     * You shall undertake multi-step implementation or refactoring in a way that after each step a running program is retained so that testing can be done to ensure progress is on the right track
     * You shall not provide default parameters to functions; make the caller provide all required values explicitly
     * You shall not code defensively; let exceptions bubble up rather than handling every possible error case
-    
-    
+
+## Manual Data Protection
+    * You shall NEVER modify manual/manual_data.yaml under any circumstances
+    * You shall NEVER add write/save/update methods to ManualDataClient
+    * You shall NEVER open manual_data.yaml in write or append mode
+    * Only the user directly edits manual/manual_data.yaml
+
+
 # CURRENT.md
     * Now read CURRENT.md and follow it's instructions
