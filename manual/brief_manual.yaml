@@ -11,17 +11,12 @@
 # Notes:
 #   - Only confirmed data is included
 #   - Functional expense breakdowns require downloading Form 990 Part IX PDFs
-#   - in_pub78 = eligible to receive tax-deductible contributions
-#   - is_revoked = tax-exempt status revoked by IRS
-#   - has_recent_filing = filed Form 990 in last 3 years
+#   - Compliance data (in_pub78, is_revoked, has_recent_filing) now from CharityAPI.org
 # ========================================
 
 ein_043255365:
   organization:
     name: "Passim (47 Palmer, Inc.)"
-    in_pub78: true
-    is_revoked: false
-    has_recent_filing: true
     charity_navigator_rating:
       stars: 4
 
@@ -46,9 +41,6 @@ ein_043255365:
 ein_132500888:
   organization:
     name: "Jewish Reconstructionist Federation"
-    in_pub78: true
-    is_revoked: false
-    has_recent_filing: true
 
   fiscal_year_2024:
     expenses:
@@ -71,9 +63,6 @@ ein_132500888:
 ein_131930176:
   organization:
     name: "The World Union for Progressive Judaism Ltd"
-    in_pub78: true
-    is_revoked: false
-    has_recent_filing: false
 
   fiscal_year_2024:
     expenses:
@@ -96,9 +85,6 @@ ein_131930176:
 ein_043129124:
   organization:
     name: "Commonwealth Zoological Corporation (Zoo New England)"
-    in_pub78: true
-    is_revoked: false
-    has_recent_filing: true
 
   fiscal_year_2024:
     expenses:
@@ -121,9 +107,6 @@ ein_043129124:
 ein_311640316:
   organization:
     name: "Donor Advised Charitable Giving, Inc. (Schwab Charitable Fund)"
-    in_pub78: true
-    is_revoked: false
-    has_recent_filing: true
 
   fiscal_year_2024:
     expenses:
@@ -146,9 +129,6 @@ ein_311640316:
 ein_131644147:
   organization:
     name: "Planned Parenthood Federation of America, Inc."
-    in_pub78: true
-    is_revoked: false
-    has_recent_filing: true
     charity_navigator_rating:
       stars: 4
 
@@ -173,9 +153,6 @@ ein_131644147:
 ein_135660870:
   organization:
     name: "International Rescue Committee Inc (IRC)"
-    in_pub78: true
-    is_revoked: false
-    has_recent_filing: true
     charity_navigator_rating:
       stars: 4
 
@@ -200,9 +177,6 @@ ein_135660870:
 ein_133433452:
   organization:
     name: "Doctors Without Borders USA Inc (MSF)"
-    in_pub78: true
-    is_revoked: false
-    has_recent_filing: true
     charity_navigator_rating:
       stars: 4
 
@@ -227,9 +201,6 @@ ein_133433452:
 ein_042105780:
   organization:
     name: "The Trustees of Reservations"
-    in_pub78: true
-    is_revoked: false
-    has_recent_filing: true
     charity_navigator_rating:
       stars: 4
 
@@ -254,9 +225,6 @@ ein_042105780:
 ein_043567502:
   organization:
     name: "Partners In Health (PIH)"
-    in_pub78: true
-    is_revoked: false
-    has_recent_filing: true
     charity_navigator_rating:
       stars: 4
 
@@ -281,9 +249,6 @@ ein_043567502:
 ein_530196605:
   organization:
     name: "American National Red Cross"
-    in_pub78: true
-    is_revoked: false
-    has_recent_filing: true
     charity_navigator_rating:
       stars: 4
 

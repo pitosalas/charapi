@@ -13,6 +13,11 @@ class Ident(Enum):
     HAS_RECENT_FILING = "has_recent_filing"
     TOTAL_REVENUE = "total_revenue"
     TOTAL_EXPENSES = "total_expenses"
+    NTEE_CODE = "ntee_code"
+    SUBSECTION = "subsection"
+    FOUNDATION_TYPE = "foundation_type"
+    FILING_REQUIREMENT = "filing_requirement"
+    RULING_YEAR = "ruling_year"
 
 
 class Issue(Enum):
@@ -46,6 +51,16 @@ class ComplianceCheck:
 
 
 @dataclass
+class OrganizationType:
+    score: float
+    issues: List[str]
+    subsection: Optional[int]
+    foundation_type: Optional[int]
+    filing_requirement: Optional[int]
+    years_operating: Optional[int]
+
+
+@dataclass
 class ExternalValidation:
     charity_navigator_rating: Optional[int]
     charity_navigator_score: float
@@ -63,9 +78,11 @@ class CharityEvaluationResult:
     financial_score: float
     validation_bonus: float
     compliance_penalty: float
+    organization_type_score: float
     financial_metrics: FinancialMetrics
     compliance_check: ComplianceCheck
     external_validation: ExternalValidation
+    organization_type: OrganizationType
     evaluation_timestamp: str
     data_sources_used: List[str]
     issues: List[str]

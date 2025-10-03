@@ -70,3 +70,4 @@ Thumbs.db
 cache/
 *.log
 config/secrets.yaml
+charapi/config/config.yaml

@@ -13,9 +13,9 @@ def test_evaluate_charity_mock_mode():
     assert result.grade in ["A", "B", "C", "D", "F"]
     assert result.total_score > 0
     assert result.financial_score > 0
-    assert result.data_sources_used == ["ProPublica", "IRS", "Charity Navigator"]
+    assert result.data_sources_used == ["ProPublica", "CharityAPI", "Charity Navigator"]
     assert "2025-" in result.evaluation_timestamp
-    
+
     assert result.financial_metrics.total_revenue > 0
     assert result.financial_metrics.net_assets > 0
     assert result.compliance_check.is_compliant == True

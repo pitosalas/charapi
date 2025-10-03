@@ -1,10 +1,13 @@
+from typing import Optional
 from ..data.charity_evaluation_result import FinancialMetrics, Ident
 from ..data.data_field_manager import DataFieldManager
 
 
 class FinancialAnalyzer:
     def __init__(self, config: dict):
+        self.config = config
         self.data_manager = DataFieldManager(config)
+        self.scoring_config = config.get("scoring", {}).get("financial", {})
 
     def extract_metrics(self, filing_data: dict, ein: str) -> FinancialMetrics:
         total_expenses = filing_data.get("totfuncexpns", 0)
@@ -40,14 +43,39 @@ class FinancialAnalyzer:
             total_liabilities=filing_data.get("totliabend", 0)
         )
 
-    def calculate_score(self, metrics: FinancialMetrics) -> float:
+    def get_sector_benchmarks(self, ntee_code: Optional[str]) -> dict:
+        if not ntee_code:
+            return self.scoring_config
+
+        sector = ntee_code[0] if ntee_code else None
+
+        sector_overrides = self.scoring_config.get("sector_overrides", {})
+
+        if sector and sector in sector_overrides:
+            benchmarks = self.scoring_config.copy()
+            benchmarks.update(sector_overrides[sector])
+            return benchmarks
+
+        return self.scoring_config
+
+    def calculate_score(self, metrics: FinancialMetrics, ntee_code: Optional[str] = None) -> float:
+        benchmarks = self.get_sector_benchmarks(ntee_code)
+
+        program_target = benchmarks.get("program_expense_target", 0.75)
+        admin_limit = benchmarks.get("admin_expense_limit", 0.15)
+        fundraising_limit = benchmarks.get("fundraising_expense_limit", 0.15)
+        program_max = benchmarks.get("program_score_max", 40)
+        admin_max = benchmarks.get("admin_score_max", 20)
+        fundraising_max = benchmarks.get("fundraising_score_max", 20)
+        stability_max = benchmarks.get("stability_score_max", 20)
+
         program_ratio = metrics.program_expense_ratio / 100.0
         admin_ratio = metrics.admin_expense_ratio / 100.0
         fundraising_ratio = metrics.fundraising_expense_ratio / 100.0
 
-        program_score = min(40 * (program_ratio / 0.75), 40)
-        admin_score = max(0, 20 * (0.15 - admin_ratio) / 0.15)
-        fundraising_score = max(0, 20 * (0.15 - fundraising_ratio) / 0.15)
-        stability_score = 20 if metrics.net_assets > 0 else 0
+        program_score = min(program_max * (program_ratio / program_target), program_max)
+        admin_score = max(0, admin_max * (admin_limit - admin_ratio) / admin_limit)
+        fundraising_score = max(0, fundraising_max * (fundraising_limit - fundraising_ratio) / fundraising_limit)
+        stability_score = stability_max if metrics.net_assets > 0 else 0
 
         return program_score + admin_score + fundraising_score + stability_score

@@ -4,9 +4,11 @@ from typing import List
 
 from ..data.charity_evaluation_result import CharityEvaluationResult, Issue
 from ..clients.propublica_client import ProPublicaClient
+from ..clients.charityapi_client import CharityAPIClient
 from ..analyzers.financial_analyzer import FinancialAnalyzer
 from ..analyzers.compliance_checker import ComplianceChecker
 from ..analyzers.validation_scorer import ValidationScorer
+from ..analyzers.organization_type_analyzer import OrganizationTypeAnalyzer
 
 
 def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
@@ -14,29 +16,43 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
         config = yaml.safe_load(f)
 
     propublica = ProPublicaClient(config_path)
+    charityapi = CharityAPIClient(config_path)
     financial_analyzer = FinancialAnalyzer(config)
     compliance_checker = ComplianceChecker(config)
     validation_scorer = ValidationScorer(config)
+    organization_type_analyzer = OrganizationTypeAnalyzer(config)
 
     # Get organization data from ProPublica
     org_data = propublica.get_organization(ein)
     filings = propublica.get_all_filings(ein)
 
-    # Calculate financial health score
+    # Get CharityAPI data for compliance checking and organization type analysis
+    charityapi_data = charityapi.get_organization(ein)
+    compliance_checker.data_manager.set_charityapi_data(charityapi_data)
+    financial_analyzer.data_manager.set_charityapi_data(charityapi_data)
+
+    # Get NTEE code for sector-specific benchmarking
+    ntee_code = charityapi_data.get("ntee_cd") if charityapi_data else None
+
+    # Calculate financial health score with sector-specific benchmarks
     latest_filing = filings[0] if filings else {}
     financial_metrics = financial_analyzer.extract_metrics(latest_filing, ein)
-    financial_score = financial_analyzer.calculate_score(financial_metrics)
+    financial_score = financial_analyzer.calculate_score(financial_metrics, ntee_code)
 
     # Check compliance
     compliance_check = compliance_checker.check_compliance(ein)
     compliance_penalty = -50 if not compliance_check.is_compliant else 0
+
+    # Analyze organization type
+    organization_type = organization_type_analyzer.analyze(charityapi_data)
+    organization_type_score = organization_type.score
 
     # Get external validation
     external_validation = validation_scorer.get_validation_data(ein)
     validation_bonus = validation_scorer.calculate_bonus(external_validation)
 
     # Calculate final score and grade
-    total_score = financial_score + validation_bonus + compliance_penalty
+    total_score = financial_score + validation_bonus + compliance_penalty + organization_type_score
     grade = _assign_grade(total_score)
 
     # Handle both mock and real API response structures
@@ -61,8 +77,13 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
     if not compliance_check.is_compliant:
         issue_codes.append(Issue.COMPLIANCE_FAILURE)
         issues.append(
-            f"IRS compliance issues: {', '.join(compliance_check.issues)} - edit manual/brief_manual.yaml"
+            f"IRS compliance issues: {', '.join(compliance_check.issues)}"
         )
+
+    # Add organization type issues if any
+    if organization_type.issues:
+        for issue in organization_type.issues:
+            issues.append(f"Organization type: {issue}")
 
     return CharityEvaluationResult(
         ein=ein,
@@ -72,11 +93,13 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
         financial_score=financial_score,
         validation_bonus=validation_bonus,
         compliance_penalty=compliance_penalty,
+        organization_type_score=organization_type_score,
         financial_metrics=financial_metrics,
         compliance_check=compliance_check,
         external_validation=external_validation,
+        organization_type=organization_type,
         evaluation_timestamp=datetime.now().isoformat(),
-        data_sources_used=["ProPublica", "IRS", "Charity Navigator"],
+        data_sources_used=["ProPublica", "CharityAPI", "Charity Navigator"],
         issues=issues,
         issue_codes=issue_codes,
     )

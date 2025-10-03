@@ -38,78 +38,44 @@ result = evaluate_charity("530196605", "charapi/config/config.yaml")
 - Multiple years of filings (when available)
 - PDF links to original Form 990 documents
 
-### IRS Tax Exempt Organization Data ✅ Implemented
-**Sources**: Bulk CSV downloads from IRS
+### Manual Data Entry System ✅ Implemented
+**Location**: `manual/` directory
 
-**Information Retrieved:**
-- Publication 78 status (tax-deductible eligibility)
-- Auto-revocation list (organizations that lost exemption)
-- EO Business Master File (comprehensive organization details)
-- Recent filing compliance status
+**Information Managed:**
+- Expense breakdowns (program/admin/fundraising) from Form 990 PDFs
+- IRS compliance fields (in_pub78, is_revoked, has_recent_filing)
+- Charity Navigator ratings (1-4 stars)
+- Multi-year fiscal data (FY2024, 2023, 2022) with automatic fallback
 
-**Setup Required:**
-```bash
-# Download IRS compliance data (required)
-./scripts/download_irs_data.sh
+**Files:**
+- `brief_manual.yaml` - Simplified format (recommended)
+- `manual_data.yaml` - Comprehensive format
+- `irs990/` - Downloaded Form 990 PDFs for reference
 
-# Data stored in: cache/ directory
-# - data-download-pub78.txt (92MB)
-# - irs_revocation_list.csv (75KB)
-# - irs_eo1.csv through irs_eo4.csv (314MB total)
+**Data Structure (per EIN):**
+```yaml
+530196605:  # American Red Cross
+  name: "American National Red Cross"
+  in_pub78: true
+  is_revoked: false
+  has_recent_filing: true
+  charity_navigator_rating: 3
+  fiscal_year_2024:
+    program_expenses: 0
+    admin_expenses: 0
+    fundraising_expenses: 0
+  fiscal_year_2023:
+    program_expenses: 2500000000
+    admin_expenses: 150000000
+    fundraising_expenses: 200000000
 ```
 
-### IRS Form 990 XML Data ✅ Implemented
-**Source**: IRS Form 990 e-file database
+### Charity Navigator Ratings ✅ Manual Entry
+**Implementation**: Manual data entry in YAML files
 
 **Information Retrieved:**
-- Detailed expense breakdowns:
-  - `TotalProgramServiceExpensesAmt` - Program expenses
-  - `ManagementAndGeneralExpenseAmt` - Administrative expenses
-  - `TotalFundraisingExpenseAmt` - Fundraising expenses
-- Total revenue and expenses
-- Net assets and fund balances
-
-**Setup Required:**
-The system downloads Form 990 XML files on-demand. When you evaluate a charity, if the required XML file is not found, you'll receive detailed instructions including:
-
-1. The specific OBJECT_ID needed
-2. Which batch file to download (organized by month)
-3. Download URL from IRS.gov
-4. Extraction commands
-
-**Manual Download Process:**
-```bash
-# Download the IRS Form 990 index first (if not already present)
-cd cache
-curl -o irs_form_index_2023.csv \
-  "https://apps.irs.gov/pub/epostcard/990/xml/2023/index_2023.csv"
-
-# When evaluation fails, use the provided script with batch number from error message
-./scripts/download_form990_batch.sh 2023 12A
-
-# Or download manually:
-cd cache
-curl -L -o 2023_TEOS_XML_12A.zip \
-  "https://apps.irs.gov/pub/epostcard/990/xml/2023/2023_TEOS_XML_12A.zip"
-mkdir -p irs_990_xml/2023_12A
-unzip 2023_TEOS_XML_12A.zip -d irs_990_xml/2023_12A
-```
-
-**Storage:**
-- Index: `cache/irs_form_index_2023.csv`
-- XML files: `cache/irs_990_xml/[YEAR]_[BATCH]/`
-- Batch sizes: ~150-200MB per month (uncompressed)
-- Each batch contains ~30,000-40,000 XML files
-
-### Charity Navigator API 🔄 Planned
-**Base URL**: `https://developer.charitynavigator.org/`
-
-**Information Retrieved:**
-- Overall star rating (1-4 stars)
-- Financial performance score
-- Accountability & transparency score
-- Advisory alerts and warnings
-- Transparency seal status
+- Star rating (1-4 stars) - 5 points per star
+- Stored in manual data files per EIN
 
 ### CharityAPI.org 🔄 Planned
 **Base URL**: `https://www.charityapi.org/`
@@ -129,7 +95,7 @@ unzip 2023_TEOS_XML_12A.zip -d irs_990_xml/2023_12A
 
 ## Calculation Equations & Derived Metrics
 
-### Financial Health Score (0-100 points)
+### Financial Health Score (0-100 points) ✅ Implemented
 
 #### Program Expense Ratio
 ```
@@ -161,62 +127,31 @@ Net Assets = Total Assets - Total Liabilities
 Stability Score = 20 points if Net Assets > 0, else 0 points
 ```
 
-### Trend Analysis Modifier (±20 points)
-
-#### Revenue Growth Rate
-```
-Annual Growth Rate = (Current Year Revenue - Previous Year Revenue) / Previous Year Revenue
-5-Year Average Growth = Average of annual growth rates over 5 years
-
-Growth Modifier = ±10 points based on consistency:
-- Stable positive growth (2-8% annually): +10 points
-- Volatile but positive: +5 points
-- Declining revenue: -10 points
-```
-
-#### Volatility Penalty
-```
-Revenue Volatility = Standard Deviation of annual revenue changes
-Volatility Penalty = min(10, (Volatility / 0.3) * 10)
-
-Final Trend Modifier = Growth Modifier - Volatility Penalty
-Range: -20 to +10 points
-```
-
-### External Validation Bonus (0-45 points)
+### External Validation Bonus (0-20 points) ✅ Implemented
 
 #### Charity Navigator Integration
 ```
 Star Rating Bonus = Charity Navigator Stars × 5 points (max 20 points)
-No Advisory Alerts = +5 points
 ```
 
-#### Transparency & Compliance
-```
-Transparency Seal = +10 points
-IRS Pub 78 Listed = +5 points
-Recent Form 990 Filing = +5 points
-```
+**Note**: Ratings are entered manually in `brief_manual.yaml` or `manual_data.yaml`
 
-#### Negative News Penalty
-```
-Negative News Alerts = -10 points per significant alert
-```
-
-### Compliance Penalties
+### Compliance Penalties ✅ Implemented
 
 #### IRS Status Violations
 ```
 Not in IRS Pub 78 = -50 points
-Auto-revoked status = -100 points (immediate F grade)
-No recent filing (>3 years) = -25 points
+Auto-revoked status = -50 points
+No recent filing (>3 years) = -50 points
 ```
+
+**Note**: All compliance data entered manually in YAML files
 
 ### Final Grade Assignment
 
 #### Total Score Calculation
 ```
-Total Score = Financial Health Score + Trend Modifier + Validation Bonus + Compliance Penalties
+Total Score = Financial Health Score + Validation Bonus + Compliance Penalties
 ```
 
 #### Grade Thresholds
@@ -231,16 +166,15 @@ F: <45 points - Failing charity
 ## Current Implementation Status
 
 - ✅ **ProPublica API**: Fully integrated with real and mock modes
-- ✅ **IRS Compliance Data**: Publication 78, revocation list, BMF data
-- ✅ **IRS Form 990 XML**: On-demand download with automatic error handling
-- ✅ **SQLite Caching**: 24-hour cache for API responses, 30-day cache for IRS data
-- ✅ **Basic Financial Metrics**: Revenue, assets, liabilities, expense breakdowns
-- ✅ **Financial Ratios**: Program/admin/fundraising ratios from Form 990 XML
-- 🔄 **Financial Scoring**: Calculation formulas need implementation
-- 🔄 **Trend Analysis**: Multi-year data processing needed
-- 🔄 **External Validation**: Charity Navigator API registration required
+- ✅ **Manual Data System**: YAML-based entry for expense breakdowns and compliance
+- ✅ **SQLite Caching**: 24-hour cache for ProPublica API responses
+- ✅ **Financial Scoring**: Real formulas implemented (program/admin/fundraising ratios + stability)
+- ✅ **Charity Navigator**: Manual star rating entry (1-4 stars)
+- ✅ **Multi-year Fallback**: Automatically falls back FY2024→2023→2022 when values are zero
+- ❌ **Trend Analysis**: Removed (insufficient multi-year data)
+- ❌ **IRS Integration**: Removed (using manual YAML entry instead)
 
-Run `python demo.py real` to see which calculations require additional API integrations.
+Run `python demo.py real` to see which manual data fields need population.
 
 ## Setup Instructions
 
@@ -249,30 +183,34 @@ Run `python demo.py real` to see which calculations require additional API integ
 uv sync
 ```
 
-### 2. Download IRS Compliance Data (Required)
-```bash
-./scripts/download_irs_data.sh
-```
-This downloads ~340MB of IRS data for compliance checking.
+### 2. Configure ProPublica API (Optional for Mock Mode)
+Add API key to `charapi/config/config.yaml` if using real mode.
 
-### 3. Download IRS Form 990 Index (Required for Financial Analysis)
-```bash
-cd cache
-curl -o irs_form_index_2023.csv \
-  "https://apps.irs.gov/pub/epostcard/990/xml/2023/index_2023.csv"
+### 3. Populate Manual Data
+Edit `manual/brief_manual.yaml` to add:
+- Expense breakdowns from Form 990 PDFs (store PDFs in `manual/irs990/`)
+- IRS compliance status (in_pub78, is_revoked, has_recent_filing)
+- Charity Navigator star ratings (1-4)
+
+**Example:**
+```yaml
+530196605:  # Your charity's EIN
+  name: "Charity Name"
+  in_pub78: true
+  is_revoked: false
+  has_recent_filing: true
+  charity_navigator_rating: 3
+  fiscal_year_2023:
+    program_expenses: 2500000000
+    admin_expenses: 150000000
+    fundraising_expenses: 200000000
 ```
 
-### 4. Download Form 990 Batches (On-Demand)
-When you evaluate a charity, if the Form 990 XML is missing, the system will tell you exactly which batch to download:
+### 4. Run Demo
 ```bash
-./scripts/download_form990_batch.sh 2023 12A
-```
-
-### 5. Run Demo
-```bash
-# Mock mode (no downloads needed)
+# Mock mode (no API or manual data needed)
 uv run python demo.py mock
 
-# Real mode (requires IRS data downloaded)
+# Real mode (requires ProPublica API, manual data optional)
 uv run python demo.py real
 ```

@@ -1,10 +1,10 @@
 # Charity Evaluation API - Current State
 
-*Last Updated: October 2, 2025 - Morning Session*
+*Last Updated: October 3, 2025 - CharityAPI Integration Complete*
 
 ## Project Overview
 
-A comprehensive charity evaluation API that analyzes nonprofit organizations using multiple data sources (ProPublica, IRS, Charity Navigator) and provides scoring with letter grades (A-F). Built as a separate Python module for reuse in charapi and other applications.
+A comprehensive charity evaluation API that analyzes nonprofit organizations using multiple data sources (ProPublica, CharityAPI.org for IRS data, Charity Navigator) and provides scoring with letter grades (A-F). Features automated compliance checking, sector-specific financial benchmarking (NTEE codes), and organization type analysis. Built as a separate Python module for reuse in charapi and other applications.
 
 ## Architecture
 
@@ -17,16 +17,17 @@ charapi/
 │   ├── clients/            # External API clients
 │   │   ├── base_client.py
 │   │   ├── propublica_client.py
-│   │   └── manual_data_client.py (NEW - Oct 1)
+│   │   ├── charityapi_client.py (NEW - Oct 3)
+│   │   └── manual_data_client.py (Oct 1)
 │   ├── analyzers/          # Analysis logic
-│   │   ├── financial_analyzer.py (uses manual data)
-│   │   ├── trend_analyzer.py (stub)
-│   │   ├── compliance_checker.py (uses manual data)
+│   │   ├── financial_analyzer.py (NTEE benchmarking - Oct 3)
+│   │   ├── compliance_checker.py (uses CharityAPI - Oct 3)
+│   │   ├── organization_type_analyzer.py (NEW - Oct 3)
 │   │   └── validation_scorer.py (uses manual data)
 │   ├── data/               # Data models and manual data management
-│   │   ├── charity_evaluation_result.py
+│   │   ├── charity_evaluation_result.py (updated - Oct 3)
 │   │   ├── mock_data.py
-│   │   └── data_field_manager.py (NEW - Oct 1)
+│   │   └── data_field_manager.py (CharityAPI support - Oct 3)
 │   ├── cache/              # SQLite caching system
 │   │   └── api_cache.py
 │   └── config/             # Configuration files
@@ -41,7 +42,10 @@ charapi/
 │   ├── test_charapi.py
 │   ├── test_api_cache.py
 │   ├── test_propublica_client.py
-│   ├── test_financial_analyzer.py
+│   ├── test_charityapi_client.py (NEW - Oct 3)
+│   ├── test_compliance_checker.py (NEW - Oct 3)
+│   ├── test_organization_type_analyzer.py (NEW - Oct 3)
+│   ├── test_financial_analyzer.py (NTEE tests - Oct 3)
 │   └── test_grading.py
 ├── cache/                  # SQLite database storage
 │   └── charapi_cache.db
@@ -142,30 +146,54 @@ propublica:
   mock_mode: false  # Ignored if global is true
 ```
 
-### Financial Scoring Framework (From apifeatures.md)
-- **Program Expense Ratio**: Target 75%+ (40 points max)
-- **Administrative Expenses**: Target <15% (20 points max)  
+### Financial Scoring Framework (NTEE-based)
+- **Program Expense Ratio**: Sector-specific targets (40 points max)
+  - Default: 75%+
+  - Arts (A): 65%+
+  - Education (B): 80%+
+  - Health (E): 80%+
+  - Medical Research (H): 70%+
+  - Human Services (P): 75%+
+  - International (Q): 70%+
+- **Administrative Expenses**: Sector-specific limits (20 points max)
+  - Default: <15%
+  - Arts (A): <20%
+  - Education/Health (B/E): <12%
+  - Research/International (H/Q): <18%
 - **Fundraising Expenses**: Target <15% (20 points max)
 - **Financial Stability**: Positive net assets (20 points max)
 - **Total Base Score**: 100 points possible
 
-### Trend Analysis Framework
-- **Revenue Growth**: ±10 points based on 5-year consistency
-- **Volatility Penalty**: ±10 points for financial stability
-- **Data Requirements**: Minimum 3 years for meaningful analysis
+### Organization Type Scoring (NEW - Oct 3)
+- **501(c)(3) Status**: -25 points if not 501(c)(3)
+- **Foundation Type**: -15 points for private foundation (vs public charity)
+- **Filing Requirement**: -10 points if not required to file Form 990
+- **Organizational Maturity**: +5 points if 20+ years operating
+- **Score Range**: -50 to +5 points
 
 ### External Validation Bonuses
 - **Charity Navigator**: 5 points per star (1-4 stars)
-- **No Advisory Alerts**: +5 points
-- **Transparency Seal**: +10 points  
-- **Negative News**: -10 points
-- **Maximum Bonus**: 45 points
+- **No Advisory Alerts**: +5 points (not yet implemented)
+- **Transparency Seal**: +10 points (not yet implemented)
+- **Negative News**: -10 points (not yet implemented)
+- **Maximum Bonus**: 20 points (current), 45 points (full implementation)
 
-### Compliance System (Manual Data)
-- **IRS Pub. 78 Status**: Tax-deductible eligibility (manual entry in in_pub78.csv)
-- **Revocation Check**: Auto-revocation list monitoring (manual entry in is_revoked.csv)
-- **Recent Filing**: Form 990 within 3 years (manual entry in has_recent_filing.csv)
-- **Penalty**: -50 points for non-compliance
+### Compliance System (Automated via CharityAPI - Oct 3)
+- **IRS Pub. 78 Status**: Tax-deductible eligibility (CharityAPI deductibility field)
+- **Revocation Check**: Tax-exempt status monitoring (CharityAPI status field)
+- **Recent Filing**: Form 990 within 3 years (CharityAPI tax_period field)
+- **Penalty**: -50 points for any non-compliance
+
+### Total Scoring Formula (Updated Oct 3)
+```
+Total Score =
+  Financial Health (0-100, NTEE-adjusted)
+  + Validation Bonus (0-20)
+  + Organization Type Score (-50 to +5)
+  + Compliance Penalties (-150 to 0)
+
+Possible Range: -150 to 125 points
+```
 
 ### Manual Data Entry System
 - **YAML Format**: Hierarchical structure for organization data by EIN and fiscal year
@@ -274,6 +302,17 @@ caching:
 17. **Financial Scoring Implementation**: Implemented real scoring formulas (program 40pts, admin 20pts, fundraising 20pts, stability 20pts)
 18. **Trend Analysis Complete Removal**: Removed all trend analysis code, dataclasses, and references (insufficient multi-year data)
 
+#### October 3, 2025 - CharityAPI Integration (Phases 2-3)
+19. **CharityAPIClient**: New API client for CharityAPI.org IRS master file data with mock support
+20. **Automated Compliance Checking**: Removed manual compliance fields (in_pub78, is_revoked, has_recent_filing) - now automated via CharityAPI
+21. **OrganizationTypeAnalyzer**: New analyzer for 501(c)(3) status, foundation type, filing requirements, and organizational maturity
+22. **NTEE-based Benchmarking**: Financial scoring now uses sector-specific ratios (Arts 65%/20%, Education 80%/12%, Health 80%/12%, etc.)
+23. **Organization Type Scoring**: Added -50 to +5 point scoring based on nonprofit type and age
+24. **Updated Data Model**: CharityEvaluationResult now includes organization_type and organization_type_score fields
+25. **Comprehensive Testing**: Added 44 new tests (27 CharityAPI client, 8 compliance checker, 9 organization type analyzer)
+26. **Demo Updates**: Updated demo.py to display organization type details and new score breakdown
+27. **Manual Data Cleanup**: Removed compliance fields from brief_manual.yaml (now automated)
+
 ### Working Demo Commands
 ```bash
 # Mock mode (instant, uses test data)
@@ -339,7 +378,24 @@ Fundraising Expense Ratio: Manual data not available (edit manual/fundraising_ex
 - **Manual Data System**: ✅ Working, non-modifying, config-driven with multi-year fallback
 - **CLAUDE.md Compliance**: ⚠️ 2 minor violations remaining
 
-### Key Files Modified Recently (October 2, 2025)
+### Key Files Modified Recently (October 3, 2025)
+- `charapi/clients/charityapi_client.py` - NEW: CharityAPI.org client with mock support
+- `charapi/analyzers/organization_type_analyzer.py` - NEW: Organization type scoring analyzer
+- `charapi/analyzers/financial_analyzer.py` - UPDATED: NTEE-based sector-specific benchmarking
+- `charapi/analyzers/compliance_checker.py` - UPDATED: Uses CharityAPI instead of manual data
+- `charapi/data/charity_evaluation_result.py` - UPDATED: Added OrganizationType dataclass and organization_type_score field
+- `charapi/data/data_field_manager.py` - UPDATED: Support for charityapi data source
+- `charapi/api/charity_evaluator.py` - UPDATED: Integrated CharityAPI, organization type analyzer, and NTEE benchmarking
+- `charapi/config/config.yaml` - UPDATED: Added CharityAPI configuration and updated data_fields mappings
+- `charapi/config/test_config.yaml` - UPDATED: Added CharityAPI configuration for tests
+- `manual/brief_manual.yaml` - UPDATED: Removed compliance fields (in_pub78, is_revoked, has_recent_filing)
+- `demo.py` - UPDATED: Display organization type details and new score breakdown
+- `tests/test_charityapi_client.py` - NEW: 27 comprehensive tests for CharityAPI client
+- `tests/test_compliance_checker.py` - NEW: 8 tests for automated compliance checking
+- `tests/test_organization_type_analyzer.py` - NEW: 9 tests for organization type analysis
+- `tests/test_financial_analyzer.py` - UPDATED: Added 8 NTEE benchmarking tests
+
+### Key Files Modified (October 2, 2025)
 - `charapi/data/charity_evaluation_result.py` - UPDATED: Removed trend_modifier, trend_analysis fields and STUB_TREND_ANALYSIS enum
 - `charapi/api/charity_evaluator.py` - UPDATED: Removed all trend analysis code
 - `demo.py` - UPDATED: Removed trend modifier from output
@@ -366,19 +422,26 @@ Fundraising Expense Ratio: Manual data not available (edit manual/fundraising_ex
 
 ## Test Coverage Summary
 
-### Total Tests: 31 across 5 test files
+### Total Tests: 83 across 8 test files (Updated Oct 3)
 - **test_api_cache.py**: 14 tests (cache operations, TTL, stats)
 - **test_propublica_client.py**: 8 tests (API client, mock/real modes, caching)
-- **test_financial_analyzer.py**: 4 tests (metrics extraction with manual data, edge cases)
+- **test_charityapi_client.py**: 27 tests (NEW - CharityAPI client and DataFieldManager integration)
+- **test_compliance_checker.py**: 8 tests (NEW - automated compliance checking with CharityAPI)
+- **test_organization_type_analyzer.py**: 9 tests (NEW - organization type scoring)
+- **test_financial_analyzer.py**: 12 tests (4 original + 8 NTEE benchmarking tests)
 - **test_charapi.py**: 3 tests (end-to-end integration)
 - **test_grading.py**: 2 tests (grade boundaries)
 
 ### Coverage Areas
 - ✅ Cache system (comprehensive)
 - ✅ API client initialization and modes
+- ✅ CharityAPI integration (NEW - Oct 3)
+- ✅ Automated compliance checking (NEW - Oct 3)
+- ✅ Organization type analysis (NEW - Oct 3)
+- ✅ NTEE-based sector benchmarking (NEW - Oct 3)
 - ✅ Mock data handling
 - ✅ Financial metrics extraction with manual data
-- ✅ Financial scoring formulas (real implementation)
+- ✅ Financial scoring formulas (real implementation with NTEE)
 - ✅ Manual data system (non-modifying behavior)
 - ✅ Grade assignment boundaries
 - ✅ End-to-end evaluation flow
@@ -386,4 +449,4 @@ Fundraising Expense Ratio: Manual data not available (edit manual/fundraising_ex
 
 ---
 
-**Status**: Core infrastructure complete with YAML-based manual data entry system, working multi-year fallback, and real financial scoring formulas. Trend analysis removed (insufficient data). 100% complete (40/40 tasks). Next priority: Address CLAUDE.md compliance issues.
+**Status**: CharityAPI.org integration complete! Features automated compliance checking, sector-specific NTEE benchmarking, and organization type analysis. Manual data now only required for expense breakdowns and Charity Navigator ratings. 83 tests passing. Core system 100% complete with intelligent, data-driven charity evaluation.

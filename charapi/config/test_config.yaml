@@ -1,6 +1,35 @@
 mock_mode: true
 
 data_fields:
+  # Compliance fields from CharityAPI
+  in_pub78:
+    source: charityapi
+    field: "deductibility"
+  is_revoked:
+    source: charityapi
+    field: "status"
+  has_recent_filing:
+    source: charityapi
+    field: "tax_period"
+
+  # Organization type fields from CharityAPI
+  ntee_code:
+    source: charityapi
+    field: "ntee_cd"
+  subsection:
+    source: charityapi
+    field: "subsection"
+  foundation_type:
+    source: charityapi
+    field: "foundation"
+  filing_requirement:
+    source: charityapi
+    field: "filing_req_cd"
+  ruling_year:
+    source: charityapi
+    field: "ruling"
+
+  # Expense fields remain manual
   program_expenses:
     source: manual
     path: "fiscal_year_2024.expenses.program"
@@ -10,18 +39,13 @@ data_fields:
   fundraising_expenses:
     source: manual
     path: "fiscal_year_2024.expenses.fundraising"
-  in_pub78:
-    source: manual
-    path: "organization.in_pub78"
-  is_revoked:
-    source: manual
-    path: "organization.is_revoked"
-  has_recent_filing:
-    source: manual
-    path: "organization.has_recent_filing"
+
+  # Charity Navigator remains manual
   charity_navigator_rating:
     source: manual
     path: "organization.charity_navigator_rating.stars"
+
+  # ProPublica API fields
   total_revenue:
     source: api
   total_expenses:
@@ -33,6 +57,12 @@ manual_data:
 
 propublica:
   base_url: "https://projects.propublica.org/nonprofits/api/v2"
+  timeout: 30
+  mock_mode: false
+
+charityapi:
+  base_url: "https://api.charityapi.org/api"
+  api_key: "test_key"
   timeout: 30
   mock_mode: false
 
@@ -60,5 +90,6 @@ caching:
   database_path: "cache/test_cache.db"
   default_ttl_hours: 1
   propublica_ttl_hours: 1
+  charityapi_ttl_hours: 1
   charity_navigator_ttl_hours: 1
   cleanup_on_startup: false

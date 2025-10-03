@@ -24,21 +24,31 @@ def print_results(result, mode):
     print(f"EIN: {result.ein}")
     print(f"Grade: {result.grade}")
     print(f"Total Score: {result.total_score:.1f}")
-    print(f"Financial Score: {result.financial_score:.1f}")
-    print(f"Validation Bonus: {result.validation_bonus:.1f}")
-    print(f"Compliance Penalty: {result.compliance_penalty:.1f}")
-    print(f"Revenue: ${result.financial_metrics.total_revenue:,}")
-    print(f"Net Assets: ${result.financial_metrics.net_assets:,}")
+    print(f"\nScore Breakdown:")
+    print(f"  Financial Score: {result.financial_score:.1f}")
+    print(f"  Validation Bonus: {result.validation_bonus:.1f}")
+    print(f"  Organization Type Score: {result.organization_type_score:.1f}")
+    print(f"  Compliance Penalty: {result.compliance_penalty:.1f}")
+
+    print(f"\nOrganization Type:")
+    print(f"  501(c)(3): {'Yes' if result.organization_type.subsection == 3 else 'No'}")
+    print(f"  Public Charity: {'Yes' if result.organization_type.foundation_type == 15 else 'No'}")
+    if result.organization_type.years_operating:
+        print(f"  Years Operating: {result.organization_type.years_operating}")
+
+    print(f"\nFinancials:")
+    print(f"  Revenue: ${result.financial_metrics.total_revenue:,}")
+    print(f"  Net Assets: ${result.financial_metrics.net_assets:,}")
 
     if result.financial_metrics.program_expenses > 0:
         print(
-            f"Program Expense Ratio: {result.financial_metrics.program_expense_ratio:.1f}%"
+            f"  Program Expense Ratio: {result.financial_metrics.program_expense_ratio:.1f}%"
         )
         print(
-            f"Admin Expense Ratio: {result.financial_metrics.admin_expense_ratio:.1f}%"
+            f"  Admin Expense Ratio: {result.financial_metrics.admin_expense_ratio:.1f}%"
         )
         print(
-            f"Fundraising Expense Ratio: {result.financial_metrics.fundraising_expense_ratio:.1f}%"
+            f"  Fundraising Expense Ratio: {result.financial_metrics.fundraising_expense_ratio:.1f}%"
         )
 
     if result.issues:
@@ -46,8 +56,9 @@ def print_results(result, mode):
         for issue in result.issues:
             print(f"  • {issue}")
 
-    data_source = "Live ProPublica API" if mode == "real" else "Mock data for testing"
-    print(f"\n📊 Data Source: {data_source}")
+    data_sources = ", ".join(result.data_sources_used)
+    data_mode = "Live APIs" if mode == "real" else "Mock data for testing"
+    print(f"\n📊 Data Sources: {data_sources} ({data_mode})")
 
 
 def show_cache_stats(config_path):
