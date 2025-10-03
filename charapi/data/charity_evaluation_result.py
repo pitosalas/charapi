@@ -1,6 +1,36 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Any
 from enum import Enum
+
+
+class MetricStatus(Enum):
+    OUTSTANDING = "outstanding"
+    ACCEPTABLE = "acceptable"
+    UNACCEPTABLE = "unacceptable"
+    UNKNOWN = "unknown"
+
+
+class MetricCategory(Enum):
+    FINANCIAL = "financial"
+    COMPLIANCE = "compliance"
+    ORGANIZATION_TYPE = "organization_type"
+    VALIDATION = "validation"
+
+
+@dataclass
+class MetricRange:
+    outstanding: str
+    acceptable: str
+
+
+@dataclass
+class Metric:
+    name: str
+    value: Any
+    status: MetricStatus
+    category: MetricCategory
+    ranges: MetricRange
+    display_value: str
 
 
 class Ident(Enum):
@@ -73,17 +103,15 @@ class ExternalValidation:
 class CharityEvaluationResult:
     ein: str
     organization_name: str
-    total_score: float
-    grade: str
-    financial_score: float
-    validation_bonus: float
-    compliance_penalty: float
-    organization_type_score: float
+    score: float
+    metrics: List[Metric]
     financial_metrics: FinancialMetrics
     compliance_check: ComplianceCheck
     external_validation: ExternalValidation
     organization_type: OrganizationType
     evaluation_timestamp: str
     data_sources_used: List[str]
-    issues: List[str]
-    issue_codes: List[Issue]
+    outstanding_count: int
+    acceptable_count: int
+    unacceptable_count: int
+    total_metrics: int

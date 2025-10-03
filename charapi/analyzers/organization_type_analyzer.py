@@ -1,6 +1,12 @@
 from datetime import datetime
-from typing import Dict, Any, Optional
-from ..data.charity_evaluation_result import OrganizationType
+from typing import Dict, Any, Optional, List
+from ..data.charity_evaluation_result import (
+    OrganizationType,
+    Metric,
+    MetricRange,
+    MetricStatus,
+    MetricCategory
+)
 
 
 class OrganizationTypeAnalyzer:
@@ -59,3 +65,88 @@ class OrganizationTypeAnalyzer:
             filing_requirement=filing_req,
             years_operating=years_operating
         )
+
+    def get_organization_type_metrics(self, charityapi_data: Optional[Dict[str, Any]]) -> List[Metric]:
+        metrics_list = []
+
+        if not charityapi_data:
+            metrics_list.append(Metric(
+                name="Organization Data",
+                value=None,
+                status=MetricStatus.UNKNOWN,
+                category=MetricCategory.ORGANIZATION_TYPE,
+                ranges=MetricRange(
+                    outstanding="Available",
+                    acceptable="Available"
+                ),
+                display_value="Unknown"
+            ))
+            return metrics_list
+
+        subsection = charityapi_data.get("subsection")
+        subsection_status = MetricStatus.ACCEPTABLE if subsection == 3 else MetricStatus.UNACCEPTABLE
+        metrics_list.append(Metric(
+            name="501(c)(3) Status",
+            value=subsection,
+            status=subsection_status,
+            category=MetricCategory.ORGANIZATION_TYPE,
+            ranges=MetricRange(
+                outstanding="Yes",
+                acceptable="Yes"
+            ),
+            display_value="Yes" if subsection == 3 else "No"
+        ))
+
+        foundation = charityapi_data.get("foundation")
+        public_charity_code = self.config.get("public_charity_code", 15)
+        foundation_status = MetricStatus.ACCEPTABLE if foundation == public_charity_code else MetricStatus.UNACCEPTABLE
+        metrics_list.append(Metric(
+            name="Public Charity",
+            value=foundation,
+            status=foundation_status,
+            category=MetricCategory.ORGANIZATION_TYPE,
+            ranges=MetricRange(
+                outstanding="Yes",
+                acceptable="Yes"
+            ),
+            display_value="Yes" if foundation == public_charity_code else "No"
+        ))
+
+        filing_req = charityapi_data.get("filing_req_cd")
+        filing_status = MetricStatus.ACCEPTABLE if filing_req == 1 else MetricStatus.UNACCEPTABLE
+        metrics_list.append(Metric(
+            name="Form 990 Filing Required",
+            value=filing_req,
+            status=filing_status,
+            category=MetricCategory.ORGANIZATION_TYPE,
+            ranges=MetricRange(
+                outstanding="Yes",
+                acceptable="Yes"
+            ),
+            display_value="Yes" if filing_req == 1 else "No"
+        ))
+
+        ruling = charityapi_data.get("ruling")
+        if ruling:
+            ruling_year = ruling // 100
+            years_operating = datetime.now().year - ruling_year
+            min_years = self.config.get("established_years_threshold", 20)
+
+            if years_operating >= min_years:
+                years_status = MetricStatus.OUTSTANDING
+            else:
+                years_status = MetricStatus.ACCEPTABLE
+
+            metrics_list.append(Metric(
+                name="Years Operating",
+                value=years_operating,
+                status=years_status,
+                category=MetricCategory.ORGANIZATION_TYPE,
+                ranges=MetricRange(
+                    outstanding=f"≥{min_years}",
+                    acceptable="≥1"
+                ),
+                display_value=str(years_operating)
+            ))
+
+        return metrics_list

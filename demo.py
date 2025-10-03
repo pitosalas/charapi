@@ -8,57 +8,73 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from charapi import evaluate_charity
 from charapi.clients.propublica_client import ProPublicaClient
+from charapi.data.charity_evaluation_result import MetricCategory, MetricStatus
 
 
-def format_value_or_api_message(value, api_name, condition):
-    if condition:
-        return f"{api_name} API required to compute this value"
-    elif isinstance(value, (int, float)) and value >= 1000:
-        return f"${value:,}"
-    else:
-        return f"{value:.1f}%" if isinstance(value, float) and value < 1 else f"{value}"
-
-
-def print_results(result, mode):
-    print(f"Organization: {result.organization_name}")
+def print_health_report(result, mode):
+    print(f"\nCHARITY HEALTH REPORT: {result.organization_name}")
     print(f"EIN: {result.ein}")
-    print(f"Grade: {result.grade}")
-    print(f"Total Score: {result.total_score:.1f}")
-    print(f"\nScore Breakdown:")
-    print(f"  Financial Score: {result.financial_score:.1f}")
-    print(f"  Validation Bonus: {result.validation_bonus:.1f}")
-    print(f"  Organization Type Score: {result.organization_type_score:.1f}")
-    print(f"  Compliance Penalty: {result.compliance_penalty:.1f}")
+    print("=" * 70)
 
-    print(f"\nOrganization Type:")
-    print(f"  501(c)(3): {'Yes' if result.organization_type.subsection == 3 else 'No'}")
-    print(f"  Public Charity: {'Yes' if result.organization_type.foundation_type == 15 else 'No'}")
-    if result.organization_type.years_operating:
-        print(f"  Years Operating: {result.organization_type.years_operating}")
+    # Group metrics by category
+    financial_metrics = [m for m in result.metrics if m.category == MetricCategory.FINANCIAL]
+    compliance_metrics = [m for m in result.metrics if m.category == MetricCategory.COMPLIANCE]
+    org_type_metrics = [m for m in result.metrics if m.category == MetricCategory.ORGANIZATION_TYPE]
+    validation_metrics = [m for m in result.metrics if m.category == MetricCategory.VALIDATION]
 
-    print(f"\nFinancials:")
-    print(f"  Revenue: ${result.financial_metrics.total_revenue:,}")
-    print(f"  Net Assets: ${result.financial_metrics.net_assets:,}")
+    # Print Financial Health
+    if financial_metrics:
+        print(f"\nFINANCIAL HEALTH")
+        for metric in financial_metrics:
+            status_symbol = get_status_symbol(metric.status)
+            print(f"  {metric.name:30s} {metric.display_value:15s} {metric.ranges.outstanding}/{metric.ranges.acceptable:15s} {status_symbol}")
 
-    if result.financial_metrics.program_expenses > 0:
-        print(
-            f"  Program Expense Ratio: {result.financial_metrics.program_expense_ratio:.1f}%"
-        )
-        print(
-            f"  Admin Expense Ratio: {result.financial_metrics.admin_expense_ratio:.1f}%"
-        )
-        print(
-            f"  Fundraising Expense Ratio: {result.financial_metrics.fundraising_expense_ratio:.1f}%"
-        )
+    # Print Compliance
+    if compliance_metrics:
+        print(f"\nCOMPLIANCE (IRS Requirements)")
+        for metric in compliance_metrics:
+            status_symbol = get_status_symbol(metric.status)
+            print(f"  {metric.name:30s} {metric.display_value:15s} {metric.ranges.acceptable:15s} {status_symbol}")
 
-    if result.issues:
-        print(f"\n⚠️  Issues:")
-        for issue in result.issues:
-            print(f"  • {issue}")
+    # Print Organization Type
+    if org_type_metrics:
+        print(f"\nORGANIZATION TYPE")
+        for metric in org_type_metrics:
+            status_symbol = get_status_symbol(metric.status)
+            print(f"  {metric.name:30s} {metric.display_value:15s} {metric.ranges.acceptable:15s} {status_symbol}")
+
+    # Print External Validation
+    if validation_metrics:
+        print(f"\nEXTERNAL VALIDATION")
+        for metric in validation_metrics:
+            status_symbol = get_status_symbol(metric.status)
+            print(f"  {metric.name:30s} {metric.display_value:15s} {metric.ranges.outstanding}/{metric.ranges.acceptable:15s} {status_symbol}")
+
+    # Print Overall Assessment
+    print(f"\nOVERALL ASSESSMENT")
+    outstanding_pct = (result.outstanding_count / result.total_metrics * 100) if result.total_metrics > 0 else 0
+    acceptable_pct = (result.acceptable_count / result.total_metrics * 100) if result.total_metrics > 0 else 0
+    unacceptable_pct = (result.unacceptable_count / result.total_metrics * 100) if result.total_metrics > 0 else 0
+
+    print(f"  ⭐ Outstanding:   {result.outstanding_count:2d} metrics ({outstanding_pct:.0f}%)")
+    print(f"  ✓ Acceptable:    {result.acceptable_count:2d} metrics ({acceptable_pct:.0f}%)")
+    print(f"  ⚠ Unacceptable:  {result.unacceptable_count:2d} metrics ({unacceptable_pct:.0f}%)")
+    print(f"\n  Overall Score: {result.score:.1f}/100")
 
     data_sources = ", ".join(result.data_sources_used)
     data_mode = "Live APIs" if mode == "real" else "Mock data for testing"
     print(f"\n📊 Data Sources: {data_sources} ({data_mode})")
+
+
+def get_status_symbol(status: MetricStatus) -> str:
+    if status == MetricStatus.OUTSTANDING:
+        return "⭐ Outstanding"
+    elif status == MetricStatus.ACCEPTABLE:
+        return "✓ Acceptable"
+    elif status == MetricStatus.UNACCEPTABLE:
+        return "⚠ Unacceptable"
+    else:
+        return "? Unknown"
 
 
 def show_cache_stats(config_path):
@@ -83,10 +99,8 @@ def main():
     mode = sys.argv[1]
     eins = [
         "530196605",  # Red Cross
-        "043255365",  # Additional charity
+        "043255365",  # Passim
         "13-1930176",  # The World Union for Progressive Judaism Ltd
-        "04-3129124",  # Commonwealth Zoological Corporation (Zoo New England)
-        "31-1640316",  # Donor Advised Charitable Giving, Inc. (Schwab Charitable
     ]
 
     config_path = (
@@ -103,14 +117,14 @@ def main():
 
     for ein in eins:
         print(f"\nEvaluating charity with EIN: {ein}")
-        print("-" * 50)
+        print("-" * 70)
 
         try:
             start_time = time.time()
             result = evaluate_charity(ein, config_path)
             end_time = time.time()
 
-            print_results(result, mode)
+            print_health_report(result, mode)
 
             print(f"⏱️  Evaluation time: {end_time - start_time:.2f} seconds")
 

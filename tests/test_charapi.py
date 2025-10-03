@@ -1,18 +1,15 @@
 from charapi.api.charity_evaluator import evaluate_charity
-from charapi.data.charity_evaluation_result import CharityEvaluationResult, Issue
 
 
 def test_evaluate_charity_mock_mode():
     config_path = "charapi/config/test_config.yaml"
     red_cross_ein = "530196605"
-    
+
     result = evaluate_charity(red_cross_ein, config_path)
-    
+
     assert result.ein == red_cross_ein
     assert result.organization_name == "AMERICAN NATIONAL RED CROSS"
-    assert result.grade in ["A", "B", "C", "D", "F"]
-    assert result.total_score > 0
-    assert result.financial_score > 0
+    assert 0 <= result.score <= 100
     assert result.data_sources_used == ["ProPublica", "CharityAPI", "Charity Navigator"]
     assert "2025-" in result.evaluation_timestamp
 
@@ -21,32 +18,36 @@ def test_evaluate_charity_mock_mode():
     assert result.compliance_check.is_compliant == True
     assert result.external_validation.charity_navigator_rating == 4
     assert result.external_validation.charity_navigator_score == 20.0
-    assert isinstance(result.issues, list)
-    assert isinstance(result.issue_codes, list)
-    assert len(result.issue_codes) == len(result.issues)
+
+    assert len(result.metrics) > 0
+    assert result.total_metrics > 0
+    assert result.outstanding_count >= 0
+    assert result.acceptable_count >= 0
+    assert result.unacceptable_count >= 0
 
 
 def test_evaluate_charity_salvation_army():
     config_path = "charapi/config/test_config.yaml"
     salvation_army_ein = "136161001"
-    
+
     result = evaluate_charity(salvation_army_ein, config_path)
-    
+
     assert result.ein == salvation_army_ein
     assert result.organization_name == "THE SALVATION ARMY NATIONAL CORPORATION"
-    assert result.grade in ["A", "B", "C", "D", "F"]
-    assert result.total_score > 0
+    assert 0 <= result.score <= 100
+    assert result.total_metrics > 0
 
 
 def test_evaluate_unknown_charity():
     config_path = "charapi/config/test_config.yaml"
     unknown_ein = "999999999"
-    
+
     result = evaluate_charity(unknown_ein, config_path)
-    
+
     assert result.ein == unknown_ein
     assert "Mock Organization" in result.organization_name
-    assert result.grade in ["A", "B", "C", "D", "F"]
+    assert 0 <= result.score <= 100
+    assert result.total_metrics > 0
 
 
 if __name__ == "__main__":

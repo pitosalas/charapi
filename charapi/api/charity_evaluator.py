@@ -2,7 +2,12 @@ import yaml
 from datetime import datetime
 from typing import List
 
-from ..data.charity_evaluation_result import CharityEvaluationResult, Issue
+from ..data.charity_evaluation_result import (
+    CharityEvaluationResult,
+    Issue,
+    Metric,
+    MetricStatus
+)
 from ..clients.propublica_client import ProPublicaClient
 from ..clients.charityapi_client import CharityAPIClient
 from ..analyzers.financial_analyzer import FinancialAnalyzer
@@ -34,90 +39,54 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
     # Get NTEE code for sector-specific benchmarking
     ntee_code = charityapi_data.get("ntee_cd") if charityapi_data else None
 
-    # Calculate financial health score with sector-specific benchmarks
+    # Extract financial metrics (keep for backward compatibility)
     latest_filing = filings[0] if filings else {}
     financial_metrics = financial_analyzer.extract_metrics(latest_filing, ein)
-    financial_score = financial_analyzer.calculate_score(financial_metrics, ntee_code)
-
-    # Check compliance
     compliance_check = compliance_checker.check_compliance(ein)
-    compliance_penalty = -50 if not compliance_check.is_compliant else 0
-
-    # Analyze organization type
     organization_type = organization_type_analyzer.analyze(charityapi_data)
-    organization_type_score = organization_type.score
-
-    # Get external validation
     external_validation = validation_scorer.get_validation_data(ein)
-    validation_bonus = validation_scorer.calculate_bonus(external_validation)
 
-    # Calculate final score and grade
-    total_score = financial_score + validation_bonus + compliance_penalty + organization_type_score
-    grade = _assign_grade(total_score)
+    # Collect all metrics
+    all_metrics: List[Metric] = []
+    all_metrics.extend(financial_analyzer.get_financial_metrics(financial_metrics, ntee_code))
+    all_metrics.extend(compliance_checker.get_compliance_metrics(ein))
+    all_metrics.extend(organization_type_analyzer.get_organization_type_metrics(charityapi_data))
+    all_metrics.extend(validation_scorer.get_validation_metrics(ein))
+
+    # Count metric statuses
+    outstanding_count = sum(1 for m in all_metrics if m.status == MetricStatus.OUTSTANDING)
+    acceptable_count = sum(1 for m in all_metrics if m.status == MetricStatus.ACCEPTABLE)
+    unacceptable_count = sum(1 for m in all_metrics if m.status == MetricStatus.UNACCEPTABLE)
+    total_metrics = len(all_metrics)
+
+    # Calculate score based on percentage of metrics in good range
+    # Outstanding: 10 points, Acceptable: 5 points, Unacceptable/Unknown: 0 points
+    total_points = (outstanding_count * 10) + (acceptable_count * 5)
+    max_points = total_metrics * 10
+    score = (total_points / max_points * 100) if max_points > 0 else 0
 
     # Handle both mock and real API response structures
     org_name = org_data.get("name") or org_data.get("organization", {}).get(
         "name", "Unknown"
     )
 
-    # Collect issues
-    issues = []
-    issue_codes = []
-
-    if external_validation.charity_navigator_rating is None:
-        issue_codes.append(Issue.MISSING_CHARITY_NAVIGATOR)
-        issues.append(
-            "Charity Navigator rating not available - edit manual/brief_manual.yaml"
-        )
-
-    if financial_metrics.program_expenses == 0:
-        issue_codes.append(Issue.MISSING_EXPENSE_DATA)
-        issues.append("Expense breakdown data missing - edit manual/brief_manual.yaml")
-
-    if not compliance_check.is_compliant:
-        issue_codes.append(Issue.COMPLIANCE_FAILURE)
-        issues.append(
-            f"IRS compliance issues: {', '.join(compliance_check.issues)}"
-        )
-
-    # Add organization type issues if any
-    if organization_type.issues:
-        for issue in organization_type.issues:
-            issues.append(f"Organization type: {issue}")
-
     return CharityEvaluationResult(
         ein=ein,
         organization_name=org_name,
-        total_score=total_score,
-        grade=grade,
-        financial_score=financial_score,
-        validation_bonus=validation_bonus,
-        compliance_penalty=compliance_penalty,
-        organization_type_score=organization_type_score,
+        score=score,
+        metrics=all_metrics,
         financial_metrics=financial_metrics,
         compliance_check=compliance_check,
         external_validation=external_validation,
         organization_type=organization_type,
         evaluation_timestamp=datetime.now().isoformat(),
         data_sources_used=["ProPublica", "CharityAPI", "Charity Navigator"],
-        issues=issues,
-        issue_codes=issue_codes,
+        outstanding_count=outstanding_count,
+        acceptable_count=acceptable_count,
+        unacceptable_count=unacceptable_count,
+        total_metrics=total_metrics
     )
 
 
 def batch_evaluate(eins: List[str], config_path: str) -> List[CharityEvaluationResult]:
     return [evaluate_charity(ein, config_path) for ein in eins]
-
-
-class GradeAssigner:
-    GRADE_THRESHOLDS = [(90, "A"), (75, "B"), (60, "C"), (45, "D")]
-
-    def assign_grade(self, total_score: float) -> str:
-        for threshold, grade in self.GRADE_THRESHOLDS:
-            if total_score >= threshold:
-                return grade
-        return "F"
-
-
-def _assign_grade(total_score: float) -> str:
-    return GradeAssigner().assign_grade(total_score)
