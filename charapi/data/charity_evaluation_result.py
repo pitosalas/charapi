@@ -15,6 +15,7 @@ class MetricCategory(Enum):
     COMPLIANCE = "compliance"
     ORGANIZATION_TYPE = "organization_type"
     VALIDATION = "validation"
+    PREFERENCE = "preference"
 
 
 @dataclass

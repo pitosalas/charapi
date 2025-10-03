@@ -85,6 +85,54 @@ scoring:
     growth_score_range: 10
     volatility_penalty_range: 10
 
+preferences:
+  mission_alignment:
+    enabled: true
+    priorities:
+      A: medium   # Arts, Culture & Humanities
+      B: high     # Education
+      C: medium   # Environment
+      D: low      # Animal-Related
+      E: high     # Health
+      F: high     # Mental Health & Crisis Intervention
+      G: medium   # Voluntary Health Associations & Medical Disciplines
+      H: high     # Medical Research
+      I: low      # Crime & Legal-Related
+      J: medium   # Employment
+      K: medium   # Food, Agriculture & Nutrition
+      L: medium   # Housing & Shelter
+      M: medium   # Public Safety, Disaster Preparedness & Relief
+      N: low      # Recreation & Sports
+      O: high     # Youth Development
+      P: high     # Human Services
+      Q: medium   # International, Foreign Affairs & National Security
+      R: medium   # Civil Rights, Social Action & Advocacy
+      S: medium   # Community Improvement & Capacity Building
+      T: low      # Philanthropy, Voluntarism & Grantmaking Foundations
+      U: medium   # Science & Technology
+      V: low      # Social Science
+      W: medium   # Public & Societal Benefit
+      X: low      # Religion-Related
+      Y: low      # Mutual & Membership Benefit
+      Z: low      # Unknown
+
+  geographic_alignment:
+    enabled: true
+    preferred_states:
+      - MA
+      - DC
+    acceptable_states:
+      - NH
+      - VT
+      - RI
+      - CT
+      - NY
+
+  organization_size:
+    enabled: true
+    small_max: 500000      # < $500k = Outstanding (grassroots)
+    medium_max: 5000000    # $500k-$5M = Acceptable
+
 caching:
   enabled: false
   database_path: "cache/test_cache.db"

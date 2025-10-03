@@ -14,6 +14,7 @@ from ..analyzers.financial_analyzer import FinancialAnalyzer
 from ..analyzers.compliance_checker import ComplianceChecker
 from ..analyzers.validation_scorer import ValidationScorer
 from ..analyzers.organization_type_analyzer import OrganizationTypeAnalyzer
+from ..analyzers.preference_analyzer import PreferenceAnalyzer
 
 
 def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
@@ -26,6 +27,7 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
     compliance_checker = ComplianceChecker(config)
     validation_scorer = ValidationScorer(config)
     organization_type_analyzer = OrganizationTypeAnalyzer(config)
+    preference_analyzer = PreferenceAnalyzer(config)
 
     # Get organization data from ProPublica
     org_data = propublica.get_organization(ein)
@@ -52,6 +54,7 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
     all_metrics.extend(compliance_checker.get_compliance_metrics(ein))
     all_metrics.extend(organization_type_analyzer.get_organization_type_metrics(charityapi_data))
     all_metrics.extend(validation_scorer.get_validation_metrics(ein))
+    all_metrics.extend(preference_analyzer.get_preference_metrics(charityapi_data, financial_metrics.total_revenue))
 
     # Count metric statuses
     outstanding_count = sum(1 for m in all_metrics if m.status == MetricStatus.OUTSTANDING)

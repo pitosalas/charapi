@@ -21,17 +21,23 @@ def print_health_report(result, mode):
     compliance_metrics = [m for m in result.metrics if m.category == MetricCategory.COMPLIANCE]
     org_type_metrics = [m for m in result.metrics if m.category == MetricCategory.ORGANIZATION_TYPE]
     validation_metrics = [m for m in result.metrics if m.category == MetricCategory.VALIDATION]
+    preference_metrics = [m for m in result.metrics if m.category == MetricCategory.PREFERENCE]
 
     # Print Financial Health
     if financial_metrics:
         print(f"\nFINANCIAL HEALTH")
+        print(f"  {'Metric':30s} {'Value':15s} {'Range':20s} {'Status':15s}")
+        print(f"  {'-'*30} {'-'*15} {'-'*20} {'-'*15}")
         for metric in financial_metrics:
             status_symbol = get_status_symbol(metric.status)
-            print(f"  {metric.name:30s} {metric.display_value:15s} {metric.ranges.outstanding}/{metric.ranges.acceptable:15s} {status_symbol}")
+            range_str = f"{metric.ranges.outstanding}/{metric.ranges.acceptable}"
+            print(f"  {metric.name:30s} {metric.display_value:15s} {range_str:20s} {status_symbol}")
 
     # Print Compliance
     if compliance_metrics:
         print(f"\nCOMPLIANCE (IRS Requirements)")
+        print(f"  {'Metric':30s} {'Value':15s} {'Required':15s} {'Status':15s}")
+        print(f"  {'-'*30} {'-'*15} {'-'*15} {'-'*15}")
         for metric in compliance_metrics:
             status_symbol = get_status_symbol(metric.status)
             print(f"  {metric.name:30s} {metric.display_value:15s} {metric.ranges.acceptable:15s} {status_symbol}")
@@ -39,6 +45,8 @@ def print_health_report(result, mode):
     # Print Organization Type
     if org_type_metrics:
         print(f"\nORGANIZATION TYPE")
+        print(f"  {'Metric':30s} {'Value':15s} {'Required':15s} {'Status':15s}")
+        print(f"  {'-'*30} {'-'*15} {'-'*15} {'-'*15}")
         for metric in org_type_metrics:
             status_symbol = get_status_symbol(metric.status)
             print(f"  {metric.name:30s} {metric.display_value:15s} {metric.ranges.acceptable:15s} {status_symbol}")
@@ -46,9 +54,22 @@ def print_health_report(result, mode):
     # Print External Validation
     if validation_metrics:
         print(f"\nEXTERNAL VALIDATION")
+        print(f"  {'Metric':30s} {'Value':15s} {'Range':20s} {'Status':15s}")
+        print(f"  {'-'*30} {'-'*15} {'-'*20} {'-'*15}")
         for metric in validation_metrics:
             status_symbol = get_status_symbol(metric.status)
-            print(f"  {metric.name:30s} {metric.display_value:15s} {metric.ranges.outstanding}/{metric.ranges.acceptable:15s} {status_symbol}")
+            range_str = f"{metric.ranges.outstanding}/{metric.ranges.acceptable}"
+            print(f"  {metric.name:30s} {metric.display_value:15s} {range_str:20s} {status_symbol}")
+
+    # Print Preferences
+    if preference_metrics:
+        print(f"\nPREFERENCES (Your Priorities)")
+        print(f"  {'Metric':30s} {'Value':30s} {'Range':20s} {'Status':15s}")
+        print(f"  {'-'*30} {'-'*30} {'-'*20} {'-'*15}")
+        for metric in preference_metrics:
+            status_symbol = get_status_symbol(metric.status)
+            range_str = f"{metric.ranges.outstanding}/{metric.ranges.acceptable}"
+            print(f"  {metric.name:30s} {metric.display_value:30s} {range_str:20s} {status_symbol}")
 
     # Print Overall Assessment
     print(f"\nOVERALL ASSESSMENT")
@@ -100,7 +121,15 @@ def main():
     eins = [
         "530196605",  # Red Cross
         "043255365",  # Passim
-        "13-1930176",  # The World Union for Progressive Judaism Ltd
+        "13-1930176", # The World Union for Progressive Judaism Ltd
+        "13-1644147", # Planned Parenthood Federation of America, Inc.
+        "13-5660870", # International Rescue Committee Inc (IRC)
+        "13-3433452", # Doctors Without Borders USA Inc (MSF)
+        "04-2105780", # The Trustees of Reservations
+        "04-3567502", # Partners In Health (PIH)
+        "53-0196605", # American National Red Cross
+        "47-5005730"  # Arlington Eats
+
     ]
 
     config_path = (

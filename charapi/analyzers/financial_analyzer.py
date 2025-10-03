@@ -120,12 +120,14 @@ class FinancialAnalyzer:
         ))
 
         admin_ratio = financial_metrics.admin_expense_ratio
-        if admin_ratio <= (admin_limit_outstanding * 100) and admin_ratio > 0:
+        if admin_ratio == 0:
+            admin_status = MetricStatus.UNKNOWN
+        elif admin_ratio <= (admin_limit_outstanding * 100):
             admin_status = MetricStatus.OUTSTANDING
         elif admin_ratio <= (admin_limit_acceptable * 100):
             admin_status = MetricStatus.ACCEPTABLE
         else:
-            admin_status = MetricStatus.UNACCEPTABLE if admin_ratio > 0 else MetricStatus.UNKNOWN
+            admin_status = MetricStatus.UNACCEPTABLE
 
         metrics_list.append(Metric(
             name="Admin Expenses",
@@ -140,12 +142,14 @@ class FinancialAnalyzer:
         ))
 
         fundraising_ratio = financial_metrics.fundraising_expense_ratio
-        if fundraising_ratio <= (fundraising_limit_outstanding * 100) and fundraising_ratio > 0:
+        if fundraising_ratio == 0:
+            fundraising_status = MetricStatus.UNKNOWN
+        elif fundraising_ratio <= (fundraising_limit_outstanding * 100):
             fundraising_status = MetricStatus.OUTSTANDING
         elif fundraising_ratio <= (fundraising_limit_acceptable * 100):
             fundraising_status = MetricStatus.ACCEPTABLE
         else:
-            fundraising_status = MetricStatus.UNACCEPTABLE if fundraising_ratio > 0 else MetricStatus.UNKNOWN
+            fundraising_status = MetricStatus.UNACCEPTABLE
 
         metrics_list.append(Metric(
             name="Fundraising Expenses",
