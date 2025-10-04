@@ -173,19 +173,19 @@ class SummaryGenerator:
             strength_text = self._join_clauses(strengths)
             concern_text = self._join_clauses(concerns)
             if mission_description:
-                base = f"{base}, {strength_text}, though {concern_text}"
+                base = f"{base} {strength_text}, though {concern_text}"
             else:
                 base = f"{base} shows {strength_text}, though {concern_text}"
         elif strengths:
             strength_text = self._join_clauses(strengths)
             if mission_description:
-                base = f"{base}, {strength_text}"
+                base = f"{base} {strength_text}"
             else:
                 base = f"{base} shows {strength_text}"
         elif concerns:
             concern_text = self._join_clauses(concerns)
             if mission_description:
-                base = f"{base}, though it has concerns including {concern_text}"
+                base = f"{base} though it has concerns including {concern_text}"
             else:
                 base = f"{base} has concerns including {concern_text}"
         else:
