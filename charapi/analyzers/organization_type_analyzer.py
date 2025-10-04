@@ -12,6 +12,7 @@ from ..data.charity_evaluation_result import (
 class OrganizationTypeAnalyzer:
     def __init__(self, config: dict):
         self.config = config.get("scoring", {}).get("organization_type", {})
+        self.org_type_config = config.get("scoring", {}).get("organization_type", {})
 
     def analyze(self, charityapi_data: Optional[Dict[str, Any]]) -> OrganizationType:
         if not charityapi_data:
@@ -41,10 +42,6 @@ class OrganizationTypeAnalyzer:
             issues.append(f"Private foundation, not public charity (code: {foundation})")
 
         filing_req = charityapi_data.get("filing_req_cd")
-        if filing_req != 1:
-            penalty = self.config.get("no_filing_requirement_penalty", 10)
-            score -= penalty
-            issues.append("Not required to file Form 990 (lack of transparency)")
 
         ruling = charityapi_data.get("ruling")
         years_operating = None
@@ -84,7 +81,8 @@ class OrganizationTypeAnalyzer:
             return metrics_list
 
         subsection = charityapi_data.get("subsection")
-        subsection_status = MetricStatus.ACCEPTABLE if subsection == 3 else MetricStatus.UNACCEPTABLE
+        subsection_required = self.org_type_config.get("subsection_required", 3)
+        subsection_status = MetricStatus.ACCEPTABLE if subsection == subsection_required else MetricStatus.UNACCEPTABLE
         metrics_list.append(Metric(
             name="501(c)(3) Status",
             value=subsection,
@@ -94,11 +92,11 @@ class OrganizationTypeAnalyzer:
                 outstanding="Yes",
                 acceptable="Yes"
             ),
-            display_value="Yes" if subsection == 3 else "No"
+            display_value="Yes" if subsection == subsection_required else "No"
         ))
 
         foundation = charityapi_data.get("foundation")
-        public_charity_code = self.config.get("public_charity_code", 15)
+        public_charity_code = self.org_type_config.get("public_charity_code", 15)
         foundation_status = MetricStatus.ACCEPTABLE if foundation == public_charity_code else MetricStatus.UNACCEPTABLE
         metrics_list.append(Metric(
             name="Public Charity",
@@ -113,7 +111,8 @@ class OrganizationTypeAnalyzer:
         ))
 
         filing_req = charityapi_data.get("filing_req_cd")
-        filing_status = MetricStatus.ACCEPTABLE if filing_req == 1 else MetricStatus.UNACCEPTABLE
+        acceptable_values = self.org_type_config.get("filing_requirement_acceptable_values", [0, 1])
+        filing_status = MetricStatus.ACCEPTABLE if filing_req in acceptable_values else MetricStatus.UNACCEPTABLE
         metrics_list.append(Metric(
             name="Form 990 Filing Required",
             value=filing_req,
@@ -121,7 +120,7 @@ class OrganizationTypeAnalyzer:
             category=MetricCategory.ORGANIZATION_TYPE,
             ranges=MetricRange(
                 outstanding="Yes",
-                acceptable="Yes"
+                acceptable="Yes/No"
             ),
             display_value="Yes" if filing_req == 1 else "No"
         ))

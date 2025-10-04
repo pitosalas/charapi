@@ -1,4 +1,5 @@
 import yaml
+from datetime import datetime
 from pathlib import Path
 from typing import Optional, Dict, Any, Callable
 from ..cache.api_cache import APICache
@@ -20,6 +21,10 @@ class BaseAPIClient:
         global_mock = self.config.get("mock_mode", False)
         service_mock = self.service_config.get("mock_mode", False)
         self.mock_mode = global_mock or service_mock
+
+        global_offline = self.config.get("offline_mode", False)
+        service_offline = self.service_config.get("offline_mode", False)
+        self.offline_mode = global_offline or service_offline
 
     def _initialize_cache(self):
         cache_config = self.config.get("caching", {})
@@ -68,14 +73,42 @@ class BaseAPIClient:
         if self.cache_enabled:
             cached_result = self.cache.get(self.service_name, endpoint, identifier)
             if cached_result is not None:
+                if isinstance(cached_result, dict) and cached_result.get("_error_cache"):
+                    return None
                 return cached_result
 
-        result = fetch_function()
+        try:
+            result = fetch_function()
 
-        if self.cache_enabled:
-            self.cache.set(self.service_name, endpoint, identifier, result, self.service_ttl)
+            if self.cache_enabled:
+                self.cache.set(self.service_name, endpoint, identifier, result, self.service_ttl)
 
-        return result
+            return result
+        except Exception as e:
+            if self.cache_enabled:
+                error_cache_entry = {
+                    "_error_cache": True,
+                    "error_type": type(e).__name__,
+                    "error_message": str(e),
+                    "timestamp": str(datetime.now())
+                }
+                error_ttl = 1
+                self.cache.set(self.service_name, endpoint, identifier, error_cache_entry, error_ttl)
+            return None
+
+    def _shorten_error_message(self, error_msg: str) -> str:
+        if "404" in error_msg or "Not Found" in error_msg:
+            return "Organization not found (404)"
+        elif "SSL" in error_msg or "SSLError" in error_msg:
+            return "SSL connection error (temporary network issue)"
+        elif "Max retries exceeded" in error_msg:
+            return "Connection timeout or network error"
+        elif "Connection" in error_msg:
+            return "Network connection error"
+        elif len(error_msg) > 100:
+            return error_msg[:97] + "..."
+        else:
+            return error_msg
 
     def get_cache_stats(self) -> Dict[str, Any]:
         if self.cache_enabled:

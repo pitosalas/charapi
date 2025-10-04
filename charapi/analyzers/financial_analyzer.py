@@ -87,7 +87,7 @@ class FinancialAnalyzer:
 
         return program_score + admin_score + fundraising_score + stability_score
 
-    def get_financial_metrics(self, financial_metrics: FinancialMetrics, ntee_code: Optional[str] = None) -> List[Metric]:
+    def get_financial_metrics(self, financial_metrics: FinancialMetrics, ntee_code: Optional[str] = None, filing_req_cd: Optional[int] = None) -> List[Metric]:
         benchmarks = self.get_sector_benchmarks(ntee_code)
 
         program_target_acceptable = benchmarks.get("program_expense_target", 0.75)
@@ -99,10 +99,14 @@ class FinancialAnalyzer:
 
         metrics_list = []
 
+        filing_not_required = filing_req_cd is not None and filing_req_cd != 1
+
         program_ratio = financial_metrics.program_expense_ratio
         if program_ratio >= (program_target_outstanding * 100):
             program_status = MetricStatus.OUTSTANDING
         elif program_ratio >= (program_target_acceptable * 100):
+            program_status = MetricStatus.ACCEPTABLE
+        elif program_ratio == 0 and filing_not_required:
             program_status = MetricStatus.ACCEPTABLE
         else:
             program_status = MetricStatus.UNACCEPTABLE if program_ratio > 0 else MetricStatus.UNKNOWN
@@ -120,7 +124,9 @@ class FinancialAnalyzer:
         ))
 
         admin_ratio = financial_metrics.admin_expense_ratio
-        if admin_ratio == 0:
+        if admin_ratio == 0 and filing_not_required:
+            admin_status = MetricStatus.ACCEPTABLE
+        elif admin_ratio == 0:
             admin_status = MetricStatus.UNKNOWN
         elif admin_ratio <= (admin_limit_outstanding * 100):
             admin_status = MetricStatus.OUTSTANDING
@@ -142,7 +148,9 @@ class FinancialAnalyzer:
         ))
 
         fundraising_ratio = financial_metrics.fundraising_expense_ratio
-        if fundraising_ratio == 0:
+        if fundraising_ratio == 0 and filing_not_required:
+            fundraising_status = MetricStatus.ACCEPTABLE
+        elif fundraising_ratio == 0:
             fundraising_status = MetricStatus.UNKNOWN
         elif fundraising_ratio <= (fundraising_limit_outstanding * 100):
             fundraising_status = MetricStatus.OUTSTANDING

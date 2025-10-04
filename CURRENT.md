@@ -1,6 +1,6 @@
 # Charity Evaluation API - Current State
 
-*Last Updated: October 3, 2025 - Preferences System & Transparent Scoring Complete*
+*Last Updated: October 4, 2025 - Configuration-Driven Thresholds & Summary Improvements*
 
 ## Project Overview
 
@@ -177,23 +177,11 @@ propublica:
    - Geographic Alignment (preferred/acceptable/other states)
    - Organization Size (small <$500k, medium <$5M, large >$5M)
 
-**Scoring Formula**:
-```
-Score = (Outstanding_Count × 10 + Acceptable_Count × 5) / (Total_Metrics × 10) × 100
-
-Each metric contributes:
-- Outstanding: 10 points
-- Acceptable: 5 points
-- Unacceptable: 0 points
-- Unknown: 0 points (not counted against)
-
-Final Score: 0-100 scale
-```
-
-**Example**: 7 Outstanding + 7 Acceptable + 1 Unacceptable out of 15 metrics
-- Total Points: (7 × 10) + (7 × 5) = 70 + 35 = 105
-- Max Points: 15 × 10 = 150
-- Score: 105 / 150 × 100 = 70.0/100
+**Assessment Approach**:
+- No overall score - transparent metric-by-metric assessment
+- Each metric shows: value, acceptable ranges, and status (Outstanding/Acceptable/Unacceptable/Unknown)
+- Summary includes organization mission and key strengths/concerns
+- All thresholds configurable in config.yaml
 
 ### Manual Data Entry System
 - **YAML Format**: Hierarchical structure for organization data by EIN and fiscal year
@@ -330,6 +318,26 @@ caching:
 34. **Config Cleanup**: Removed obsolete penalty/bonus settings after metrics refactoring
 35. **Test Suite**: Added 14 preference analyzer tests (95 total tests, all passing)
 
+#### October 4, 2025 - Configuration-Driven Thresholds & Summary Improvements
+36. **Configuration-Driven Thresholds**: Moved all hardcoded threshold logic to config.yaml
+    - Financial: program_expense_target_outstanding, admin_expense_limit_outstanding, fundraising_expense_limit_outstanding
+    - Compliance: pub78_required, revoked_acceptable, recent_filing_required, recent_filing_years
+    - Organization Type: subsection_required, public_charity_code, filing_requirement_acceptable_values
+    - Validation: charity_navigator_outstanding, charity_navigator_acceptable
+37. **Form 990 Exemption Handling**: Small organizations not required to file Form 990 are no longer penalized
+    - Financial metrics show ACCEPTABLE instead of UNKNOWN when filing not required
+    - Summary generator skips "missing financial data" concerns for exempt organizations
+    - Confidence assessment not lowered for exempt organizations
+38. **Score Removal**: Eliminated overall score calculation and display
+    - Removed score-based assessment from summary (was "highly effective charity with score of 85/100")
+    - Focus on transparent metric-by-metric assessment
+39. **Summary Enhancements**: Added mission description to summary
+    - Includes NTEE category description (e.g., "a health organization")
+    - Better context for understanding the charity's purpose
+40. **Bug Fixes**:
+    - Fixed AttributeError when ProPublica data is None
+    - Organization name now falls back to CharityAPI data if ProPublica unavailable
+
 ### Working Demo Commands
 ```bash
 # Mock mode (instant, uses test data)
@@ -380,12 +388,17 @@ PREFERENCES (Your Priorities)
   Geographic Alignment           DC (Pref)                      Pref/Accept          ⭐ Outstanding
   Organization Size              $3,500,000,000 (Large)         Small/Med            ⚠ Unacceptable
 
+SUMMARY
+  American National Red Cross is a human services organization, operating for 107 years
+  and based in the preferred state of DC, spending 101.9% on programs with only 3.7% on
+  administrative costs, and holding a 4 stars Charity Navigator rating, though as a large
+  national organization with $3,500,000,000 in revenue, it falls outside the preferred
+  focus on smaller, grassroots charities.
+
 OVERALL ASSESSMENT
   ⭐ Outstanding:    7 metrics (47%)
   ✓ Acceptable:     7 metrics (47%)
   ⚠ Unacceptable:   1 metrics (7%)
-
-  Overall Score: 70.0/100
 ```
 
 ### Cache Performance

@@ -8,35 +8,46 @@ from ..data.charity_evaluation_result import (
 
 
 class SummaryGenerator:
+    def _is_form_990_exempt(self, result: CharityEvaluationResult) -> bool:
+        filing_req_metric = next(
+            (m for m in result.metrics if "Form 990 Filing Required" in m.name),
+            None
+        )
+        if filing_req_metric and filing_req_metric.display_value == "No":
+            return True
+        return False
+
+    def _get_mission_description(self, result: CharityEvaluationResult) -> Optional[str]:
+        mission_metric = next(
+            (m for m in result.metrics if "Mission Alignment" in m.name),
+            None
+        )
+
+        if not mission_metric or not mission_metric.display_value:
+            return None
+
+        display_parts = mission_metric.display_value.split(" (")
+        if len(display_parts) > 0:
+            sector_name = display_parts[0]
+            return f"a {sector_name.lower()} organization"
+
+        return None
+
     def generate_summary(self, result: CharityEvaluationResult) -> str:
         organization_name = result.organization_name
-        score = result.score
 
-        score_assessment = self._get_score_assessment(score)
+        mission_description = self._get_mission_description(result)
         strengths = self._identify_strengths(result)
         concerns = self._identify_concerns(result)
         confidence = self._assess_confidence(result)
 
         return self._build_summary_sentence(
             organization_name,
-            score,
-            score_assessment,
+            mission_description,
             strengths,
             concerns,
             confidence
         )
-
-    def _get_score_assessment(self, score: float) -> str:
-        if score >= 80:
-            return "highly effective charity"
-        elif score >= 70:
-            return "effective charity"
-        elif score >= 60:
-            return "moderately effective organization"
-        elif score >= 50:
-            return "organization with acceptable performance"
-        else:
-            return "concerning charity"
 
     def _identify_strengths(self, result: CharityEvaluationResult) -> List[str]:
         strengths = []
@@ -105,7 +116,8 @@ class SummaryGenerator:
 
         unknown_metrics = [m for m in result.metrics if m.status == MetricStatus.UNKNOWN]
         financial_unknown = [m for m in unknown_metrics if m.category == MetricCategory.FINANCIAL]
-        if len(financial_unknown) >= 3 and not financial_unacceptable:
+        is_exempt = self._is_form_990_exempt(result)
+        if len(financial_unknown) >= 3 and not financial_unacceptable and not is_exempt:
             concerns.append("detailed financial breakdowns are not available to assess program efficiency")
 
         preference_unacceptable = [m for m in unacceptable_metrics if m.category == MetricCategory.PREFERENCE]
@@ -131,11 +143,12 @@ class SummaryGenerator:
         total_count = result.total_metrics
 
         financial_unknown = [m for m in unknown_metrics if m.category == MetricCategory.FINANCIAL]
+        is_exempt = self._is_form_990_exempt(result)
 
         if unknown_count == 0:
             return None
 
-        if len(financial_unknown) >= 3:
+        if len(financial_unknown) >= 3 and not is_exempt:
             return "This assessment has low confidence due to missing financial data"
         elif unknown_count >= (total_count * 0.4):
             return "This assessment has moderate confidence due to limited data availability"
@@ -147,29 +160,43 @@ class SummaryGenerator:
     def _build_summary_sentence(
         self,
         organization_name: str,
-        score: float,
-        score_assessment: str,
+        mission_description: Optional[str],
         strengths: List[str],
         concerns: List[str],
         confidence: Optional[str]
     ) -> str:
-        base = f"{organization_name} is a {score_assessment} with a score of {score:.0f}/100"
-
-        if strengths:
-            strength_text = self._join_clauses(strengths)
-            base = f"{base}, {strength_text}"
-
-        if concerns:
-            concern_text = self._join_clauses(concerns)
-            if confidence:
-                return f"{base}, though {concern_text}. {confidence}."
-            else:
-                return f"{base}, though {concern_text}."
+        if mission_description:
+            base = f"{organization_name} is {mission_description}"
         else:
-            if confidence:
-                return f"{base}. {confidence}."
+            base = f"{organization_name}"
+
+        if strengths and concerns:
+            strength_text = self._join_clauses(strengths)
+            concern_text = self._join_clauses(concerns)
+            if mission_description:
+                base = f"{base}, {strength_text}, though {concern_text}"
             else:
-                return f"{base}."
+                base = f"{base} shows {strength_text}, though {concern_text}"
+        elif strengths:
+            strength_text = self._join_clauses(strengths)
+            if mission_description:
+                base = f"{base}, {strength_text}"
+            else:
+                base = f"{base} shows {strength_text}"
+        elif concerns:
+            concern_text = self._join_clauses(concerns)
+            if mission_description:
+                base = f"{base}, though it has concerns including {concern_text}"
+            else:
+                base = f"{base} has concerns including {concern_text}"
+        else:
+            if not mission_description:
+                base = f"{base} has limited data available for assessment"
+
+        if confidence:
+            return f"{base}. {confidence}."
+        else:
+            return f"{base}."
 
     def _join_clauses(self, clauses: List[str]) -> str:
         if len(clauses) == 0:

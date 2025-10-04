@@ -14,6 +14,7 @@ class ValidationScorer:
     def __init__(self, config: dict):
         self.config = config
         self.data_manager = DataFieldManager(config)
+        self.validation_config = config.get("scoring", {}).get("validation", {})
 
     def get_validation_data(self, ein: str) -> ExternalValidation:
         rating_val = self.data_manager.get_field(Ident.CHARITY_NAVIGATOR_RATING, ein)
@@ -39,6 +40,9 @@ class ValidationScorer:
     def get_validation_metrics(self, ein: str) -> List[Metric]:
         rating_val = self.data_manager.get_field(Ident.CHARITY_NAVIGATOR_RATING, ein)
 
+        outstanding_threshold = self.validation_config.get("charity_navigator_outstanding", 4)
+        acceptable_threshold = self.validation_config.get("charity_navigator_acceptable", 3)
+
         metrics_list = []
 
         if rating_val is None:
@@ -46,9 +50,9 @@ class ValidationScorer:
             display_value = "Not rated"
         else:
             rating = int(rating_val)
-            if rating >= 4:
+            if rating >= outstanding_threshold:
                 rating_status = MetricStatus.OUTSTANDING
-            elif rating >= 3:
+            elif rating >= acceptable_threshold:
                 rating_status = MetricStatus.ACCEPTABLE
             else:
                 rating_status = MetricStatus.UNACCEPTABLE
@@ -60,8 +64,8 @@ class ValidationScorer:
             status=rating_status,
             category=MetricCategory.VALIDATION,
             ranges=MetricRange(
-                outstanding="≥4 stars",
-                acceptable="≥3 stars"
+                outstanding=f"≥{outstanding_threshold} stars",
+                acceptable=f"≥{acceptable_threshold} stars"
             ),
             display_value=display_value
         ))

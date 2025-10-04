@@ -73,8 +73,26 @@ irs:
 scoring:
   financial:
     program_expense_target: 0.75
+    program_expense_target_outstanding: 0.80
     admin_expense_limit: 0.15
+    admin_expense_limit_outstanding: 0.10
     fundraising_expense_limit: 0.15
+    fundraising_expense_limit_outstanding: 0.10
+
+  compliance:
+    pub78_required: true
+    revoked_acceptable: false
+    recent_filing_required: true
+    recent_filing_years: 3
+
+  organization_type:
+    subsection_required: 3
+    public_charity_code: 15
+    filing_requirement_acceptable_values: [0, 1]
+
+  validation:
+    charity_navigator_outstanding: 4
+    charity_navigator_acceptable: 3
 
 preferences:
   mission_alignment:

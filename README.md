@@ -1,6 +1,6 @@
 # CharAPI - Charity Evaluation API
 
-A comprehensive charity evaluation API that analyzes nonprofit organizations using multiple data sources and provides scoring with letter grades (A-F).
+A comprehensive charity evaluation API that analyzes nonprofit organizations using multiple data sources and provides transparent metric-by-metric health assessment without overall scores.
 
 ## Quick Start
 
@@ -43,9 +43,10 @@ result = evaluate_charity("530196605", "charapi/config/config.yaml")
 
 **Information Managed:**
 - Expense breakdowns (program/admin/fundraising) from Form 990 PDFs
-- IRS compliance fields (in_pub78, is_revoked, has_recent_filing)
 - Charity Navigator ratings (1-4 stars)
 - Multi-year fiscal data (FY2024, 2023, 2022) with automatic fallback
+
+**Note**: IRS compliance fields (in_pub78, is_revoked, has_recent_filing) are now automated via CharityAPI
 
 **Files:**
 - `brief_manual.yaml` - Simplified format (recommended)
@@ -77,13 +78,18 @@ result = evaluate_charity("530196605", "charapi/config/config.yaml")
 - Star rating (1-4 stars) - 5 points per star
 - Stored in manual data files per EIN
 
-### CharityAPI.org 🔄 Planned
-**Base URL**: `https://www.charityapi.org/`
+### CharityAPI.org ✅ Implemented
+**Base URL**: `https://api.charityapi.org/api`
 
 **Information Retrieved:**
-- Real-time IRS tax-exempt status
-- Current public charity classification
-- Compliance verification
+- Organization name and NTEE category code
+- 501(c)(3) status (subsection field)
+- Public charity vs private foundation classification
+- Form 990 filing requirements
+- IRS Publication 78 listing status
+- Tax-exempt status and revocation status
+- Recent filing information
+- Organization ruling year
 
 ### Candid APIs 🔄 Future Enhancement
 **Base URL**: `https://candid.org/use-our-data/apis`

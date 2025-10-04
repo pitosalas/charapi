@@ -84,7 +84,6 @@ def print_health_report(result, mode):
     print(f"  ⭐ Outstanding:   {result.outstanding_count:2d} metrics ({outstanding_pct:.0f}%)")
     print(f"  ✓ Acceptable:    {result.acceptable_count:2d} metrics ({acceptable_pct:.0f}%)")
     print(f"  ⚠ Unacceptable:  {result.unacceptable_count:2d} metrics ({unacceptable_pct:.0f}%)")
-    print(f"\n  Overall Score: {result.score:.1f}/100")
 
     data_sources = ", ".join(result.data_sources_used)
     data_mode = "Live APIs" if mode == "real" else "Mock data for testing"
@@ -124,7 +123,7 @@ def main():
     mode = sys.argv[1]
     eins = [
         # "530196605",  # Red Cross
-        # "043255365",  # Passim
+        "043255365",  # Passim
         # "13-1930176", # The World Union for Progressive Judaism Ltd
         # "13-1644147", # Planned Parenthood Federation of America, Inc.
         # "13-5660870", # International Rescue Committee Inc (IRC)
@@ -132,8 +131,9 @@ def main():
         # "04-2105780", # The Trustees of Reservations
         # "04-3567502", # Partners In Health (PIH)
         # "53-0196605", # American National Red Cross
-        # "47-5005730"  # Arlington Eats
-        "04-3129124" 
+        "47-5005730",  # Arlington Eats
+        "04-3129124",   # Zoo New England
+        "02-0475057"    # Moulton borough Historical"
 
     ]
 

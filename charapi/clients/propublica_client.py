@@ -9,6 +9,9 @@ class ProPublicaClient(BaseAPIClient):
         super().__init__(config_path, "propublica")
         self.base_url = self.service_config["base_url"]
         self.timeout = self.service_config["timeout"]
+
+    def _normalize_ein(self, ein: str) -> str:
+        return ein.replace("-", "")
     
     def search_organizations(self, query: str) -> List[Dict]:
         def fetch():
@@ -25,6 +28,8 @@ class ProPublicaClient(BaseAPIClient):
         )
     
     def get_organization(self, ein: str) -> Dict:
+        normalized_ein = self._normalize_ein(ein)
+
         def fetch():
             url = f"{self.base_url}/organizations/{ein}.json"
             response = requests.get(url, timeout=self.timeout)
@@ -33,18 +38,20 @@ class ProPublicaClient(BaseAPIClient):
 
         return self.get_cached_or_fetch(
             "organization",
-            ein,
+            normalized_ein,
             fetch,
             lambda: self._mock_organization(ein)
         )
     
     def get_all_filings(self, ein: str) -> List[Dict]:
+        normalized_ein = self._normalize_ein(ein)
+
         def fetch():
             return self.get_organization(ein).get("filings_with_data", [])
 
         return self.get_cached_or_fetch(
             "filings",
-            ein,
+            normalized_ein,
             fetch,
             lambda: self._mock_filings(ein)
         )

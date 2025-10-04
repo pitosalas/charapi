@@ -11,10 +11,15 @@ class CharityAPIClient(BaseAPIClient):
         self.api_key = self.service_config["api_key"]
         self.timeout = self.service_config.get("timeout", 30)
 
+    def _normalize_ein(self, ein: str) -> str:
+        return ein.replace("-", "")
+
     def get_organization(self, ein: str):
+        normalized_ein = self._normalize_ein(ein)
+
         return self.get_cached_or_fetch(
             endpoint="organizations",
-            identifier=ein,
+            identifier=normalized_ein,
             fetch_function=lambda: self._fetch_organization(ein),
             mock_function=lambda: self._get_mock_data(ein)
         )

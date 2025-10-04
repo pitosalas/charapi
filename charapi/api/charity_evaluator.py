@@ -43,6 +43,7 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
 
     # Get NTEE code for sector-specific benchmarking
     ntee_code = charityapi_data.get("ntee_cd") if charityapi_data else None
+    filing_req_cd = charityapi_data.get("filing_req_cd") if charityapi_data else None
 
     # Extract financial metrics (keep for backward compatibility)
     latest_filing = filings[0] if filings else {}
@@ -53,7 +54,7 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
 
     # Collect all metrics
     all_metrics: List[Metric] = []
-    all_metrics.extend(financial_analyzer.get_financial_metrics(financial_metrics, ntee_code))
+    all_metrics.extend(financial_analyzer.get_financial_metrics(financial_metrics, ntee_code, filing_req_cd))
     all_metrics.extend(compliance_checker.get_compliance_metrics(ein))
     all_metrics.extend(organization_type_analyzer.get_organization_type_metrics(charityapi_data))
     all_metrics.extend(validation_scorer.get_validation_metrics(ein))
@@ -65,21 +66,18 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
     unacceptable_count = sum(1 for m in all_metrics if m.status == MetricStatus.UNACCEPTABLE)
     total_metrics = len(all_metrics)
 
-    # Calculate score based on percentage of metrics in good range
-    # Outstanding: 10 points, Acceptable: 5 points, Unacceptable/Unknown: 0 points
-    total_points = (outstanding_count * 10) + (acceptable_count * 5)
-    max_points = total_metrics * 10
-    score = (total_points / max_points * 100) if max_points > 0 else 0
-
     # Handle both mock and real API response structures
-    org_name = org_data.get("name") or org_data.get("organization", {}).get(
-        "name", "Unknown"
-    )
+    if org_data:
+        org_name = org_data.get("name") or org_data.get("organization", {}).get("name", "Unknown")
+    elif charityapi_data:
+        org_name = charityapi_data.get("name", "Unknown")
+    else:
+        org_name = "Unknown"
 
     result = CharityEvaluationResult(
         ein=ein,
         organization_name=org_name,
-        score=score,
+        score=0.0,
         metrics=all_metrics,
         financial_metrics=financial_metrics,
         compliance_check=compliance_check,
