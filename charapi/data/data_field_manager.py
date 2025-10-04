@@ -26,8 +26,8 @@ class DataFieldManager:
             return self._get_from_manual(field_config, field_name_str, ein)
         elif source == "charityapi":
             return self._get_from_charityapi(field_config, field_name_str)
-        elif source == "api":
-            raise NotImplementedError(f"API source for {field_name_str} must be handled by caller")
+        elif source == "propublicaapi":
+            raise NotImplementedError(f"ProPublica API source for {field_name_str} must be handled by caller")
         else:
             raise ValueError(f"Unknown source '{source}' for field {field_name_str}")
 

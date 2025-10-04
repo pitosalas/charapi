@@ -47,9 +47,9 @@ data_fields:
 
   # ProPublica API fields
   total_revenue:
-    source: api
+    source: propublicaapi
   total_expenses:
-    source: api
+    source: propublicaapi
 
 manual_data:
   directory: "manual"
