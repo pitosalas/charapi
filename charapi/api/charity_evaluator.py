@@ -41,8 +41,7 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
     compliance_checker.data_manager.set_charityapi_data(charityapi_data)
     financial_analyzer.data_manager.set_charityapi_data(charityapi_data)
 
-    # Get NTEE code for sector-specific benchmarking
-    ntee_code = charityapi_data.get("ntee_cd") if charityapi_data else None
+    # Get filing requirement code
     filing_req_cd = charityapi_data.get("filing_req_cd") if charityapi_data else None
 
     # Extract financial metrics (keep for backward compatibility)
@@ -54,7 +53,7 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
 
     # Collect all metrics
     all_metrics: List[Metric] = []
-    all_metrics.extend(financial_analyzer.get_financial_metrics(financial_metrics, ntee_code, filing_req_cd))
+    all_metrics.extend(financial_analyzer.get_financial_metrics(financial_metrics, filing_req_cd))
     all_metrics.extend(compliance_checker.get_compliance_metrics(ein))
     all_metrics.extend(organization_type_analyzer.get_organization_type_metrics(charityapi_data))
     all_metrics.extend(validation_scorer.get_validation_metrics(ein))

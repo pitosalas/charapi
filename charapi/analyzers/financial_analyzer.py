@@ -50,52 +50,13 @@ class FinancialAnalyzer:
             total_liabilities=filing_data.get("totliabend", 0)
         )
 
-    def get_sector_benchmarks(self, ntee_code: Optional[str]) -> dict:
-        if not ntee_code:
-            return self.scoring_config
-
-        sector = ntee_code[0] if ntee_code else None
-
-        sector_overrides = self.scoring_config.get("sector_overrides", {})
-
-        if sector and sector in sector_overrides:
-            benchmarks = self.scoring_config.copy()
-            benchmarks.update(sector_overrides[sector])
-            return benchmarks
-
-        return self.scoring_config
-
-    def calculate_score(self, metrics: FinancialMetrics, ntee_code: Optional[str] = None) -> float:
-        benchmarks = self.get_sector_benchmarks(ntee_code)
-
-        program_target = benchmarks.get("program_expense_target", 0.75)
-        admin_limit = benchmarks.get("admin_expense_limit", 0.15)
-        fundraising_limit = benchmarks.get("fundraising_expense_limit", 0.15)
-        program_max = benchmarks.get("program_score_max", 40)
-        admin_max = benchmarks.get("admin_score_max", 20)
-        fundraising_max = benchmarks.get("fundraising_score_max", 20)
-        stability_max = benchmarks.get("stability_score_max", 20)
-
-        program_ratio = metrics.program_expense_ratio / 100.0
-        admin_ratio = metrics.admin_expense_ratio / 100.0
-        fundraising_ratio = metrics.fundraising_expense_ratio / 100.0
-
-        program_score = min(program_max * (program_ratio / program_target), program_max)
-        admin_score = max(0, admin_max * (admin_limit - admin_ratio) / admin_limit)
-        fundraising_score = max(0, fundraising_max * (fundraising_limit - fundraising_ratio) / fundraising_limit)
-        stability_score = stability_max if metrics.net_assets > 0 else 0
-
-        return program_score + admin_score + fundraising_score + stability_score
-
-    def get_financial_metrics(self, financial_metrics: FinancialMetrics, ntee_code: Optional[str] = None, filing_req_cd: Optional[int] = None) -> List[Metric]:
-        benchmarks = self.get_sector_benchmarks(ntee_code)
-
-        program_target_acceptable = benchmarks.get("program_expense_target", 0.75)
-        program_target_outstanding = benchmarks.get("program_expense_target_outstanding", program_target_acceptable + 0.05)
-        admin_limit_acceptable = benchmarks.get("admin_expense_limit", 0.15)
-        admin_limit_outstanding = benchmarks.get("admin_expense_limit_outstanding", admin_limit_acceptable - 0.05)
-        fundraising_limit_acceptable = benchmarks.get("fundraising_expense_limit", 0.15)
-        fundraising_limit_outstanding = benchmarks.get("fundraising_expense_limit_outstanding", fundraising_limit_acceptable - 0.05)
+    def get_financial_metrics(self, financial_metrics: FinancialMetrics, filing_req_cd: Optional[int] = None) -> List[Metric]:
+        program_target_acceptable = self.scoring_config.get("program_expense_target", 0.75)
+        program_target_outstanding = self.scoring_config.get("program_expense_target_outstanding", 0.80)
+        admin_limit_acceptable = self.scoring_config.get("admin_expense_limit", 0.15)
+        admin_limit_outstanding = self.scoring_config.get("admin_expense_limit_outstanding", 0.10)
+        fundraising_limit_acceptable = self.scoring_config.get("fundraising_expense_limit", 0.15)
+        fundraising_limit_outstanding = self.scoring_config.get("fundraising_expense_limit_outstanding", 0.10)
 
         metrics_list = []
 
