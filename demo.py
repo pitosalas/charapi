@@ -16,6 +16,10 @@ def print_health_report(result, mode):
     print(f"EIN: {result.ein}")
     print("=" * 70)
 
+    print(f"\nSUMMARY")
+    print(f"  {result.summary}")
+    print()
+
     # Group metrics by category
     financial_metrics = [m for m in result.metrics if m.category == MetricCategory.FINANCIAL]
     compliance_metrics = [m for m in result.metrics if m.category == MetricCategory.COMPLIANCE]
@@ -119,16 +123,17 @@ def main():
 
     mode = sys.argv[1]
     eins = [
-        "530196605",  # Red Cross
-        "043255365",  # Passim
-        "13-1930176", # The World Union for Progressive Judaism Ltd
-        "13-1644147", # Planned Parenthood Federation of America, Inc.
-        "13-5660870", # International Rescue Committee Inc (IRC)
-        "13-3433452", # Doctors Without Borders USA Inc (MSF)
-        "04-2105780", # The Trustees of Reservations
-        "04-3567502", # Partners In Health (PIH)
-        "53-0196605", # American National Red Cross
-        "47-5005730"  # Arlington Eats
+        # "530196605",  # Red Cross
+        # "043255365",  # Passim
+        # "13-1930176", # The World Union for Progressive Judaism Ltd
+        # "13-1644147", # Planned Parenthood Federation of America, Inc.
+        # "13-5660870", # International Rescue Committee Inc (IRC)
+        # "13-3433452", # Doctors Without Borders USA Inc (MSF)
+        # "04-2105780", # The Trustees of Reservations
+        # "04-3567502", # Partners In Health (PIH)
+        # "53-0196605", # American National Red Cross
+        # "47-5005730"  # Arlington Eats
+        "04-3129124" 
 
     ]
 

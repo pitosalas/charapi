@@ -116,3 +116,4 @@ class CharityEvaluationResult:
     acceptable_count: int
     unacceptable_count: int
     total_metrics: int
+    summary: str

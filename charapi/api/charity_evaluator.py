@@ -15,11 +15,14 @@ from ..analyzers.compliance_checker import ComplianceChecker
 from ..analyzers.validation_scorer import ValidationScorer
 from ..analyzers.organization_type_analyzer import OrganizationTypeAnalyzer
 from ..analyzers.preference_analyzer import PreferenceAnalyzer
+from ..analyzers.summary_generator import SummaryGenerator
 
 
 def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
     with open(config_path, "r") as f:
         config = yaml.safe_load(f)
+
+    config["_config_file_path"] = config_path
 
     propublica = ProPublicaClient(config_path)
     charityapi = CharityAPIClient(config_path)
@@ -73,7 +76,7 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
         "name", "Unknown"
     )
 
-    return CharityEvaluationResult(
+    result = CharityEvaluationResult(
         ein=ein,
         organization_name=org_name,
         score=score,
@@ -87,8 +90,14 @@ def evaluate_charity(ein: str, config_path: str) -> CharityEvaluationResult:
         outstanding_count=outstanding_count,
         acceptable_count=acceptable_count,
         unacceptable_count=unacceptable_count,
-        total_metrics=total_metrics
+        total_metrics=total_metrics,
+        summary=""
     )
+
+    summary_generator = SummaryGenerator()
+    result.summary = summary_generator.generate_summary(result)
+
+    return result
 
 
 def batch_evaluate(eins: List[str], config_path: str) -> List[CharityEvaluationResult]:

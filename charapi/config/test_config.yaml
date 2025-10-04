@@ -111,18 +111,18 @@ preferences:
     enabled: true
     preferred_states:
       - MA
-      - DC
     acceptable_states:
       - NH
       - VT
       - RI
       - CT
       - NY
+      - DC
 
   organization_size:
     enabled: true
-    small_max: 500000      # < $500k = Outstanding (grassroots)
-    medium_max: 5000000    # $500k-$5M = Acceptable
+    small_max: 5000000      # < $5M = Outstanding (local/grassroots)
+    medium_max: 999999999999   # ≥ $5M = Acceptable (established charities - no upper penalty)
 
 caching:
   enabled: false

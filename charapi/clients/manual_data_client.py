@@ -13,11 +13,28 @@ class ManualDataClient:
     _global_data = None
 
     def __init__(self, config: dict):
-        self.manual_dir = Path(config.get("manual_data", {}).get("directory", "manual"))
+        manual_dir_str = config.get("manual_data", {}).get("directory", "manual")
+        manual_dir_path = Path(manual_dir_str)
+
+        if not manual_dir_path.is_absolute() and "_config_file_path" in config:
+            config_file_path = Path(config["_config_file_path"]).resolve()
+            project_root = self._find_project_root(config_file_path)
+            self.manual_dir = project_root / manual_dir_path
+        else:
+            self.manual_dir = manual_dir_path
+
         self.filename = config.get("manual_data", {}).get("filename", "manual_data.yaml")
 
         if ManualDataClient._global_data is None:
             self._load_data()
+
+    def _find_project_root(self, start_path: Path) -> Path:
+        current = start_path.parent
+        while current != current.parent:
+            if (current / "pyproject.toml").exists():
+                return current
+            current = current.parent
+        return start_path.parent
 
     def _load_data(self):
         yaml_path = self.manual_dir / self.filename
