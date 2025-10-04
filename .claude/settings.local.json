@@ -5,7 +5,8 @@
       "Bash(curl:*)",
       "WebSearch",
       "Bash(uv add:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(sqlite3:*)"
     ],
     "deny": [],
     "ask": []

@@ -5,6 +5,7 @@ from ..data.charity_evaluation_result import (
     MetricStatus,
     MetricCategory
 )
+from ..data.ntee_mapper import NTEEMapper
 
 
 class SummaryGenerator:
@@ -23,15 +24,13 @@ class SummaryGenerator:
             None
         )
 
-        if not mission_metric or not mission_metric.display_value:
+        if not mission_metric or not mission_metric.value:
             return None
 
-        display_parts = mission_metric.display_value.split(" (")
-        if len(display_parts) > 0:
-            sector_name = display_parts[0]
-            return f"a {sector_name.lower()} organization"
+        ntee_code = mission_metric.value
+        description = NTEEMapper.get_description(ntee_code)
 
-        return None
+        return f"focused on {description}"
 
     def generate_summary(self, result: CharityEvaluationResult) -> str:
         organization_name = result.organization_name
@@ -166,7 +165,7 @@ class SummaryGenerator:
         confidence: Optional[str]
     ) -> str:
         if mission_description:
-            base = f"{organization_name} is {mission_description}"
+            base = f"{organization_name}, {mission_description},"
         else:
             base = f"{organization_name}"
 
